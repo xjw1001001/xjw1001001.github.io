@@ -18,7 +18,7 @@ tagline: A Jekyll template for course websites
 description: A modern, highly customizable, responsive Jekyll template for course websites
 author: Kevin Lin
 baseurl: '/STA032_SQ2023' # the subpath of your site, e.g. /blog
-url: 'https://xjw1001001.com' # the base hostname & protocol for your site, e.g. http://example.com
+url: 'https://xjw1001001.github.io' # the base hostname & protocol for your site, e.g. http://example.com
 exclude: ["Gemfile", "Gemfile.lock", "LICENSE"]
 
 # Theme settings
