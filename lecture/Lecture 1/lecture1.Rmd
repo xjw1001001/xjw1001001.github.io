@@ -1,6 +1,6 @@
 ---
 title: "Introduction and R Basics"
-subtitle: "<br><br> STA35A: Statistical Data Science 1"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 1"
 author: "Jingwei Xiong"
 date: April 3, 2023
 output:
@@ -16,24 +16,6 @@ output:
       countIncrementalSlides: false
 ---
 
-<style>
-@media print{
-  body, html, .remark-slides-area, .remark-notes-area {
-    height: 100% !important;
-    width: 100% !important;
-    overflow: visible;
-    display: inline-block;
-    }
-    
-    p1{ 
-    color: red; 
-    top: 15cm !important; 
-    position: relative !important; 
-    left: 1cm !important;
-    }
-    
-}
-</style>
 ```{r, echo = FALSE}
 #library(renderthis)
 #to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
@@ -46,8 +28,14 @@ output:
 
 ```{r xaringanExtra, echo=FALSE}
 xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
 ```
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
 
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
@@ -62,9 +50,23 @@ library(unvotes)
 
 - Course logistics
 
-- Install R and R studio
+- R and R studio
 
-- Knit your first R markdown file
+- Some examples
+
+???
+
+Welcome to this course on statistical data science. In this session, we will cover some important course information and get you set up with the necessary tools for the course.
+
+Firstly, we will provide an overview of the course and its objectives. We will discuss the topics and concepts that will be covered throughout the course and explain how these will be applied to real-world scenarios.
+
+Next, we will cover the logistics of the course, including the course schedule, assignments, and assessments. We will also discuss the expectations for attendance, participation, and academic integrity.
+
+After that, we will guide you through the process of installing R and R Studio, which are the software tools we will be using for this course. We will provide step-by-step instructions to ensure that everyone is able to install the software successfully.
+
+Finally, we will introduce you to R markdown, a powerful tool for creating reproducible reports and documents. We will walk you through the process of creating your first R markdown file, and show you how to generate output in different formats such as HTML and PDF.
+
+By the end of this session, you should have a good understanding of what to expect from the course, the tools you will be using, and how to get started with R markdown. We look forward to an exciting and productive course with you!
 
 ---
 
@@ -89,3 +91,575 @@ This course is an introductory level course in statistics and data science, suit
 
 So, let's get started on this exciting journey into the world of data science and statistical thinking!
 
+---
+## Examples of Data Science in Practice
+
+--
+
++ Predicting Grades: Using past grades and study habits to predict future academic performance.
+
+--
+
++ Analyzing Sports Data: Analyzing data from sports games to identify patterns and make predictions, such as predicting the outcome of a game or identifying which player is likely to make the next play.
+
+--
+
++ Social Media Analysis: Analyzing social media data to understand user behavior and preferences, such as identifying popular topics or predicting which products or services are likely to be successful.
+
+--
+
++ Customer Segmentation: Grouping customers based on shared characteristics, such as demographics, buying habits, or preferences, to create targeted marketing campaigns.
+
+--
+
+These examples demonstrate how data science can be applied to a variety of domains, from academia to sports to marketing to security. 
+
+---
+
+## Data Science Workflow
+
+Data Science Workflow refers to the step-by-step process of data analysis, from data collection to communicating insights. The workflow is iterative, meaning that each step builds on the previous one, and changes may be made at any point based on new discoveries or insights.
+
+--
+
+### Steps in the Data Science Workflow
+1. **Data Collection**: Collecting relevant data from various sources.
+
+--
+
+2. **Data Cleaning and Preparation**: Cleaning and preparing the data for analysis by handling missing data, outliers, and other issues.
+
+--
+
+3. **Data Exploration and Visualization**: Exploring the data visually to identify patterns, trends, and relationships.
+
+--
+
+4. **Data Analysis and Modeling**: Analyzing the data to generate insights and develop models that can predict outcomes or identify trends.
+
+--
+
+5. **Communication of Results**: Communicating the insights and findings to stakeholders through reports, visualizations, and presentations.
+
+---
+
+## Course content 
+
+1. Fundamentals of R  
+  - Overview of data types and structures 
+  - Data manipulation and data visualization tools
+  - Functions, iterations
+  - R simulation
+
+2. Descriptive statistics for numerical and categorical data 
+
+3. Probability
+  - Rules of probability computation; conditional probability
+  - Basic probability models: Binomial, Normal and Poisson 
+
+4. Statistical inference
+  - Sampling distributions of sample mean and sample proportion 
+  - Hypothesis testing and confidence intervals for population mean and population proportion
+  - Simple linear regression
+
+- No statistics, data science or programming knowledge presumed
+
+- R will be used throughout this course.
+
+???
+
+In this course, we will cover fundamental concepts and techniques in statistical data science, with a focus on using R programming.
+
+In the first section, we will cover the fundamentals of R programming, including an overview of data types and structures, data manipulation and data visualization tools, functions, and iterations. We will later explore R simulation, which is a powerful tool for modeling complex systems.
+
+In the second section, we will dive into descriptive statistics for numerical and categorical data. We will cover important concepts such as mean, median, mode, variance, standard deviation, frequency tables, and graphical representation of data.
+
+The third section covers probability, including the rules of probability computation, conditional probability, and basic probability models such as Binomial, Normal, and Poisson.
+
+Finally, in the fourth section, we will explore statistical inference. We will cover important concepts such as sampling distributions of sample mean and sample proportion, hypothesis testing, and confidence intervals for population mean and population proportion. We will also introduce simple linear regression, which is a powerful tool for modeling the relationship between two variables.
+
+No prior knowledge of statistics, data science, or programming is required for this course. We will be using R programming throughout the course, so make sure to have it installed on your computer before starting. By the end of this course, you will have a solid understanding of the fundamental concepts and techniques of statistical data science and be equipped with the skills to apply them to real-world scenarios.
+
+---
+
+## Course logistics 
+
+- Lectures Monday, Wednesday and Friday 
+
+- Thursday lab
+
+- Office hours
+  - TA: TBD
+  - Jingwei Xiong: TBD
+
+- Course website: https://xjw1001001.github.io/
+  - Lecture notes, homework, supplementary materials, etc.
+  
+- Canvas for lab materials, turning homework (through Gradescope), solutions and grade-book
+
+- Piazza for announcements and discussion
+
+???
+
+We will have lectures on Monday, Wednesday, and Friday each week, covering fundamental concepts and techniques in statistical data science. On Thursdays, we will have a lab session where you can apply what you have learned in lectures and get hands-on experience with R programming.
+
+Office hours will be held by the TA and Jingwei Xiong, who will be available to answer any questions you may have about the course material, homework, or other related topics.
+
+We will be using a course website, which will contain lecture notes, homework, supplementary materials, and other resources. Additionally, we will be using Canvas for lab materials, submitting homework (through Gradescope), solutions, and grade-book.
+
+Lastly, we will be using Piazza for announcements and discussion. This platform will enable you to communicate with your classmates, ask questions, and receive updates from the instructor.
+
+By the end of this course, you will have a strong foundation in statistical data science and be equipped with the skills to apply them to real-world scenarios. We look forward to working with you throughout the course and hope that you find it both challenging and rewarding.
+
+---
+
+#### Grading  
+
+- Grade Distribution:
+
+| Assignment | Percentage |
+|:------------:|:------------:|
+| Homework Level 1  | 35% |
+| Homework Level 2  | 5+% |
+| Participation  | 5% |
+| Exam I | 15% |
+| Exam II | 20% |
+| Final | 25% |
+
++ Homework: Released on Fridays, due on Thursdays at 12 PM. Use R markdown to generate the homework and submit in PDF format on Gradescope. Level 2 homework problems are available for extra credit.
+
++ Participation:Participation and L2 homeworks will be evaluated with the higher one.
+
++ Exams: Exam 1 is a take-home exam on R programming, Exam 2 is an in-person exam on statistical concepts, and the Final Exam is a take-home programming exam.
+
+???
+
+Your grade will be based on several components, including homework, participation, and exams.
+
+Homework assignments will make up a significant portion of your grade, with Level 1 assignments accounting for 35% of the total grade, and Level 2 assignments offering opportunities for extra credit. You are required to use R markdown to generate the homework and submit in PDF format on Gradescope.
+
+Participation in class, including collaboration and assistance between students and active participation in Piazza, will account for 5% of your final grade. If you cannot finish all L2 problems, you can get scores back from here. Participation and L2 homeworks will be evaluated with the higher one.
+
+The exams will be a crucial component of your grade, with Exam 1 focusing on R programming, and Exam 2 covering statistical concepts. The Final Exam will be a take-home programming exam. The distribution for the exams is as follows: Exam 1 (15%), Exam 2 (20%), and the Final Exam (25%).
+
+By understanding the grading distribution and expectations for each component, you can prepare effectively and strive to achieve your best possible performance in this course.
+
+---
+
+
+## Set up
+
+- You will need regular, reliable access to a computer either with a working browser, or running an up-to-date version of R and RStudio
+
+- It's strongly recommended to install R and RStudio on your own computers 
+
+- If this is a problem, please let us know right away. There are resources available to support you.
+
+- Labs will be at TLC 2212; either use computers available in the lab, or your own laptops (make sure your laptop is charged before class)
+
+- For lectures, it's strongly recommended to repeat all coding examples on your own computer.
+
+---
+
+## Software: R
+
+.pull-left[
+```{r echo=FALSE, out.width="25%", fig.align="left"}
+knitr::include_graphics("img/R_logo.svg.png")
+```
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/r.png")
+```
+]
+
+.pull-right[
+<br> 
+<br> 
+
+- R is a free, open-source statistical programming language for statistical computing
+
+- It is also an interactive environment for doing data science
+
+- Data science teams often use a mix of languages, including R, Python, Julia, ... 
+
+]
+
+???
+
+R is a free, open-source statistical programming language that is widely used for statistical computing and data analysis.
+
+R is also an interactive environment for doing data science, which means that you can manipulate data, create visualizations, and run statistical analyses within the R environment. This makes it a powerful tool for data scientists who want to work efficiently and effectively with large datasets.
+
+It's important to note that data science teams often use a mix of programming languages, including R, Python, Julia, and others. Each language has its own strengths and weaknesses, and data scientists typically choose the language that is best suited to their specific needs and tasks. In this course, we will be focusing on R programming, which is widely used in the field of statistical data science.
+
+---
+.pull-left[
+```{r echo=FALSE, out.width="25%", fig.align="left"}
+knitr::include_graphics("img/R_logo.svg.png")
+```
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/r.png")
+```
+]
+
+.pull-right[
+
+<br> 
+<br> 
+
+- R Console: Basic interaction with R is by typing in the console, a.k.a. terminal or command-line
+
+- You type in commands, R gives back answers (or errors)
+
+- It is easily extensible with packages
+
+- Menus and other graphical interfaces are extras built on top of the console
+
+]
+
+???
+Here is the terminal or command-line, which is where you will be typing in commands and interacting with R programming.
+
+The console is a powerful tool that allows you to enter commands and obtain answers from R. You can perform a wide range of operations in the console, such as data manipulation, statistical analysis, and visualization.
+
+One of the strengths of R programming is that it is easily extensible with packages. These packages contain additional functions and tools that you can use to extend the capabilities of R. You can easily install and load packages in the console, which makes it a flexible and powerful tool for data science.
+
+It's worth noting that while R programming can be used with menus and other graphical interfaces, these are often extras built on top of the console. The console is the primary interface for working with R, and it's important to become comfortable using it in order to become proficient in R programming.
+
+---
+
+# Installing R
+
+.pull-left[To install R on Windows OS:
+
+1. Go to the [**CRAN**](https://cran.r-project.org/) website.
+
+2. Click on **"Download R for Windows"**.
+
+3. Click on "install R for the first time" link to download the R executable (.exe) file.
+
+4. Run the R executable file to start installation, and allow the app to make changes to your device.
+
+5. Follow the installation instructions.]
+
+.pull-right[To install R on Mac OS:
+
+1. Go to the [**CRAN**](https://cran.r-project.org/) website.
+
+2. Click on **"Download R for macOS"**.
+
+3. Download the latest version of the R GUI under (.pkg file) under **"Latest release"**. You can download much older versions by following the "old directory" or "CRAN archive" links.
+
+4. Run the .pkg file, and follow the installation instructions.]
+
+---
+
+### R studio
+
+.pull-left[
+```{r echo=FALSE, out.width="55%", fig.align="left"}
+knitr::include_graphics("img/RStudio-Logo-Flat.png")
+```
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/rstudio.png")
+```
+]
+
+.pull-right[
+<br> 
+<br> 
+
+- RStudio is a free, open-source R programming environment
+
+- It is called an integrated development environment, or IDE, for R programming  
+
+- It contains a built-in code editor, many features to make working with R easier, and works the same way across different operating systems.
+
+]
+
+???
+
+RStudio is a free, open-source R programming environment.
+
+RStudio is called an integrated development environment, or IDE, for R programming. It provides a comprehensive environment for working with R, including a built-in code editor, debugging tools, and many features to make working with R easier.
+
+One of the strengths of RStudio is that it works the same way across different operating systems. This means that whether you are using a Windows, Mac, or Linux computer, you can expect a consistent and familiar environment for working with R.
+
+In summary, RStudio is a powerful tool for working with R programming, and it's an essential tool for anyone who wants to work effectively and efficiently with R.
+
+---
+
+# Installing RStudio Desktop
+
+To install RStudio Desktop on your computer, do the following:
+
+1. Go to the [**RStudio**](https://posit.co/download/rstudio-desktop/) website.
+2. Go to the step 2, Install RStudio Desktop
+3. Download RStudio Desktop recommended for your computer.
+4. Run the RStudio Executable file (.exe) for Windows OS or the Apple Image Disk file (.dmg) for macOS X.
+
+---
+
+#### Example of a data visualization 
+
+.panelset[
+.panel[.panel-name[R Code]
+```{r oplot, eval = FALSE}
+un_votes %>%
+  filter(country %in% c("United States", "United Kingdom", "China", "Singapore")) %>%
+  inner_join(un_roll_calls, by = "rcid") %>%
+  inner_join(un_roll_call_issues, by = "rcid") %>%
+  mutate(year = lubridate::year(date)) %>%
+  group_by(country, year, issue) %>%
+  summarize(votes = n(),
+            percent_yes = mean(vote == "yes")) %>%
+  filter(votes > 5) %>%  # Only use records where there are more than 5 votes
+  ggplot(mapping = aes(x = year, y = percent_yes, color = country)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "loess", se = FALSE) +
+  facet_wrap(~issue) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Percentage of 'Yes' votes in the UN General Assembly",
+    subtitle = "1946 to 2019",
+    y = "% Yes",
+    x = "Year",
+    color = "Country"
+  ) +
+  scale_color_viridis_d() +
+  theme(text = element_text(size = 9))   
+```
+]
+.panel[.panel-name[Plot]
+
+```{r echo=FALSE, fig.height=8,fig.width=12}
+un_votes %>%
+  filter(country %in% c("United States", "United Kingdom", "China", "Singapore")) %>%
+  inner_join(un_roll_calls, by = "rcid") %>%
+  inner_join(un_roll_call_issues, by = "rcid") %>%
+  mutate(year = lubridate::year(date)) %>%
+  group_by(country, year, issue) %>%
+  summarize(votes = n(),
+            percent_yes = mean(vote == "yes")) %>%
+  filter(votes > 5) %>%  # Only use records where there are more than 5 votes
+  ggplot(mapping = aes(x = year, y = percent_yes, color = country)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "loess", se = FALSE) +
+  facet_wrap(~issue) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Percentage of 'Yes' votes in the UN General Assembly",
+    subtitle = "1946 to 2019",
+    y = "% Yes",
+    x = "Year",
+    color = "Country"
+  ) +
+  scale_color_viridis_d() +
+  theme(text = element_text(size = 9))   
+```
+
+]
+]
+---
+
+When you start RStudio for the first time, you will see three panes. The left pane shows the R console. On the right, the top pane includes tabs such as Environment and History, while the bottom pane shows five tabs: File, Plots, Packages, Help, and Viewer (these tabs may change in new versions). You can click on each tab to move across the different features.
+
+![](http://rafalab.dfci.harvard.edu/dsbook/productivity/img/windows-screenshots/VirtualBox_Windows-7-Enterprise_22_03_2018_16_21_16.png)
+
+---
+
+To start a new script, you can click on File, then New File, then R markdown.
+
+![](http://rafalab.dfci.harvard.edu/dsbook/productivity/img/windows-screenshots/VirtualBox_Windows-7-Enterprise_22_03_2018_16_21_42.png)
+
+---
+
+This starts a new pane on the left and it is here where you can start writing your R markdown file. The R markdown file will ended with **.Rmd**.
+
+---
+
+
+## R Markdown
+```{r echo=FALSE, out.width="10%"}
+knitr::include_graphics("img/rmarkdown.png")
+```
+
+- R Markdown is a tool to integrate code and written prose in reproducible computational documents
+
+- R Markdown files have the `Rmd` extension. Each time you "knit," the analysis is run from the beginning.
+
+- To learn more, go to [rmarkdown.rstudio.com](https://rmarkdown.rstudio.com/)
+
+- Homework and take home exams will be completed in R Markdown
+
+- Code goes in chunks, defined by three backticks, narrative goes outside of chunks
+
+---
+
+## Tour: R Markdown
+
+```{r echo=FALSE, out.width="90%"}
+knitr::include_graphics("img/tour-rmarkdown.png")
+```
+
+* Example: Create your first R markdown file and knit it.
+
+---
+
+In RStudio, you can start an R markdown document by clicking on **File, New File, the R Markdown**. 
+
+You will then be asked to enter a title and author for your document. 
+
+You can also decide what format you would like the final report to be in: HTML, PDF, or Microsoft Word. 
+
+It will generate a template file.
+
+As a convention, we use the **Rmd suffix** for these files.
+
+In the template, you will see several things to note.
+
+---
+
+# The header
+
+At the top you see:
+
+```
+---
+title: "Untitled"
+author: 'Jingwei Xiong'
+date: "2023/1/10"
+output: html_document
+---
+```
+
+The things between the `---` is the header. We actually don't need a header, but it is often useful. You can define many other things in the header than what is included in the template. We don't discuss those here, but much information is available online. The one parameter that we will highlight is `output`. By changing this to, say, `pdf_document`, we can control the type of output that is produced when we compile. 
+
+---
+
+# R code chunks
+
+In various places in the document, we see something like this:
+
+````
+```{r}`r ''`
+summary(pressure)
+```
+````
+
+These are the code chunks. When you compile the document, the R code inside the chunk, in this case `summary(pressure)`, will be evaluated and the result included in that position in the final document. 
+
+This applies to plots as well; the plot will be placed in that position. We can write something like this:
+
+
+
+
+````
+```{r}`r ''`
+plot(pressure)
+```
+````
+
+---
+
+By default, the code will show up as well. To avoid having the code show up, you can use an argument. To avoid this, you can use the argument `echo=FALSE`. For example:
+
+````
+```{r, echo=FALSE}`r ''`
+summary(pressure)
+```
+````
+
+If you want to only show the code but not run the code, you can use the argument `eval=FALSE`.
+
+````
+```{r, eval=FALSE}`r ''`
+summary(pressure)
+```
+````
+
+By default, the code will run and the output will be shown.
+
+---
+
+# Knit your first rmd file
+
+After you get the template rmd file, click this **knit**:
+
+<img src="1.png"
+     width="70%" height="70%">
+
+This button will process your source code into the final document, if your code has no error.
+
+---
+
+# Insert a new code chunk
+
+To insert a new code chunk, click this:
+
+<img src="2.png"
+     width="70%" height="70%">
+
+This button will insert a new code chunk in the current cursor line.
+
+---
+
+# Run scripts in the code chunk
+
+To run scripts in a code chunk, click this:
+
+<img src="4.png"
+     width="70%" height="70%">
+
+This button will copy all of the codes inside that code chunk into the console, and run it.
+
+---
+
+# Knit settings
+
+You can find the knit settings here:
+
+<img src="3.png"
+     width="50%" height="50%">
+
+You can change to word using the output format.
+
+---
+
+# Try it yourself
+
+1. Go to File -> New file -> R markdown to generate a new R markdown file. Change the title into "My project" and author as your name. Select the html document.
+
+2. Save your rmd file into a place you know with a new name.
+
+3. Knit the project as a html file. You should find the html file in the same location with the rmd file you saved.
+
+4. Directly change the header in the rmd file into
+````
+title: "My first R markdown"
+author: 'Jingwei Xiong'
+date: "`r Sys.Date()`"
+output: pdf_document
+````
+
+---
+
+
+## Check list
+
+* Install R and R studio on your own computer.
+
+* Try it yourself, knit your first rmd file.
+
+---
+
+## Reading:
+
+[Getting started with R and RStudio](http://rafalab.dfci.harvard.edu/dsbook/getting-started.html)
+
+[R markdown](http://rafalab.dfci.harvard.edu/dsbook/reproducible-projects-with-rstudio-and-r-markdown.html#r-markdown)
+
+---
