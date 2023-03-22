@@ -1,0 +1,134 @@
+---
+output: html_document
+title: >
+  Syllabus: STA 032 - Gateway to Data Science: Spring 2023
+author: "STA 032"
+
+---
+
+### Course Content:
+Statistics 32 will cover probability concepts, programming in R, exploratory data analysis, sampling distribution, estimation and inference, linear regression, simulations, and resampling methods.
+
+### Prerequisite:
+MAT 016B C- or better or MAT 017B C- or better or MAT 021B C- or better.
+
+### Course Objective:
+This course gives the student an overview of the structure and applications of probability, statistics, computer simulation and data analysis. After completing the course successfully, the student should:
+
++ Be aware of the general types of applications of probability, statistics and simulation, and the roles of the twin tools of mathematical analysis and simulation.
++ Be able to do simple computations involving probabilities, random variables, mass or density functions, expected values and variances--both through mathematical analysis and through simulation.
++ Have the prerequisite background from the methodology courses such as course 104, 106, and 108.
++ Have insight, which should lead to better performance in courses 131ABC.
+
+### Course Website
++ The class will use Canvas and a website (https://xjw1001001.github.io/) to distribute all resources.  Lecture notes, homework, supplementary materials, etc., will be posted [there](https://xjw1001001.github.io/).
++ Forums on Piazza will be used to address students questions and answers. 
++ Students will submit homeworks onto Gradescope.
+
+### Material Covered
+We will cover selected sections of the following chapters:
+
++ Sampling and Descriptive Statistics (Chapter 1)
++ Probability (Chapter 2)
++ Commonly Used Distributions (Chapter 4)
++ Confidence Intervals (Chapter 5)
++ Hypothesis Testing (Chapter 6)
++ Correlation and Simple Linear Regression (Chapter 7)
++ Introduction to R Language
+
+### R and RStudio
+R is a free, open-source programming language for statistical computing. RStudio is a free, open-source R programming environment. It contains a built-in code editor, many features to make working with R easier, and works the same way across different operating systems.
+
+All of our computing work in this class will be done using R and RStudio. You will use RStudio for homework, labs and exams, so a working version of RStudio is required. You can choose to download it on your personal computer, or use UC Davis Lab computer. You will need regular, reliable access to a computer either running an up-to-date version of R and RStudio. If this is a problem, please let us know right away. 
+
+The room that labs are held in have computers with RStudio installed, and you may choose to use them. If you are using your own laptop, please make sure that it is charged before class.
+
+### Piazza
+You should have already received an email inviting you to Piazza. If you did not, or have any problem accessing Piazza, please email me or a TA as soon as possible. Note: the Piazza access code is .
+
+Post your questions about class material or general administrations on Piazza. Piazza is the class' online forum. The course piazza will be available from the week 2. TAs will monitor regularly. Anyone in the class can answer your question, so you're likely to get an answer quickly. When you use Piazza:
+
+Use your official/preferred name at UC Davis. (Matched with your name in Canvas.)
+Be polite and respectful to others.
+Search before you post. Your question may have already been asked and answered.
+When you post a question, explain the context and give an example of what you mean.
+
+### Communication
+The instructor will make announcements in canvas.
+For questions about course materials or general administrations, use Piazza or come to office hour. Do not send emails.
+For private questions, use Piazza with private features or send canvas inbox message.
+For emergency, send us an email with the course name (STA32). Emergency is you or a family member has an illness or had an accident that interfering your ability to complete exams or tasks.
+Unexpected Issue
+Students may encounter with unexpected issues like internet outages, computer failure etc.
+
+### Accommodation
+UC Davis is committed to educational equity in the academic setting, and in serving a diverse student body. I encourage all students who are interested in learning more about the Student Disability Center (SDC) to contact them directly at sdc.ucdavis.edu, sdc@ucdavis.edu or 530-752-3184. If you are a student who requires academic accommodations, please submit your SDC Letter of Accommodation to me as soon as possible, ideally within the first two weeks of this course.
+
+### Academic Conduct Review
+Students are responsible for reviewing the Academic Code of Conduct. Information on the Academic Code of Conduct can be found here: https://supportjudicialaffairs.sf.ucdavis.edu/code-academic-conduct
+
+### Collaboration, copying, and plagiarism
+Any student who cheats on an assignment or exam will be referred to the Office of Student Support and Judicial Affairs and will receive an automatic failing grade on the relevant assignment. A second instance of academic dishonesty will result in a failing grade in the course. More information on the nature of dishonest academic behavior or UCD policy can be found on the website of the Office of Student Support and Judicial Affairs.
+
+Collaboration is encouraged and students are encouraged to discuss course material, R programming with classmates. All work that is turned in, however, must be your own. If students have collaborated on homework, the names of all students working together must be clearly indicated.
+
+### Grading
+
+- Grade Distribution:
+
+| Assignment | Percentage |
+|:------------:|:------------:|
+| Homework Level 1  | 35\% |
+| Homework Level 2  | 5+\% |
+| Participation  | 5\% |
+| Exam I | 15\% |
+| Exam II | 20\% |
+| Final | 25\% |
+
+- **Homework**: Homework will be released on Friday, and will be due Thursday the week after, at 12 PM. **You are required to use R markdown to generate the homework.** Using the Homework template (rmd file) is highly recommended. The submission must be in PDF format in gradescope, thus you need to knit as html first, and then print the html into a PDF file. Homework may contain other non-coding components, and these can be typed (use any software you are comfortable with), or written and scanned.
+
+- **Homework Level 2**: There will be a separate set of Level 2 homework problems that are more challenging and time-consuming than the regular assignments. These problems may offer opportunities for extra credit.
+
+- **Participation**: Collaboration and assistance between students in debugging code and programming are encouraged. Active participation in Piazza, both by asking and answering questions, will be taken into consideration in cases where students are unable to complete the Level 2 problems.
+
+- **Exams**: Exam 1 will focus on R programming and it will be a take home exam with 4 hours. It will be similar to the programming homework problems. Exam 2 will focus on statistical concepts and it will be an in person exam in class. Final exam will be a take home programming exam. **There will be no late submissions for exams.**
+
+- **Regrade Policy**: You have **7 days** after a graded assignment is returned (quizzes, exams, projects) to contest a grade. After this time, the item may not be considered. If the 7 day period extends beyond the final exam date, the grade must be contested before the final exam.
+
+- Final Grade Guidelines:
+
+| Course Grade Cutoffs | |
+|:------------------------:|:---:|
+| A+ | [97 - 100) |
+| A | [93 - 97) |
+| A- | [90 - 93) |
+| B+ | [87 - 90) |
+| B | [83 - 87) |
+| B- | [80 - 83) |
+| C+ | [77 - 80) |
+| C | [73 - 77)|
+| C- | [70 - 73) |
+| D+ | [67 - 70) |
+| D | [63 - 67) |
+| D- | [60 - 63) |
+| F | [0 - 60) |
+
+* Grading distribution is approximate. Instructor reserves the right to adjust grading scheme.
+
+* Cutoffs are approximate. Instructor reserves the right to lower any grade cutoffs. Final decisions will not be made until all assignments have been turned in and graded.
+
+### Quarter Dates to Remember
+| Date                   | Event                                      |
+|:------------------------:|:---------------------------------------------:|
+| Monday, April 3, 2023      | Instruction Begins                         |
+| Friday, April 14, 2023     | Drop day for 10-day-drop courses            |
+| Tuesday, April 18, 2023     | Last day: For wait lists; To add courses        |
+| Friday, February 3     | STA 32 Exam 1                               |
+| Friday, May 5, 2023    | Last day to opt for P/NP or S/U grading     |
+| Friday, March 3        | STA 32 Exam 2                               |
+| Thursday, June 8, 2023      | Last day of lecture                         |
+| Thursday | STA 32 Final Exam                           |
+
+* Syllabus is subject to change.
+
+

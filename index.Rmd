@@ -1,53 +1,62 @@
 ---
 output: html_document
 title: >
-  Statistical Data Science 1: Fall 2022
-author: "STA 35A"
+  STA 032 - Gateway to Data Science: Spring 2023
+author: "STA 032"
 
 ---
 
-**Instructor**: Xiao Hui Tai (xtai [at] ucdavis [dot] edu)
+**Instructor**: Jingwei Xiong: jwxxiong@ucdavis.edu
 
-**TA**: Jedidiah Harwood (jedharwood [at] ucdavis [dot] edu)
+**TA**: 
 
 **Class time**:   
-Lectures are Mondays, Wednesdays and Fridays, 11-11:50 AM at Hunt 100.  
-Discussions (labs) are run by Jedidiah Harwood on Thursdays 12:10-1 PM (Section A01), 1:10-2 PM (Section A02) at TLC 2212.
+Lectures are Mondays, Wednesdays and Fridays, 9-9:50 AM at Wellman 6  
+Discussions (labs) are run by TA on Thursdays 10:00 - 10:50 AM (Section A01), 11:00 - 11:50 AM (Section A02) at TLC 2212.
 
 **Office hours**:  
-Jedidiah Harwood: Tuesdays 10-11 AM, Thursdays 10:30-11:30 AM at MSB 1117   
-Xiao Hui Tai: Mondays 9:30-10:30 AM at MSB 4242
+: TBD
+Jingwei Xiong: TBD
+
+**Canvas**: [here](https://canvas.ucdavis.edu/courses/7846886).
 
 **Syllabus**: [here](https://xhtai.github.io/statdatasci/syllabus.html).
 
-**Piazza**: [here](https://piazza.com/class/l81yk31iqv85wu). 
+**Piazza**: [here](https://canvas.ucdavis.edu/courses/784688/external_tools/12776).
 
+**Gradescope**: [here](https://www.gradescope.com/courses/524102).
+
+<!-- your comment 
 **Textbooks**:
-There are three required textbooks. They are all available online and are free. 
+There are three optional textbooks. They are all available online and are free. 
 
 1. R for Data Science by Hadley Wickham and Garrett Grolemund. 1st Edition, 2017. Available [here](https://r4ds.had.co.nz/index.html).
-2. Introduction to Modern Statistics by Mine Çetinkaya-Rundel and Johanna Hardin. 1st Edition, 2021. Available [here](https://openintro-ims.netlify.app/index.html).
+2. Statistics for Engineers and Scientists, Fifth Edition}, William Navidi.  Older versions will be fine.)
 3. OpenIntro Statistics by David Diez, Mine Cetinkaya-Rundel and Christopher Barr. 4th Edition, 2019. Available [here](https://www.openintro.org/book/os/).
 
-There will sometimes be additional (optional) reading from: 
-
-1. Art of R Programming by Norman Matloff. 2011. (Look on Google)
+-->
 
 ## Class Schedule
 
 ### Week 1: Introduction, overview of data types	
-- Wed Sept 21: Introduction and R Basics
+- Mon April 3: Introduction and R Basics
   - Notes: [Lecture 1](https://xhtai.github.io/statdatasci/lectures/lecture1/lecture1.html)
   - Reading: 
     - R for Data Science Chapters 1, 2, 27
 
-- Fri Sept 23: Overview of data types and data structures, vectors
+- Wed April 5: Overview of data types and data structures, vectors
   - Notes: [Lecture 2](https://xhtai.github.io/statdatasci/lectures/lecture2/lecture2.html)
   - Reading: 
     - R for Data Science Chapter 4, 20
     - Additional reading: Matloff Chapter 2
 
+- Fri April 7: Overview of data types and data structures, vectors
+  - Notes: [Lecture 3](https://xhtai.github.io/statdatasci/lectures/lecture2/lecture2.html)
+  - Reading: 
+    - R for Data Science Chapter 4, 20
+    - Additional reading: Matloff Chapter 2
 
+<!-- your comment 
 
 ### Week 2: Overview of data types
 - Mon Sept 26: More on vectors, arrays
@@ -188,3 +197,4 @@ There will sometimes be additional (optional) reading from:
 - Fri Dec 2: Confidence intervals and one-sided tests 
   - Notes: [Lecture 25](https://xhtai.github.io/statdatasci/lectures/lecture25/lecture25.html)
 
+-->
