@@ -507,7 +507,7 @@ x
 is.vector(x)
 ```
 
-* `c()` function creates a vector containing all its arguments in order
+> `c()` function creates a vector containing all its arguments in order, c stands for _concatenate_:
 
 ???
 
@@ -520,7 +520,7 @@ For example, we can create a vector x containing four numeric values using the c
 We can then output x to the console and check if it is a vector using the is.vector() function.
 
 ---
-## Indexing and length
+## Subsetting
 
 `x[1]` is the first element, `x[4]` is the 4th element  
 `x[-4]` is a vector containing **all but** the fourth element
@@ -536,6 +536,8 @@ Vector of negative indices
 x[c(-1, -3)]
 ```
 <small>(why that, and not  `8 10`?)</small>
+
+
 
 ???
 
@@ -554,7 +556,7 @@ Finally, we can also use negative indices in a vector of indices to exclude cert
 For instance, x[c(-1, -3)] would give us the second and fourth elements of the vector x, since the first and third elements are excluded.
 
 ---
-## Indexing and length
+## length
 
 To get the length of the vector, use `length()`
 ```{r}
@@ -583,6 +585,11 @@ mySeq <- 2:5
 mySeq
 ```
 
+The sequences defined above are particularly useful if we want to access, say, the first two elements:
+
+```{r}
+x[1:2]
+```
 
 ???
 
@@ -591,6 +598,8 @@ In addition to creating vectors using c(), you can create empty vectors of a spe
 This can be useful for filling the vector with data later. 
 
 The colon operator : can be used to produce a sequence of integers. For example, 2:5 will create a vector with elements 2, 3, 4, and 5.
+
+The sequences defined above are particularly useful if we want to access, say, the first two elements:
 
 ---
 ## Creating vectors
@@ -616,6 +625,65 @@ Enclosing an assignment statement in parentheses prints the result.
 
 ---
 
+## Vector can have names for each element
+
+Remember can create vectors using the function `c`, which stands for _concatenate_:
+
+```{r}
+codes <- c(380, 124, 818)
+```
+
+We can also create character vectors. We use the quotes to denote that the entries are characters rather than variable names.
+
+```{r}
+country <- c("italy", "canada", "egypt")
+```
+
+In R you can also use single quotes:
+
+```{r}
+country <- c('italy', 'canada', 'egypt')
+```
+
+---
+
+## Vector can have names for each element
+
+By now you should know that if you type:
+```{r, eval=FALSE}
+country <- c(italy, canada, egypt)
+```
+
+you receive an error because the variables `italy`, `canada`, and `egypt` are not defined. If we do not use the quotes, R looks for variables with those names and returns an error.
+
+We can also assign names using the `names` functions:
+
+```{r}
+codes <- c(380, 124, 818)
+country <- c("italy","canada","egypt")
+names(codes) <- country
+codes
+```
+
+---
+
+## Vector can subset by names
+
+If the elements have names, we can also access the entries using these names. Below are two examples.
+
+```{r}
+codes["canada"]
+codes[c("egypt","italy")]
+```
+
+It is the same as we subset by index.
+
+```{r}
+codes[c(3,1)]
+```
+
+---
+
 ## Summary
 
 --
@@ -627,6 +695,8 @@ Enclosing an assignment statement in parentheses prints the result.
 - Data structures group related values together
 
 - Vectors group values of the same type
+
+- Vector creating and subsetting
 
 ---
 
