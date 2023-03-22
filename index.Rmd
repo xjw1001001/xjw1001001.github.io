@@ -47,7 +47,7 @@ There are three optional textbooks. They are all available online and are free.
 
 
 - Wed April 5: Overview of data types and data structures, vectors
-  - Notes: [Lecture 2](https://xhtai.github.io/statdatasci/lectures/lecture2/lecture2.html)
+  - Notes: [Lecture 2](https://xjw1001001.github.io/lecture/Lecture 2/lecture2.html)
   - Reading: 
     - R for Data Science Chapter 4, 20
     - Additional reading: Matloff Chapter 2

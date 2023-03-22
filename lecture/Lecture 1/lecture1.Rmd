@@ -479,6 +479,12 @@ To start a new script, you can click on File, then New File, then R markdown.
 
 This starts a new pane on the left and it is here where you can start writing your R markdown file. The R markdown file will ended with **.Rmd**.
 
+**Script part is not console part.**
+
+The script part and R console part are separate. In the script part, you write the code for your program, and in the R console part, you run the code and see the results.
+
+**Only the code in the console part will be evaluated**.
+
 ---
 
 
