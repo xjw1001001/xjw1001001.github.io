@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction and R Basics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-04-03" />
+    <script src="lecture1_files/header-attrs-2.20/header-attrs.js"></script>
+    <link href="lecture1_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture1_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture1_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture1_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture1_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture1_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Introduction and R Basics
+]
+.subtitle[
+## <br><br> STA35A: Statistical Data Science 1
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### April 3, 2023
+]
+
+---
+
+
+&lt;style&gt;
+@media print{
+  body, html, .remark-slides-area, .remark-notes-area {
+    height: 100% !important;
+    width: 100% !important;
+    overflow: visible;
+    display: inline-block;
+    }
+    
+    p1{ 
+    color: red; 
+    top: 15cm !important; 
+    position: relative !important; 
+    left: 1cm !important;
+    }
+    
+}
+&lt;/style&gt;
+
+
+
+&lt;style type="text/css"&gt;
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+
+
+
+
+
+
+## Summary
+
+- Course overview 
+
+- Course logistics
+
+- Install R and R studio
+
+- Knit your first R markdown file
+
+---
+
+## Statistical data science
+--
+
+- Statistics is the study of how to collect, analyze, and draw conclusions from data.
+
+- Data science is typically thought of as an interdisciplinary field, combining statistical thinking with elements more traditionally thought of as coming from other fields, such as programming, database management and optimization.
+
+- There is a stronger focus on the practical aspects of working with data, in particular computing, as well as applications in different domains, such as the sciences, business, sports, and government.
+
+- This is a course on introduction to data science, no prior programming experience needed. However, we will focus on R programming. 
+
+???
+
+Welcome to this course on introduction to data science with a focus on statistical thinking. In this course, we will explore the fundamentals of statistics and how to collect, analyze, and draw conclusions from data. We will also examine the interdisciplinary nature of data science, combining statistical thinking with elements from programming, database management, and optimization.
+
+Our focus will be on the practical aspects of working with data, with particular emphasis on computing and applications in different domains such as the sciences, business, sports, and government. We will be using R programming throughout the course to demonstrate statistical concepts and techniques.
+
+This course is an introductory level course in statistics and data science, suitable for beginners who have little or no prior experience in these areas. By the end of this course, you should have a solid understanding of the fundamental concepts of data science, including data collection, analysis, and visualization. You will also be equipped with the tools and skills to apply statistical thinking to solve problems in a variety of domains.
+
+So, let's get started on this exciting journey into the world of data science and statistical thinking!
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

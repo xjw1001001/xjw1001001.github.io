@@ -1,0 +1,91 @@
+---
+title: "Introduction and R Basics"
+subtitle: "<br><br> STA35A: Statistical Data Science 1"
+author: "Jingwei Xiong"
+date: April 3, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      # ratio: "16:9"
+      # highlightLines: true
+      # highlightStyle: solarized-light
+      countIncrementalSlides: false
+---
+
+<style>
+@media print{
+  body, html, .remark-slides-area, .remark-notes-area {
+    height: 100% !important;
+    width: 100% !important;
+    overflow: visible;
+    display: inline-block;
+    }
+    
+    p1{ 
+    color: red; 
+    top: 15cm !important; 
+    position: relative !important; 
+    left: 1cm !important;
+    }
+    
+}
+</style>
+```{r, echo = FALSE}
+#library(renderthis)
+#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```
+
+
+```{css, echo = FALSE}
+.small .remark-code { font-size: 80%; }
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+```
+
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
+
+
+## Summary
+
+- Course overview 
+
+- Course logistics
+
+- Install R and R studio
+
+- Knit your first R markdown file
+
+---
+
+## Statistical data science
+--
+
+- Statistics is the study of how to collect, analyze, and draw conclusions from data.
+
+- Data science is typically thought of as an interdisciplinary field, combining statistical thinking with elements more traditionally thought of as coming from other fields, such as programming, database management and optimization.
+
+- There is a stronger focus on the practical aspects of working with data, in particular computing, as well as applications in different domains, such as the sciences, business, sports, and government.
+
+- This is a course on introduction to data science, no prior programming experience needed. However, we will focus on R programming. 
+
+???
+
+Welcome to this course on introduction to data science with a focus on statistical thinking. In this course, we will explore the fundamentals of statistics and how to collect, analyze, and draw conclusions from data. We will also examine the interdisciplinary nature of data science, combining statistical thinking with elements from programming, database management, and optimization.
+
+Our focus will be on the practical aspects of working with data, with particular emphasis on computing and applications in different domains such as the sciences, business, sports, and government. We will be using R programming throughout the course to demonstrate statistical concepts and techniques.
+
+This course is an introductory level course in statistics and data science, suitable for beginners who have little or no prior experience in these areas. By the end of this course, you should have a solid understanding of the fundamental concepts of data science, including data collection, analysis, and visualization. You will also be equipped with the tools and skills to apply statistical thinking to solve problems in a variety of domains.
+
+So, let's get started on this exciting journey into the world of data science and statistical thinking!
+
