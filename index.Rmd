@@ -60,18 +60,20 @@ There are three optional textbooks. They are all available online and are free.
 - Fri April 7: More on Vectors, R markdown Homework example
   - Notes: [Lecture 3](https://xjw1001001.github.io/lecture/Lecture 3/lecture3.html)
   - Reading: 
-    - R for Data Science Chapter 4, 20
+    - R for Data Science Chapter 20, 27
     - Additional reading: Matloff Chapter 2
     - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
     - [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
-    - Homework 1: (Due April 14 midnight, cover lecture 1-3) [Html](https://xhtai.github.io/statdatasci/homework/homework1/HW1.html) [Rmd](https://xhtai.github.io/statdatasci/homework/homework1/HW1.Rmd)
+  - Homework 1: (Due April 14 midnight, cover lecture 1-3) [Html](https://xhtai.github.io/statdatasci/homework/homework1/HW1.html) [Rmd](https://xhtai.github.io/statdatasci/homework/homework1/HW1.Rmd)
     
 ### Week 2: Introduction to data manipulation
 
 - Mon April 10: List and data frame
   - Notes: [Lecture 4](https://xjw1001001.github.io/lecture/Lecture 4/lecture4.html)
   - Reading: 
-    - R for Data Science Chapters 1, 2, 27
+    - R for Data Science Chapter 4, 20
+    - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
+    - [Chapter 3](http://rafalab.dfci.harvard.edu/dsbook/programming-basics.html)
     
 <!-- your comment 
 

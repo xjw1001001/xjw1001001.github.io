@@ -69,6 +69,8 @@ library(unvotes)
 
 - Data frames, or more generally "data sets"
 
+- Auto complete and How to use help in R
+
 ???
 
 Today's topics are lists and data frames, which are both important data structures in R.
@@ -611,15 +613,106 @@ In this example, we create two data frames, `df1` and `df2`, and then create a l
 In this example, we create two data frames, df1 and df2, and then create a list called nested_list containing these two data frames as elements. We can see that nested_list is a list with two elements, each of which is a data frame, by using the str() function to print the structure of the list.
 
 
----
-## More complicated data structures: structures of structures
 
-Most complicated objects are (usually) lists of data structures
+---
+
+## Autocomplete and help
+
+.panelset[
+.panel[.panel-name[Autocomplete]
+* RStudio has a powerful autocomplete feature that makes it easy to write code and reduce errors
+
+* To use the autocomplete feature, simply start typing a function or variable name and press the TAB key
+
+* RStudio will display a list of possible completions, including function names, variable names, and other objects in your workspace
+
+* You can select the desired completion from the list using the up and down arrow keys or by clicking on the item with your mouse
+
+* Autocomplete also works with other types of text, such as file paths and package names
+]
+
+.panel[.panel-name[seq() example]
+- Let’s try using `seq()` which makes regular **seq**uences of numbers
+- Type `se` and hit TAB. A popup shows you possible completions.
+
+- Specify `seq()` by typing more (a "`q`") to disambiguate
+
+- Press TAB once more when you’ve selected the function you want. RStudio will add matching opening (() and closing ()) parentheses for you.
+
+- Type the arguments 1, 10 and hit return.
 
 ```{r}
-a <- list(a = 1:3, b = "a string", c = pi, d = list(-1, -5))
-str(a)
+seq(1,10)
 ```
+
+]
+.panel[.panel-name[Get help of a function]
+
+- Type `?function_name` in console to get help of a function. The help will be in "help" panel to the right.
+
+```{r eval = F}
+?seq
+```
+
+The help documentation is divided into several sections, including:
+
+- Description: a brief summary of what the function does.
+- Usage: the syntax of the function, including any required and optional arguments.
+- Arguments: a description of each argument, including its name, data type, and default value.
+- Details: additional information about the function's behavior or how to use it.
+- Value: the type of output produced by the function.
+- Examples: example code demonstrating how to use the function.
+]
+.panel[.panel-name[help page]
+
+[links here](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/seq)
+
+* It will be the same when you use `?seq` on your own computer
+
+]]
+
+---
+
+## Recap: install packages
+
+* What you get after your first install is base R
+
+* extra functionality comes from add-ons available from developers
+
+* R makes it very easy to install packages from within R. For example, type this in console
+
+```{r eval=F}
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("dslabs")
+```
+
+After we install the package, we can then load the package into our R sessions using the library function:
+
+```{r eval=F}
+library(tidyverse)
+library(dslabs)
+```
+
+If you want to use the add-on functions in the package, you need to library the package first.
+
+---
+
+## Built-in Dataframes
+
+For example, we stored the data for US gun murder in a data frame. You can access this dataset by loading the __dslabs__ library and loading the `murders` dataset using the `data` function:
+
+```{r warning = F}
+library(dslabs)
+data(murders)
+```
+
+To see that this is in fact a data frame, we type:
+
+```{r}
+class(murders)
+```
+
 
 ---
 
@@ -638,10 +731,71 @@ str(a)
 - We've seen a few tools and functions for working with data frames in "base R," now we will look at some tools from `dplyr`
 
 ---
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/tidyverse.png")
+```
+https://www.tidyverse.org/
+- What we've seen so far: "base R"
+- `ggplot2` for plotting, `dplyr` for data manipulation
+
+
+---
+## First question: What's in a data set?
+
+### Example: Star Wars data 
+
+- `starwars` data set in the `dplyr` package 
+
+(A `tibble` is the `tidyverse` version of the data frame.)
+
+```{r message=FALSE}
+dplyr::starwars
+```
+
+---
+
+
+We've seen `str()`. `dplyr::glimpse()` produces cleaner output in this case:
+
+```{r}
+dplyr::glimpse(starwars)
+```
+
+---
+
+How many rows and columns does this data set have? What does each row represent? What does each column represent?
+
+```{r eval = FALSE}
+?starwars
+```
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/starwars-help.png")
+```
+
+---
+
+How many rows and columns does this data set have?
+
+```{r}
+nrow(starwars) # number of rows
+ncol(starwars) # number of columns
+dim(starwars)  # dimensions (row column)
+```
+
+As we've seen, columns (variables) in data frames can be accessed with `$`:
+
+```{r eval=FALSE}
+dataframe$var_name
+```
+
+
+---
+
+### Next lecture we will start data manipulation!
 
 # Readings
 
 - R for Data Science Chapter 4, 20
-- Additional reading: Matloff Chapter 2
 - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
-- [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
+- [Chapter 3](http://rafalab.dfci.harvard.edu/dsbook/programming-basics.html)

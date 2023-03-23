@@ -683,6 +683,93 @@ codes[c(3,1)]
 
 ---
 
+## Vectors with additional attributes: Factors
+- Factors are built on top of integer vectors
+
+- These have a fixed and known set of possible values. 
+
+- Factors have two components: level numbers (integers) and level labels (characters) 
+
+```{r}
+tmp <- factor(c("BS", "MS", "PhD", "MS"))
+tmp
+as.integer(tmp)
+```
+
+> In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
+
+???
+
+In addition to regular numeric and character vectors, R also has a special type of vector called factors. Factors are built on top of integer vectors and are used to represent categorical data.
+
+One key feature of factors is that they have a fixed and known set of possible values, which are known as levels. The levels of a factor are stored as integers and their corresponding labels are stored as characters.
+
+In the example code shown on the slide, we create a factor called tmp using the factor() function. The c() function is used to specify the values of the factor. We can see that the levels of the factor are automatically assigned integer values based on the order in which they appear. In this case, "BS" is assigned level 1, "MS" is assigned level 2, and "PhD" is assigned level 3.
+
+To view the integer values of the levels, we can use the as.integer() function to convert the factor to an integer vector.
+
+In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
+
+---
+
+## Vectors with additional attributes: Dates
+
+- Dates and date-times are built on top of numeric vectors
+
+- Dates are represented internally as the number of days since the origin, 1 Jan 1970
+
+```{r}
+z <- as.Date("2020-01-01")
+z
+typeof(z)
+str(z)
+```
+
+---
+
+## Vectors with additional attributes: Dates
+
+- Dates and date-times are built on top of numeric vectors
+
+- Dates are represented internally as the number of days since the origin, 1 Jan 1970
+
+```{r}
+z <- as.Date("2020-01-01")
+z
+typeof(z)
+str(z)
+```
+
+
+
+???
+
+Another type of vector in R with additional attributes is the date vector. Dates and date-times are built on top of numeric vectors and are represented internally as the number of days since the origin, which is January 1st, 1970.
+
+In the example code shown on the slide, we create a date vector called z using the as.Date() function. We specify the date "2020-01-01" as a character string, and R automatically recognizes it as a date and creates a date object. We can see that the output of z shows the date in the standard date format.
+
+To check the data type of the date vector, we use the typeof() function, which returns "double" because dates are stored as the number of days since the origin, which is a numeric value.
+
+Finally, we use the str() function to examine the structure of the date vector. The output shows that the date vector is of type "Date" and is stored as a numeric value representing the number of days since the origin.
+
+
+---
+
+## Vectors with additional attributes: Dates
+
+```{r}
+z
+as.integer(z)
+as.integer(z) / 365 # roughly 50 yrs
+```
+
+> In summary, date vectors are useful for representing dates in R, and they are stored as numeric values representing the number of days since the origin.
+
+We will talk more about packages later on in the class, but the `lubridate` package is particularly useful for dealing with dates. 
+
+
+---
+
 ## Summary
 
 --

@@ -63,11 +63,12 @@ library(unvotes)
 
 - Vectors arithmetics
 
-- Vector functions
-
 - Logical subsetting
 
 - Installing packages
+
+- Function basics
+
 ---
 
 
@@ -105,91 +106,6 @@ And today we will continue with more on vectors.
 In our last lecture, we covered some basic concepts related to vectors in R. We learned about various ways of creating a vector, such as using the c() function, 1:5, seq(), and vector(). We also learned about how to subset a vector using index and name.
 
 Today, we will continue our discussion on vectors and cover some more topics. Specifically, we will look at factors, dates, some common operations that can be performed on vectors, such as arithmetic operations and logical operations. We will also discuss some important functions for working with vectors in R.  So, let's dive in!
-
----
-## Vectors with additional attributes: Factors
-- Factors are built on top of integer vectors
-
-- These have a fixed and known set of possible values. 
-
-- Factors have two components: level numbers (integers) and level labels (characters) 
-
-```{r}
-tmp <- factor(c("BS", "MS", "PhD", "MS"))
-tmp
-as.integer(tmp)
-```
-
-> In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
-
-???
-
-In addition to regular numeric and character vectors, R also has a special type of vector called factors. Factors are built on top of integer vectors and are used to represent categorical data.
-
-One key feature of factors is that they have a fixed and known set of possible values, which are known as levels. The levels of a factor are stored as integers and their corresponding labels are stored as characters.
-
-In the example code shown on the slide, we create a factor called tmp using the factor() function. The c() function is used to specify the values of the factor. We can see that the levels of the factor are automatically assigned integer values based on the order in which they appear. In this case, "BS" is assigned level 1, "MS" is assigned level 2, and "PhD" is assigned level 3.
-
-To view the integer values of the levels, we can use the as.integer() function to convert the factor to an integer vector.
-
-In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
-
----
-
-## Vectors with additional attributes: Dates
-
-- Dates and date-times are built on top of numeric vectors
-
-- Dates are represented internally as the number of days since the origin, 1 Jan 1970
-
-```{r}
-z <- as.Date("2020-01-01")
-z
-typeof(z)
-str(z)
-```
-
----
-
-## Vectors with additional attributes: Dates
-
-- Dates and date-times are built on top of numeric vectors
-
-- Dates are represented internally as the number of days since the origin, 1 Jan 1970
-
-```{r}
-z <- as.Date("2020-01-01")
-z
-typeof(z)
-str(z)
-```
-
-
-
-???
-
-Another type of vector in R with additional attributes is the date vector. Dates and date-times are built on top of numeric vectors and are represented internally as the number of days since the origin, which is January 1st, 1970.
-
-In the example code shown on the slide, we create a date vector called z using the as.Date() function. We specify the date "2020-01-01" as a character string, and R automatically recognizes it as a date and creates a date object. We can see that the output of z shows the date in the standard date format.
-
-To check the data type of the date vector, we use the typeof() function, which returns "double" because dates are stored as the number of days since the origin, which is a numeric value.
-
-Finally, we use the str() function to examine the structure of the date vector. The output shows that the date vector is of type "Date" and is stored as a numeric value representing the number of days since the origin.
-
-
----
-
-## Vectors with additional attributes: Dates
-
-```{r}
-z
-as.integer(z)
-as.integer(z) / 365 # roughly 50 yrs
-```
-
-> In summary, date vectors are useful for representing dates in R, and they are stored as numeric values representing the number of days since the origin.
-
-We will talk more about packages later on in the class, but the `lubridate` package is particularly useful for dealing with dates. 
 
 ---
 
@@ -559,7 +475,97 @@ Once we have installed a package, we need to load it into our R session using th
 
 It's important to note that if we want to use the functions and data types in a package, we need to load the package using the library() function first. Otherwise, we will get an error message indicating that the functions and data types are not found.
 
-In summary, packages are a powerful way to add additional functionality to R, and we can install and load packages using the install.packages() and library() functions, respectively.
+---
+
+## Functions introduction
+
+R has a large collection of built-in functions that are called like this:
+
+```{r eval = F}
+function_name(arg1 = val1, arg2 = val2, ...)
+```
+
+.panelset[
+
+.panel[.panel-name[1]
+
+* The data analysis process are a series of **functions** applied to the data. 
+
+* We also used the function `sqrt` to solve the quadratic equation. 
+
+* Prebuilt R functions **do not** appear in the workspace because you did not define them, but they are available for immediate use.
+
+]
+.panel[.panel-name[2]
+
+In general, we need to use **parentheses** to evaluate a function. If you type  `ls`, the function is not evaluated and instead R shows you the code that defines the function.
+
+```{r eval = F}
+ls
+```
+
+]
+
+.panel[.panel-name[3]
+
+If you type `ls()` the function is evaluated and then we see objects in the workspace.
+
+```{r}
+ls()
+```
+
+]
+.panel[.panel-name[4]
+
+Unlike `ls`, most functions require one or more __arguments__. Below is an example of how we assign an object to the argument of the function `log`. Remember that we earlier defined `a` to be 1:
+
+```{r}
+a=1
+log(8)
+log(a)
+```
+
+]
+
+.panel[.panel-name[5]
+
+However, some arguments are required and others are optional. You can determine which arguments are optional by noting in the help document that a default value is assigned with `=`. Defining these is optional. For example, the base of the function `log` defaults to `base = exp(1)` making `log` the natural log by default. 
+
+You can change the default values by simply assigning another object:
+
+```{r}
+log(8, base = 2)
+```
+
+]
+
+.panel[.panel-name[6]
+
+Note that we have not been specifying the argument `x` as such:
+```{r}
+log(x = 8, base = 2)
+```
+
+The above code works, but we can save ourselves some typing: if no argument name is used, R assumes you are entering arguments in the order shown in the help file.
+]
+
+.panel[.panel-name[7]
+
+So by not using the names, it assumes the arguments are `x` followed by `base`:
+
+```{r}
+log(8,2)
+```
+
+If using the arguments' names, then we can include them in whatever order we want:
+
+```{r}
+log(base = 2, x = 8)
+```
+
+To specify arguments, we must use `=`, and cannot use `<-`.
+]
+]
 
 ---
 
@@ -733,11 +739,18 @@ When adding the x * 3 command to an R chunk in the R Markdown document, an error
 
 Create new code chunks; Run codes; Write your own response.
 
+
+
+
+---
+
+## Next week: Datasets
+
 ---
 
 # Readings
 
-- R for Data Science Chapter 4, 20
+- R for Data Science Chapter 20, 27
 - Additional reading: Matloff Chapter 2
 - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
 - [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
