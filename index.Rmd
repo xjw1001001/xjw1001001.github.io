@@ -64,7 +64,7 @@ There are three optional textbooks. They are all available online and are free.
     - Additional reading: Matloff Chapter 2
     - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
     - [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
-  - Homework 1: (Due April 14 midnight, cover lecture 1-3) [Html](https://xhtai.github.io/statdatasci/homework/homework1/HW1.html) [Rmd](https://xhtai.github.io/statdatasci/homework/homework1/HW1.Rmd)
+  - Homework 1: (Due April 17 midnight, cover lecture 1-4) [Html](https://xjw1001001.github.io/homework/homework1/HW1.html) [Rmd](https://xjw1001001.github.io/homework/homework1/HW1.Rmd)
     
 ### Week 2: Introduction to data manipulation
 

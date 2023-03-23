@@ -1,59 +1,53 @@
-<!DOCTYPE html>
-<html lang="" xml:lang="">
-  <head>
-    <title>List and data frame</title>
-    <meta charset="utf-8" />
-    <meta name="author" content="Jingwei Xiong" />
-    <meta name="date" content="2023-04-10" />
-    <script src="lecture4_files/header-attrs-2.20/header-attrs.js"></script>
-    <link href="lecture4_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="lecture4_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-    <link href="lecture4_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
-    <script src="lecture4_files/tile-view-0.2.6/tile-view.js"></script>
-    <link href="lecture4_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
-    <link href="lecture4_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
-    <link href="lecture4_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
-    <script src="lecture4_files/panelset-0.2.6/panelset.js"></script>
-  </head>
-  <body>
-    <textarea id="source">
-class: center, middle, inverse, title-slide
-
-.title[
-# List and data frame
-]
-.subtitle[
-## <br><br> STA 032: Gateway to data science Lecture 4
-]
-.author[
-### Jingwei Xiong
-]
-.date[
-### April 10, 2023
-]
-
+---
+title: "Introduction to data science 1"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 5"
+author: "Jingwei Xiong"
+date: April 10, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      # ratio: "16:9"
+      # highlightLines: true
+      # highlightStyle: solarized-light
+      countIncrementalSlides: false
 ---
 
+```{r, echo = FALSE}
+#library(renderthis)
+#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```
 
 
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
 
 
-
-
-
-
-
-
-
-&lt;style type="text/css"&gt;
+```{css, echo = FALSE}
 .tiny .remark-code { font-size: 60%; }
 .small .remark-code { font-size: 80%; }
-&lt;/style&gt;
+```
 
 ## Reminders
 
-- Homework 1 has been assigned: (Due April 17 midnight, cover lecture 1-4)
-  - start as soon as possible
+- Homework 1 has been assigned: (Due April 14 midnight, cover lecture 1-3)
   - PDF files only
   - Submission through Gradescope (accessible through Canvas)
   - If you get stuck, it's encouraged to communicate with your mate about solution.
@@ -88,21 +82,9 @@ Today's topics are lists and data frames, which are both important data structur
 - Sequence of values, _not_ necessarily all of the same type 
   - (Vector has to be the same type!)
 
-
-```r
-my.distribution &lt;- list("exponential", 7, FALSE)
+```{r}
+my.distribution <- list("exponential", 7, FALSE)
 my.distribution
-```
-
-```
-[[1]]
-[1] "exponential"
-
-[[2]]
-[1] 7
-
-[[3]]
-[1] FALSE
 ```
 
 - Most of what you can do with vectors you can also do with lists
@@ -125,27 +107,13 @@ It's important to note that the list shown on the slide is an unnamed list, whic
 
 - This is a named list
 
-
-```r
-l &lt;- list(
+```{r}
+l <- list(
   x = 1:4,
   y = c("hi", "hello", "jello"),
   z = data.frame(a = c(1,2), b = c(3,4))
 )
 l
-```
-
-```
-$x
-[1] 1 2 3 4
-
-$y
-[1] "hi"    "hello" "jello"
-
-$z
-  a b
-1 1 3
-2 2 4
 ```
 
 ???
@@ -163,24 +131,9 @@ We can see that each element in the list is named using the syntax name = value.
 ---
 ## Lists
 Make an empty list to fill in later
-
-```r
-myList &lt;- vector(mode = "list", length = 4)
+```{r}
+myList <- vector(mode = "list", length = 4)
 myList
-```
-
-```
-[[1]]
-NULL
-
-[[2]]
-NULL
-
-[[3]]
-NULL
-
-[[4]]
-NULL
 ```
 
 ???
@@ -197,24 +150,11 @@ Can use `[ ]` as with vectors
 or use `[[ ]]`, but only with a single index  
 `[[ ]]` drops names and structures, `[ ]` does not
 
-
-```r
+```{r}
 l[1]
-```
-
-```
-$x
-[1] 1 2 3 4
-```
-
-```r
 l[[1]]
 ```
-
-```
-[1] 1 2 3 4
-```
-&lt;small&gt;Does `l[[1:2]]` work?&lt;/small&gt;
+<small>Does `l[[1:2]]` work?</small>
 
 
 ???
@@ -236,14 +176,18 @@ It's important to note that [[ ]] drops names and structures associated with the
 Helpful illustration from R for Data Science (Chapter 20.5.3):
 
 .pull-left[
-&lt;img src="img/pepperShaker1.png" width="110%" /&gt;
+```{r echo=FALSE, out.width="110%"}
+knitr::include_graphics("img/pepperShaker1.png")
+```
 ]
 
 .pull-right[
-&lt;img src="img/pepperShaker2.png" width="110%" /&gt;
+```{r echo=FALSE, out.width="110%"}
+knitr::include_graphics("img/pepperShaker2.png")
+```
 ]
 
-&gt; Summary: [] subset will still be a list, not an element. If you want to access the element, use [[]]
+> Summary: [] subset will still be a list, not an element. If you want to access the element, use [[]]
 
 
 ???
@@ -266,52 +210,21 @@ It's important to note that [[ ]] drops names and structures associated with the
 ## Working with lists 
 
 .pull-left[
-
-```r
+```{r}
 my.distribution
-```
-
-```
-[[1]]
-[1] "exponential"
-
-[[2]]
-[1] 7
-
-[[3]]
-[1] FALSE
 ```
 ]
 
 .pull-right[
-
-```r
+```{r}
 is.character(my.distribution)
-```
-
-```
-[1] FALSE
-```
-
-```r
 is.character(my.distribution[[1]])
-```
-
-```
-[1] TRUE
-```
-
-```r
 my.distribution[[2]]^2
-```
-
-```
-[1] 49
 ```
 ]
 
-&lt;small&gt;What happens if you try `my.distribution[2]^2`?&lt;/small&gt;
-&lt;small&gt;What happens if you try `[[ ]]` on a vector?&lt;/small&gt;
+<small>What happens if you try `my.distribution[2]^2`?</small>
+<small>What happens if you try `[[ ]]` on a vector?</small>
 
 ???
 
@@ -323,33 +236,18 @@ What happens if you try `my.distribution[2]^2`
 
 What happens if you try `[[ ]]` on a vector?
 
-If we try to use the [ ] or [[ ]] operator on a vector instead of a list, we get the same result, because a vector is treated as a list with a single element. For example, my.vector &lt;- c(1, 2, 3) and my.vector[[2]] both return the value 2. However, we cannot use the [[ ]] operator with a range of indices on a vector, because it returns an error.
+If we try to use the [ ] or [[ ]] operator on a vector instead of a list, we get the same result, because a vector is treated as a list with a single element. For example, my.vector <- c(1, 2, 3) and my.vector[[2]] both return the value 2. However, we cannot use the [[ ]] operator with a range of indices on a vector, because it returns an error.
 
 ---
 ## Filling in lists 
-
-```r
-myList[[1]] &lt;- 1:10
+```{r}
+myList[[1]] <- 1:10
 # Fill the first element with a vector 1:10
 myList
 ```
+<small>What happens if you try `myList[1] <- 1:10`?</small>
 
-```
-[[1]]
- [1]  1  2  3  4  5  6  7  8  9 10
-
-[[2]]
-NULL
-
-[[3]]
-NULL
-
-[[4]]
-NULL
-```
-&lt;small&gt;What happens if you try `myList[1] &lt;- 1:10`?&lt;/small&gt;
-
-&gt; Summary: Rememeber when you want to **access** or **assign** with an element in a list, use [[]]!!!
+> Summary: Rememeber when you want to **access** or **assign** with an element in a list, use [[]]!!!
 
 ???
 
@@ -362,34 +260,13 @@ It's important to remember to use [[ ]] to access or assign individual elements 
 ## Expanding and contracting lists
 
 Add to lists with `c()` (also works with vectors):
-
-```r
-my.distribution &lt;- c(my.distribution, 7)
+```{r}
+my.distribution <- c(my.distribution, 7)
 my.distribution
-```
 
-```
-[[1]]
-[1] "exponential"
-
-[[2]]
-[1] 7
-
-[[3]]
-[1] FALSE
-
-[[4]]
-[1] 7
-```
-
-```r
 # vector:
 a = c(1,2,3)
 c(a, 4)
-```
-
-```
-[1] 1 2 3 4
 ```
 
 ???
@@ -404,38 +281,12 @@ We can also use c() to add new elements to a vector or create a new vector by co
 
 Chop off the end of a list by setting the length to something smaller (also works with vectors):
 
-
-```r
+```{r}
 length(my.distribution)
-```
-
-```
-[1] 4
-```
-
-```r
-length(my.distribution) &lt;- 3
+length(my.distribution) <- 3
 my.distribution
-```
-
-```
-[[1]]
-[1] "exponential"
-
-[[2]]
-[1] 7
-
-[[3]]
-[1] FALSE
-```
-
-```r
 length(a) = 3
 a
-```
-
-```
-[1] 1 2 3
 ```
 
 ???
@@ -451,22 +302,10 @@ We can also use length() to modify the length of a vector, as shown in the examp
 
 - We can also add names later on:
 
-
-```r
-my.distribution &lt;- list("exponential", 7, FALSE)
-names(my.distribution) &lt;- c("family", "mean", "is.symmetric")
+```{r}
+my.distribution <- list("exponential", 7, FALSE)
+names(my.distribution) <- c("family", "mean", "is.symmetric")
 my.distribution
-```
-
-```
-$family
-[1] "exponential"
-
-$mean
-[1] 7
-
-$is.symmetric
-[1] FALSE
 ```
 ???
 
@@ -482,33 +321,13 @@ Assigning names to the elements of a list can be useful when working with large 
 
 Lists have a special short-cut way of using names, `$` (which removes names and structures):
 
-
-```r
+```{r}
 my.distribution[["family"]]
-```
-
-```
-[1] "exponential"
-```
-
-```r
 my.distribution$family
-```
-
-```
-[1] "exponential"
-```
-
-```r
 my.distribution[1]
 ```
 
-```
-$family
-[1] "exponential"
-```
-
-&gt; Using the $ operator can make our code more readable and easier to understand, especially when working with large or complex data structures
+> Using the $ operator can make our code more readable and easier to understand, especially when working with large or complex data structures
  
 ???
 
@@ -523,23 +342,20 @@ Using the $ operator can make our code more readable and easier to understand, e
 ## Names in lists 
 
 Creating a list with names:
-
-```r
-another.distribution &lt;- list(family="gaussian", mean = 7, 
+```{r}
+another.distribution <- list(family="gaussian", mean = 7, 
                              sd = 1, is.symmetric = TRUE)
 ```
 
 Adding named elements:
-
-```r
-my.distribution$was.estimated &lt;- FALSE
-my.distribution[["last.updated"]] &lt;- "2011-08-30"
+```{r}
+my.distribution$was.estimated <- FALSE
+my.distribution[["last.updated"]] <- "2011-08-30"
 ```
 
 Removing a named list element, by assigning it the value `NULL`:
-
-```r
-my.distribution$was.estimated &lt;- NULL
+```{r}
+my.distribution$was.estimated <- NULL
 ```
 
 ???
@@ -554,17 +370,8 @@ We can create a named list using the list() function and the name=value syntax. 
 
 - We can use str() to see the structure of a list, including the data types and names of each element in the list.
 
-
-```r
+```{r}
 str(my.distribution)
-```
-
-```
-List of 4
- $ family      : chr "exponential"
- $ mean        : num 7
- $ is.symmetric: logi FALSE
- $ last.updated: chr "2011-08-30"
 ```
 
 ---
@@ -573,7 +380,7 @@ List of 4
 
 - A data frame is a special **list** containing vectors of **equal length**
 
-- Data frame = the classic data table, `\(n\)` rows for observations, `\(p\)` columns for variables
+- Data frame = the classic data table, $n$ rows for observations, $p$ columns for variables
 
 - Lots of the statistical parts of R presume data frames
 
@@ -592,31 +399,16 @@ Unlike a simple list, data frames have a specific structure that allows columns 
 
 * We can use `dim()` function to know how many row and columns.
 
-
-```r
+```{r}
 # create a data frame with three variables
-my.df &lt;- data.frame(
+my.df <- data.frame(
   x = 1:3,
   y = c("a", "b", "c"),
   z = c(TRUE, FALSE, TRUE)
 )
 # print the data frame
 my.df
-```
-
-```
-  x y     z
-1 1 a  TRUE
-2 2 b FALSE
-3 3 c  TRUE
-```
-
-```r
 dim(my.df)
-```
-
-```
-[1] 3 3
 ```
 
 ???
@@ -636,25 +428,15 @@ We can use `dim()` function to know how many row and columns.
 * For example, `my.df$column_name` returns the values of the `column_name` column. 
    - (Which will be a vector)
 
-
-```r
+```{r}
 my.df$x
-```
-
-```
-[1] 1 2 3
 ```
 
 * Row and column index: we can use the [ ] operator with row and column index to access individual elements of a data frame. 
   - For example, `my_df[row_index, col_index]` returns the value in the `row_index`-th row and `col_index`-th column.
 
-
-```r
+```{r}
 my.df[2, 3]
-```
-
-```
-[1] FALSE
 ```
 
 ???
@@ -670,37 +452,18 @@ Row and column index: we can use the [ ] operator with row and column index to a
 * Rows or columns by index: we can use the [ ] operator to access entire rows or columns of a data frame by index
   - For example, `my_df[row_index, ]` returns the `row_index`-th row of the data frame, and `my_df[, col_index]` returns the `col_index`-th column.
 
-
-```r
+```{r}
 # Use row index to get a row
 my.df[3, ]
-```
 
-```
-  x y    z
-3 3 c TRUE
-```
-
-```r
 # Use column index to get a column
 my.df[, 2]
 ```
 
-```
-[1] "a" "b" "c"
-```
-
 * You can also use index vectors on the row or column arguments.
 
-
-```r
+```{r}
 my.df[c(1,2),c(1,2)]
-```
-
-```
-  x y
-1 1 a
-2 2 b
 ```
 
 ---
@@ -709,33 +472,17 @@ my.df[c(1,2),c(1,2)]
 
 We can add columns using $ accessor
 
-
-```r
+```{r}
 # Adding columns
-my.df$new.col &lt;- 4:6
+my.df$new.col <- 4:6
 my.df
-```
-
-```
-  x y     z new.col
-1 1 a  TRUE       4
-2 2 b FALSE       5
-3 3 c  TRUE       6
 ```
 
 We can also add columns similar to a list
 
-
-```r
-my.df[["newer.col"]] &lt;- c(7, 8, 9)
+```{r}
+my.df[["newer.col"]] <- c(7, 8, 9)
 my.df
-```
-
-```
-  x y     z new.col newer.col
-1 1 a  TRUE       4         7
-2 2 b FALSE       5         8
-3 3 c  TRUE       6         9
 ```
 
 ---
@@ -744,15 +491,14 @@ my.df
 
 Now remove `newCol`
 
-
-```r
+```{r}
 # Removing column 3
-my.df &lt;- my.df[, -3]
+my.df <- my.df[, -3]
 # We can also remove by this way
-my.df$new.col &lt;- NULL
+my.df$new.col <- NULL
 ```
 
-&gt; Some are very similar to a list operation.
+> Some are very similar to a list operation.
 
 ---
 ## `rbind()` and `cbind()`
@@ -761,94 +507,58 @@ We can also add rows or columns to an array or data-frame with `rbind()` and `cb
 
 .panelset[
 .panel[.panel-name[rbind]
-
-```r
+```{r}
 # Create a data frame
-df &lt;- data.frame(
+df <- data.frame(
   x = 1:3,
   y = c("a", "b", "c"),
   z = c(TRUE, FALSE, TRUE)
 )
 
 # Add a new row
-new_row &lt;- data.frame(x = 4, y = "d", z = FALSE)
-df &lt;- rbind(df, new_row)
+new_row <- data.frame(x = 4, y = "d", z = FALSE)
+df <- rbind(df, new_row)
 df
-```
-
-```
-  x y     z
-1 1 a  TRUE
-2 2 b FALSE
-3 3 c  TRUE
-4 4 d FALSE
 ```
 
 ]
 .panel[.panel-name[rbind_df]
-
-```r
+```{r}
 # Creating two data frames to combine
-df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
-df2 &lt;- data.frame(x = 4:6, y = c("d", "e", "f"))
+df1 <- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 <- data.frame(x = 4:6, y = c("d", "e", "f"))
 
 # Using rbind to combine rows
-df3 &lt;- rbind(df1, df2)
+df3 <- rbind(df1, df2)
 df3
-```
-
-```
-  x y
-1 1 a
-2 2 b
-3 3 c
-4 4 d
-5 5 e
-6 6 f
 ```
 
 ]
 .panel[.panel-name[cbind]
-
-```r
+```{r}
 # Create a data frame
-df &lt;- data.frame(
+df <- data.frame(
   x = 1:3,
   y = c("a", "b", "c"),
   z = c(TRUE, FALSE, TRUE)
 )
 
 # Add a new column
-new_col &lt;- c(4, 5, 6)
-df &lt;- cbind(df, new_col)
+new_col <- c(4, 5, 6)
+df <- cbind(df, new_col)
 df
-```
-
-```
-  x y     z new_col
-1 1 a  TRUE       4
-2 2 b FALSE       5
-3 3 c  TRUE       6
 ```
 
 ]
 .panel[.panel-name[cbind_df]
-
-```r
+```{r}
 # Creating two data frames to combine
-df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
-df2 &lt;- data.frame(z = c(TRUE, FALSE, TRUE), w = c(0.5, 1.2, 2.1))
+df1 <- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 <- data.frame(z = c(TRUE, FALSE, TRUE), w = c(0.5, 1.2, 2.1))
 
 # Using cbind to combine columns
-df3 &lt;- cbind(df1, df2)
+df3 <- cbind(df1, df2)
 df3
-```
-
-```
-  x y     z   w
-1 1 a  TRUE 0.5
-2 2 b FALSE 1.2
-3 3 c  TRUE 2.1
 ```
 
 ]
@@ -878,43 +588,17 @@ This is because rbind() stacks the data frames vertically, while cbind() stacks 
 
 ]
 .panel[.panel-name[Code example]
-
-```r
-df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
-df2 &lt;- data.frame(x = 4:6, y = c("d", "e", "f"))
-nested_list &lt;- list(df1 = df1, df2 = df2)
+```{r}
+df1 <- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 <- data.frame(x = 4:6, y = c("d", "e", "f"))
+nested_list <- list(df1 = df1, df2 = df2)
 str(nested_list)
-```
-
-```
-List of 2
- $ df1:'data.frame':	3 obs. of  2 variables:
-  ..$ x: int [1:3] 1 2 3
-  ..$ y: chr [1:3] "a" "b" "c"
- $ df2:'data.frame':	3 obs. of  2 variables:
-  ..$ x: int [1:3] 4 5 6
-  ..$ y: chr [1:3] "d" "e" "f"
 ```
 
 ]
 .panel[.panel-name[Output]
-
-```r
+```{r}
 nested_list
-```
-
-```
-$df1
-  x y
-1 1 a
-2 2 b
-3 3 c
-
-$df2
-  x y
-1 4 d
-2 5 e
-3 6 f
 ```
 
 ]
@@ -957,13 +641,8 @@ In this example, we create two data frames, df1 and df2, and then create a list 
 
 - Type the arguments 1, 10 and hit return.
 
-
-```r
+```{r}
 seq(1,10)
-```
-
-```
- [1]  1  2  3  4  5  6  7  8  9 10
 ```
 
 ]
@@ -971,8 +650,7 @@ seq(1,10)
 
 - Type `?function_name` in console to get help of a function. The help will be in "help" panel to the right.
 
-
-```r
+```{r eval = F}
 ?seq
 ```
 
@@ -1003,8 +681,7 @@ The help documentation is divided into several sections, including:
 
 * R makes it very easy to install packages from within R. For example, type this in console
 
-
-```r
+```{r eval=F}
 install.packages("tidyverse")
 install.packages("ggplot2")
 install.packages("dslabs")
@@ -1012,8 +689,7 @@ install.packages("dslabs")
 
 After we install the package, we can then load the package into our R sessions using the library function:
 
-
-```r
+```{r eval=F}
 library(tidyverse)
 library(dslabs)
 ```
@@ -1026,21 +702,15 @@ If you want to use the add-on functions in the package, you need to library the 
 
 For example, we stored the data for US gun murder in a data frame. You can access this dataset by loading the __dslabs__ library and loading the `murders` dataset using the `data` function:
 
-
-```r
+```{r warning = F}
 library(dslabs)
 data(murders)
 ```
 
 To see that this is in fact a data frame, we type:
 
-
-```r
+```{r}
 class(murders)
-```
-
-```
-[1] "data.frame"
 ```
 
 
@@ -1051,8 +721,8 @@ class(murders)
 - We've seen data frames. This is a commonly used data structure that we get after reading in a data set into R. 
 
 - In a data set in general, 
-  - Each row is an **observation**, `\(n\)`
-  - Each column is a **variable**, `\(p\)`
+  - Each row is an **observation**, $n$
+  - Each column is a **variable**, $p$
 
 - Often, the first things we want to do when given a data set are to figure out
   1. What is in it (what dimensions, what variables)
@@ -1061,7 +731,9 @@ class(murders)
 - We've seen a few tools and functions for working with data frames in "base R," now we will look at some tools from `dplyr`
 
 ---
-&lt;img src="img/tidyverse.png" width="100%" /&gt;
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/tidyverse.png")
+```
 https://www.tidyverse.org/
 - What we've seen so far: "base R"
 - `ggplot2` for plotting, `dplyr` for data manipulation
@@ -1076,28 +748,8 @@ https://www.tidyverse.org/
 
 (A `tibble` is the `tidyverse` version of the data frame.)
 
-
-```r
+```{r message=FALSE}
 dplyr::starwars
-```
-
-```
-# A tibble: 87 × 14
-   name        height  mass hair_…¹ skin_…² eye_c…³ birth…⁴ sex   gender homew…⁵
-   &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  
- 1 Luke Skywa…    172    77 blond   fair    blue       19   male  mascu… Tatooi…
- 2 C-3PO          167    75 &lt;NA&gt;    gold    yellow    112   none  mascu… Tatooi…
- 3 R2-D2           96    32 &lt;NA&gt;    white,… red        33   none  mascu… Naboo  
- 4 Darth Vader    202   136 none    white   yellow     41.9 male  mascu… Tatooi…
- 5 Leia Organa    150    49 brown   light   brown      19   fema… femin… Aldera…
- 6 Owen Lars      178   120 brown,… light   blue       52   male  mascu… Tatooi…
- 7 Beru White…    165    75 brown   light   blue       47   fema… femin… Tatooi…
- 8 R5-D4           97    32 &lt;NA&gt;    white,… red        NA   none  mascu… Tatooi…
- 9 Biggs Dark…    183    84 black   light   brown      24   male  mascu… Tatooi…
-10 Obi-Wan Ke…    182    77 auburn… fair    blue-g…    57   male  mascu… Stewjon
-# … with 77 more rows, 4 more variables: species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;, and abbreviated variable names
-#   ¹​hair_color, ²​skin_color, ³​eye_color, ⁴​birth_year, ⁵​homeworld
 ```
 
 ---
@@ -1105,74 +757,35 @@ dplyr::starwars
 
 We've seen `str()`. `dplyr::glimpse()` produces cleaner output in this case:
 
-
-```r
+```{r}
 dplyr::glimpse(starwars)
-```
-
-```
-Rows: 87
-Columns: 14
-$ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "Darth Vader", "Leia Or…
-$ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 2…
-$ mass       &lt;dbl&gt; 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.…
-$ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "brown, grey", "brown", N…
-$ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white", "light", "light", "…
-$ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "brown", "blue", "blue",…
-$ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 47.0, NA, 24.0, 57.0, …
-$ sex        &lt;chr&gt; "male", "none", "none", "male", "female", "male", "female",…
-$ gender     &lt;chr&gt; "masculine", "masculine", "masculine", "masculine", "femini…
-$ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tatooine", "Alderaan", "T…
-$ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "Human", "Human", "Huma…
-$ films      &lt;list&gt; &lt;"The Empire Strikes Back", "Revenge of the Sith", "Return…
-$ vehicles   &lt;list&gt; &lt;"Snowspeeder", "Imperial Speeder Bike"&gt;, &lt;&gt;, &lt;&gt;, &lt;&gt;, "Imp…
-$ starships  &lt;list&gt; &lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, &lt;&gt;, "TIE Advanced x1",…
 ```
 
 ---
 
 How many rows and columns does this data set have? What does each row represent? What does each column represent?
 
-
-```r
+```{r eval = FALSE}
 ?starwars
 ```
 
-&lt;img src="img/starwars-help.png" width="100%" /&gt;
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/starwars-help.png")
+```
 
 ---
 
 How many rows and columns does this data set have?
 
-
-```r
+```{r}
 nrow(starwars) # number of rows
-```
-
-```
-[1] 87
-```
-
-```r
 ncol(starwars) # number of columns
-```
-
-```
-[1] 14
-```
-
-```r
 dim(starwars)  # dimensions (row column)
-```
-
-```
-[1] 87 14
 ```
 
 As we've seen, columns (variables) in data frames can be accessed with `$`:
 
-
-```r
+```{r eval=FALSE}
 dataframe$var_name
 ```
 
@@ -1186,120 +799,3 @@ dataframe$var_name
 - R for Data Science Chapter 4, 20
 - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
 - [Chapter 3](http://rafalab.dfci.harvard.edu/dsbook/programming-basics.html)
-    </textarea>
-<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
-<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
-<script>var slideshow = remark.create({
-"countIncrementalSlides": false
-});
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
-  window.dispatchEvent(new Event('resize'));
-});
-(function(d) {
-  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
-  if (!r) return;
-  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
-  d.head.appendChild(s);
-})(document);
-
-(function(d) {
-  var el = d.getElementsByClassName("remark-slides-area");
-  if (!el) return;
-  var slide, slides = slideshow.getSlides(), els = el[0].children;
-  for (var i = 1; i < slides.length; i++) {
-    slide = slides[i];
-    if (slide.properties.continued === "true" || slide.properties.count === "false") {
-      els[i - 1].className += ' has-continuation';
-    }
-  }
-  var s = d.createElement("style");
-  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
-  d.head.appendChild(s);
-})(document);
-// delete the temporary CSS (for displaying all slides initially) when the user
-// starts to view slides
-(function() {
-  var deleted = false;
-  slideshow.on('beforeShowSlide', function(slide) {
-    if (deleted) return;
-    var sheets = document.styleSheets, node;
-    for (var i = 0; i < sheets.length; i++) {
-      node = sheets[i].ownerNode;
-      if (node.dataset["target"] !== "print-only") continue;
-      node.parentNode.removeChild(node);
-    }
-    deleted = true;
-  });
-})();
-// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
-// screen reader (see PR #262)
-(function(d) {
-  let res = {};
-  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
-    const t = tr.querySelector('td:nth-child(2)').innerText;
-    tr.querySelectorAll('td:first-child .key').forEach(key => {
-      const k = key.innerText;
-      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
-    });
-  });
-  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
-})(document);
-(function() {
-  "use strict"
-  // Replace <script> tags in slides area to make them executable
-  var scripts = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container script'
-  );
-  if (!scripts.length) return;
-  for (var i = 0; i < scripts.length; i++) {
-    var s = document.createElement('script');
-    var code = document.createTextNode(scripts[i].textContent);
-    s.appendChild(code);
-    var scriptAttrs = scripts[i].attributes;
-    for (var j = 0; j < scriptAttrs.length; j++) {
-      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
-    }
-    scripts[i].parentElement.replaceChild(s, scripts[i]);
-  }
-})();
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();</script>
-
-<script>
-slideshow._releaseMath = function(el) {
-  var i, text, code, codes = el.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
-  }
-};
-slideshow._releaseMath(document);
-</script>
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-(function () {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
-  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
-    script.src  = script.src.replace(/^https?:/, '');
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
-</script>
-  </body>
-</html>
