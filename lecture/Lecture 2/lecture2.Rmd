@@ -95,8 +95,6 @@ Last lecture we also went over the basics of R markdown. Hopefully you would hav
 
 - Operators
 
-- Install packages
-
 - Vectors
 
 - objects and environment
@@ -494,31 +492,6 @@ When adding the x * 3 command to an R chunk in the R Markdown document, an error
 
 ---
 
-## Installing R packages
-
-* What you get after your first install is base R
-
-* extra functionality comes from add-ons available from developers
-
-* R makes it very easy to install packages from within R. For example, type this in console
-
-```{r eval=F}
-install.packages("tidyverse")
-```
-
-After we install the package, we can then load the package into our R sessions using the library function:
-
-```{r eval=F}
-library(tidyverse)
-```
-
-If you want to use the add-on functions in the package, you need to library the package first.
-
-???
-
-The functionality provided by a fresh install of R is only a small fraction of what is possible. In fact, we refer to what you get after your first install as base R. The extra functionality comes from add-ons available from developers. However, because not everybody needs all available functionality, R instead makes different components available via packages. R makes it very easy to install packages from within R. For example, type this in console:
-
----
 
 ## First data structure: vectors
 
@@ -728,4 +701,6 @@ codes[c(3,1)]
 
 ## Reading:
 
-R for Data Science Chapter 4, 20
+- R for Data Science Chapter 4, 20
+- Additional reading: Matloff Chapter 2
+- [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)

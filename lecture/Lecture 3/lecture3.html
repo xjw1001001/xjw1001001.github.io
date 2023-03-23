@@ -1,49 +1,54 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction and R Basics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-04-07" />
+    <script src="lecture3_files/header-attrs-2.20/header-attrs.js"></script>
+    <link href="lecture3_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture3_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture3_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture3_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture3_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture3_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture3_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture3_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Introduction and R Basics
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 3
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### April 7, 2023
+]
+
 ---
-title: "Introduction and R Basics"
-subtitle: "<br><br> STA 032: Gateway to data science Lecture 3"
-author: "Jingwei Xiong"
-date: April 7, 2023
-output:
-  xaringan::moon_reader:
-    # css: [default, metropolis, metropolis-fonts]
-    # css: ["default", "extra.css"]
-    # css: ["../xaringan-themer.css", "../slides.css"]
-    # lib_dir: libs
-    nature:
-      # ratio: "16:9"
-      # highlightLines: true
-      # highlightStyle: solarized-light
-      countIncrementalSlides: false
----
-
-```{r, echo = FALSE}
-#library(renderthis)
-#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
-```
 
 
-```{r xaringanExtra, echo=FALSE}
-xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
-xaringanExtra::use_panelset()
-```
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
-)
-```
-
-```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(dplyr)
-library(ggplot2)
-library(unvotes)
-```
 
 
-```{css, echo = FALSE}
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
 .tiny .remark-code { font-size: 60%; }
 .small .remark-code { font-size: 80%; }
-```
+&lt;/style&gt;
 
 ## Reminders
 
@@ -72,17 +77,34 @@ library(unvotes)
 
 ## Questions from last class: NA vs. NaN
 - `NaN` means "not a number" and it means there is a result, but it cannot be represented by the computer
-```{r}
+
+```r
 0 / 0 # note that 1 / 0 returns Inf
+```
+
+```
+[1] NaN
 ```
 
 - `NA` means missing; when working with data sets this is the more common one you will encounter
 - `is.na()` returns `TRUE` for both missing values (`NA`) and `NaN`
 
-```{r}
+
+```r
 is.na(0 / 0)
+```
+
+```
+[1] TRUE
+```
+
+```r
 NA + NaN 
-```  
+```
+
+```
+[1] NA
+```
 - For more, see https://jameshoward.us/2016/07/18/nan-versus-na-r/.
 
 ---
@@ -112,13 +134,26 @@ Today, we will continue our discussion on vectors and cover some more topics. Sp
 
 - Factors have two components: level numbers (integers) and level labels (characters) 
 
-```{r}
-tmp <- factor(c("BS", "MS", "PhD", "MS"))
+
+```r
+tmp &lt;- factor(c("BS", "MS", "PhD", "MS"))
 tmp
+```
+
+```
+[1] BS  MS  PhD MS 
+Levels: BS MS PhD
+```
+
+```r
 as.integer(tmp)
 ```
 
-> In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
+```
+[1] 1 2 3 2
+```
+
+&gt; In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
 
 ???
 
@@ -140,11 +175,30 @@ In summary, factors are a useful data type in R for representing categorical dat
 
 - Dates are represented internally as the number of days since the origin, 1 Jan 1970
 
-```{r}
-z <- as.Date("2020-01-01")
+
+```r
+z &lt;- as.Date("2020-01-01")
 z
+```
+
+```
+[1] "2020-01-01"
+```
+
+```r
 typeof(z)
+```
+
+```
+[1] "double"
+```
+
+```r
 str(z)
+```
+
+```
+ Date[1:1], format: "2020-01-01"
 ```
 
 ---
@@ -155,11 +209,30 @@ str(z)
 
 - Dates are represented internally as the number of days since the origin, 1 Jan 1970
 
-```{r}
-z <- as.Date("2020-01-01")
+
+```r
+z &lt;- as.Date("2020-01-01")
 z
+```
+
+```
+[1] "2020-01-01"
+```
+
+```r
 typeof(z)
+```
+
+```
+[1] "double"
+```
+
+```r
 str(z)
+```
+
+```
+ Date[1:1], format: "2020-01-01"
 ```
 
 
@@ -179,13 +252,32 @@ Finally, we use the str() function to examine the structure of the date vector. 
 
 ## Vectors with additional attributes: Dates
 
-```{r}
+
+```r
 z
+```
+
+```
+[1] "2020-01-01"
+```
+
+```r
 as.integer(z)
+```
+
+```
+[1] 18262
+```
+
+```r
 as.integer(z) / 365 # roughly 50 yrs
 ```
 
-> In summary, date vectors are useful for representing dates in R, and they are stored as numeric values representing the number of days since the origin.
+```
+[1] 50.03288
+```
+
+&gt; In summary, date vectors are useful for representing dates in R, and they are stored as numeric values representing the number of days since the origin.
 
 We will talk more about packages later on in the class, but the `lubridate` package is particularly useful for dealing with dates. 
 
@@ -195,19 +287,30 @@ We will talk more about packages later on in the class, but the `lubridate` pack
 
 In R, arithmetic operations on vectors occur _element-wise_. For a quick example, suppose we have height in inches:
 
-```{r}
-inches <- c(69, 62, 66, 70, 70, 73, 67, 73, 67, 70)
+
+```r
+inches &lt;- c(69, 62, 66, 70, 70, 73, 67, 73, 67, 70)
 ```
 and want to convert to centimeters. Notice what happens when we multiply `inches` by 2.54:
 
-```{r}
+
+```r
 inches * 2.54
+```
+
+```
+ [1] 175.26 157.48 167.64 177.80 177.80 185.42 170.18 185.42 170.18 177.80
 ```
  
 In the line above, we multiplied each element by 2.54.  Similarly, if for each entry we want to compute how many inches taller or shorter than 69 inches, the average height for males, we can subtract it from every entry like this:
 
-```{r}
+
+```r
 inches - 69
+```
+
+```
+ [1]  0 -7 -3  1  1  4 -2  4 -2  1
 ```
 
 ---
@@ -218,26 +321,26 @@ inches - 69
 If we have two vectors of the same length, and we sum them in R, they will be added entry by entry as follows:
 
 $$
-\begin{pmatrix}
+`\begin{pmatrix}
 a\\
 b\\
 c\\
 d
-\end{pmatrix}
+\end{pmatrix}`
 +
-\begin{pmatrix}
+`\begin{pmatrix}
 e\\
 f\\
 g\\
 h
-\end{pmatrix}
+\end{pmatrix}`
 =
-\begin{pmatrix}
+`\begin{pmatrix}
 a +e\\
 b + f\\
 c + g\\
 d + h
-\end{pmatrix}
+\end{pmatrix}`
 $$
 
 The same holds for other mathematical operations, such as `-`, `*` and `/`.
@@ -246,12 +349,31 @@ The same holds for other mathematical operations, such as `-`, `*` and `/`.
 
 ## Example: Vector arithmetic: Two vectors 
 
-```{r}
-x <- c(7, 8, 10, 45)
-y <- c(-7, -8, -10, -45)
+
+```r
+x &lt;- c(7, 8, 10, 45)
+y &lt;- c(-7, -8, -10, -45)
 x + y
+```
+
+```
+[1] 0 0 0 0
+```
+
+```r
 x * y
+```
+
+```
+[1]   -49   -64  -100 -2025
+```
+
+```r
 x^c(1, 0, -1, 0.5)
+```
+
+```
+[1] 7.000000 1.000000 0.100000 6.708204
 ```
 
 ???
@@ -270,15 +392,25 @@ We also perform an exponentiation operation on x using a vector of exponents c(1
 
   - When a shorter vector is combined with a longer one, elements of the shorter vector are repeated or recycled, to make it the same length as the longer vector.
 
-```{r}
-x <- c(7, 8, 10, 45)
+
+```r
+x &lt;- c(7, 8, 10, 45)
 x + c(-7, -8)
+```
+
+```
+[1]  0  0  3 37
 ```
 
 Single numbers are vectors of length 1 for purposes of recycling:
 
-```{r}
+
+```r
 2*x
+```
+
+```
+[1] 14 16 20 90
 ```
 
 ???
@@ -297,17 +429,34 @@ We also show that single numbers are considered vectors of length 1 for the purp
 
 Most built-in functions are vectorized, meaning that they will operate on a vector of numbers. Here are some examples about functions taking vector as input:
 
-```{r}
+
+```r
 sample(1:10) + 100
 ```
 
-<small>(what does `sample()` do?)</small>
+```
+ [1] 103 104 101 105 110 102 106 108 109 107
+```
+
+&lt;small&gt;(what does `sample()` do?)&lt;/small&gt;
 
 Operator also work as functions:
 
-```{r}
+
+```r
 x
-x > 9 # pairwise comparisons, where the scalar 9 is recycled
+```
+
+```
+[1]  7  8 10 45
+```
+
+```r
+x &gt; 9 # pairwise comparisons, where the scalar 9 is recycled
+```
+
+```
+[1] FALSE FALSE  TRUE  TRUE
 ```
 
 ---
@@ -341,21 +490,36 @@ Finally, the any() and all() functions are useful for Boolean vectors. any() ret
 
 Because Boolean operators work elementwise, We can use logical operators and comparison operators to specify a condition, and R will return Boolean vector that is TRUE for the elements that meet the condition and FALSE for the others.
 
-```{r}
-ages <- c(23, 35, 28, 19, 42, 30, 38, 27)
-(ages  > 25) & (ages  < 40)
+
+```r
+ages &lt;- c(23, 35, 28, 19, 42, 30, 38, 27)
+(ages  &gt; 25) &amp; (ages  &lt; 40)
+```
+
+```
+[1] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE
 ```
 
 * Use the Boolean vector as an index for the original vector.
 
-```{r}
-ages[(ages  > 25) & (ages  < 40)]
+
+```r
+ages[(ages  &gt; 25) &amp; (ages  &lt; 40)]
+```
+
+```
+[1] 35 28 30 38 27
 ```
 
 
 * To get the number of components that satisfy a certain condition: This works because R coerces the TRUE and FALSE values to 1 and 0, respectively.
-```{r}
-sum((ages  > 25) & (ages  < 40)) # another example of coercion
+
+```r
+sum((ages  &gt; 25) &amp; (ages  &lt; 40)) # another example of coercion
+```
+
+```
+[1] 5
 ```
 
 
@@ -363,11 +527,11 @@ sum((ages  > 25) & (ages  < 40)) # another example of coercion
 
 Boolean operators in R work element-wise, which means that we can use logical and comparison operators to specify a condition, and R will return the subset of the vector that satisfies the condition.
 
-In the example code shown on the slide, we create a vector of ages called ages and use the comparison operators > and < to create a logical condition that returns TRUE for ages between 25 and 40. We can see that this returns a Boolean vector that is TRUE for the elements that meet the condition and FALSE for the others.
+In the example code shown on the slide, we create a vector of ages called ages and use the comparison operators &gt; and &lt; to create a logical condition that returns TRUE for ages between 25 and 40. We can see that this returns a Boolean vector that is TRUE for the elements that meet the condition and FALSE for the others.
 
-To actually subset the vector and return the elements that meet the condition, we can use the Boolean vector as an index for the original vector. In the example code, we use ages[(ages > 25) & (ages < 40)] to subset the ages vector and return the ages between 25 and 40.
+To actually subset the vector and return the elements that meet the condition, we can use the Boolean vector as an index for the original vector. In the example code, we use ages[(ages &gt; 25) &amp; (ages &lt; 40)] to subset the ages vector and return the ages between 25 and 40.
 
-To get the number of components that satisfy a certain condition, we can use the sum() function and pass in the Boolean vector as an argument. This works because R coerces the TRUE and FALSE values to 1 and 0, respectively. In the example code, we use sum((ages > 25) & (ages < 40)) to return the number of ages between 25 and 40.
+To get the number of components that satisfy a certain condition, we can use the sum() function and pass in the Boolean vector as an argument. This works because R coerces the TRUE and FALSE values to 1 and 0, respectively. In the example code, we use sum((ages &gt; 25) &amp; (ages &lt; 40)) to return the number of ages between 25 and 40.
 
 ---
 ## The which() Function
@@ -376,14 +540,20 @@ This function returns the indices of the elements in a vector that satisfy a cer
 
 For example, let's say we have a vector of test scores:
 
-```{r}
-scores <- c(78, 82, 91, 64, 87, 76, 93, 80)
+
+```r
+scores &lt;- c(78, 82, 91, 64, 87, 76, 93, 80)
 ```
 
 We can use the which() function to return the indices of the scores that are greater than 80:
 
-```{r}
-which(scores > 80)
+
+```r
+which(scores &gt; 80)
+```
+
+```
+[1] 2 3 5 7
 ```
 
 ???
@@ -391,28 +561,52 @@ which(scores > 80)
 Another useful function for working with vectors in R is the which() function. This function returns the indices of the elements in a vector that satisfy a certain condition.
 
 For example, let's say we have a vector of test scores:
-scores <- c(78, 82, 91, 64, 87, 76, 93, 80)
+scores &lt;- c(78, 82, 91, 64, 87, 76, 93, 80)
 
 We can use the which() function to return the indices of the scores that are greater than 80:
 
 This will return a new vector containing the indices 3, 5, 7, and 8, which correspond to the scores that are greater than 80.
 
-which(scores > 80)
+which(scores &gt; 80)
 
 ---
 
 We can also use the which() function to return the indices of the minimum or maximum values in a vector.
-```{r}
+
+```r
 which.min(scores)
+```
+
+```
+[1] 4
 ```
 
 With these index we can easily subset the vector.
 
-```{r}
-scores[which(scores > 80)] # subset by index
-scores[scores > 80] # subset by boolen values
+
+```r
+scores[which(scores &gt; 80)] # subset by index
+```
+
+```
+[1] 82 91 87 93
+```
+
+```r
+scores[scores &gt; 80] # subset by boolen values
+```
+
+```
+[1] 82 91 87 93
+```
+
+```r
 # Why they are the same?
 scores[which.max(scores)]
+```
+
+```
+[1] 93
 ```
 
 ???
@@ -421,9 +615,9 @@ In addition to returning the indices of the elements that satisfy a certain cond
 
 In the example code, we have a vector of test scores called scores, and we use the which.min() function to return the index of the minimum score. We can then use this index to subset the scores vector and return the value of the minimum score.
 
-We can also use the which() function together with logical or comparison operators to return the indices of elements that meet certain conditions. In the example code, we use which(scores > 80) to return the indices of the scores that are greater than 80.
+We can also use the which() function together with logical or comparison operators to return the indices of elements that meet certain conditions. In the example code, we use which(scores &gt; 80) to return the indices of the scores that are greater than 80.
 
-Once we have the indices of the elements that meet a certain condition or the minimum or maximum value, we can use them to subset the vector. In the example code, we use the index vector returned by which(scores > 80) to subset the scores vector and return the scores that are greater than 80.
+Once we have the indices of the elements that meet a certain condition or the minimum or maximum value, we can use them to subset the vector. In the example code, we use the index vector returned by which(scores &gt; 80) to subset the scores vector and return the scores that are greater than 80.
 
 We can also use Boolean values to subset the vector directly, as shown in the example code. When we use Boolean values to subset the vector, R automatically returns the values that meet the condition and discards the ones that do not.
 
@@ -437,16 +631,29 @@ Another useful operator for working with vectors in R is the %in% operator. This
 
 For example, let's say we have a vector of names:
 
-```{r}
-names <- c("Alice", "Bob", "Charlie", "David", "Eve")
+
+```r
+names &lt;- c("Alice", "Bob", "Charlie", "David", "Eve")
 ```
 
 We can use the %in% operator to test whether a vector of search terms is present in the names vector:
 
-```{r}
-search_terms <- c("Bob", "Eve", "Frank")
+
+```r
+search_terms &lt;- c("Bob", "Eve", "Frank")
 search_terms %in% names
+```
+
+```
+[1]  TRUE  TRUE FALSE
+```
+
+```r
 names[names %in% c("Bob", "Charlie", "Frank")]
+```
+
+```
+[1] "Bob"     "Charlie"
 ```
 
 ???
@@ -454,11 +661,11 @@ Another useful operator for working with vectors in R is the %in% operator. This
 
 For example, let's say we have a vector of names:
 
-names <- c("Alice", "Bob", "Charlie", "David", "Eve")
+names &lt;- c("Alice", "Bob", "Charlie", "David", "Eve")
 
 We can use the %in% operator to test whether a vector of search terms is present in the names vector:
 
-search_terms <- c("Bob", "Eve", "Frank")
+search_terms &lt;- c("Bob", "Eve", "Frank")
 search_terms %in% names
 
 This will return a Boolean vector that is TRUE for the elements that are present in the names vector and FALSE for the others. In this example, the output is TRUE TRUE FALSE, indicating that "Bob" and "Eve" are present in the names vector, but "Frank" is not.
@@ -475,10 +682,33 @@ In summary, the %in% operator is a useful tool for working with vectors in R, an
 When we want to compare two vectors element-wise, we can use Boolean operators like ==
 
 However, to compare **whole** vectors, best to use `identical()`:
-```{r}
+
+```r
 x; y
+```
+
+```
+[1]  7  8 10 45
+```
+
+```
+[1]  -7  -8 -10 -45
+```
+
+```r
 x == -y
+```
+
+```
+[1] TRUE TRUE TRUE TRUE
+```
+
+```r
 identical(x, -y)
+```
+
+```
+[1] TRUE
 ```
 
 ???
@@ -495,10 +725,22 @@ To compare the two vectors as a whole, we can use the identical() function. This
 
 It's common to encounter missing values (NA) in vectors when working with real-world data. In R, we can use the is.na() function to check for missing values in a vector, and the sum() function to count the number of missing values.
 
-```{r}
+
+```r
 myNAvec = c(1,2,NA,4,NA)
 is.na(myNAvec)
+```
+
+```
+[1] FALSE FALSE  TRUE FALSE  TRUE
+```
+
+```r
 sum(is.na(myNAvec))
+```
+
+```
+[1] 2
 ```
 
 ???
@@ -512,14 +754,19 @@ To count the number of missing values in the myNAvec vector, we can use the sum(
 ---
 ## Example 2: Calculate the summation
 
-If we want to compute: $1+\frac{1}{2^2}+\frac{1}{3^2}+...+\frac{1}{1000^2}$
+If we want to compute: `\(1+\frac{1}{2^2}+\frac{1}{3^2}+...+\frac{1}{1000^2}\)`
 
-We first define a vector contains numbers from $1$ to $1000$, then square that vector, and then use single number $1$ divided by the squared vector. By vector arithmetic, the result will be $1$ divided by each element of the vector, which will be a vector of $1,\frac{1}{2^2},...,\frac{1}{1000^2}$.
+We first define a vector contains numbers from `\(1\)` to `\(1000\)`, then square that vector, and then use single number `\(1\)` divided by the squared vector. By vector arithmetic, the result will be `\(1\)` divided by each element of the vector, which will be a vector of `\(1,\frac{1}{2^2},...,\frac{1}{1000^2}\)`.
 
 Then use the function `sum` we can obtain the summation. In one line, it is:
 
-```{r}
+
+```r
 sum(1 / (1:1000)^2 )
+```
+
+```
+[1] 1.643935
 ```
 
 ---
@@ -532,7 +779,8 @@ sum(1 / (1:1000)^2 )
 
 * R makes it very easy to install packages from within R. For example, type this in console
 
-```{r eval=F}
+
+```r
 install.packages("tidyverse")
 install.packages("ggplot2")
 install.packages("dslabs")
@@ -540,7 +788,8 @@ install.packages("dslabs")
 
 After we install the package, we can then load the package into our R sessions using the library function:
 
-```{r eval=F}
+
+```r
 library(tidyverse)
 library(dslabs)
 ```
@@ -599,7 +848,7 @@ The things between the `---` is the header. We actually don't need a header, but
 In various places in the document, we see something like this:
 
 ````
-```{r}`r ''`
+```{r}
 summary(pressure)
 ```
 ````
@@ -612,7 +861,7 @@ This applies to plots as well; the plot will be placed in that position. We can 
 
 
 ````
-```{r}`r ''`
+```{r}
 plot(pressure)
 ```
 ````
@@ -622,7 +871,7 @@ plot(pressure)
 By default, the code will show up as well. To avoid having the code show up, you can use an argument. To avoid this, you can use the argument `echo=FALSE`. For example:
 
 ````
-```{r, echo=FALSE}`r ''`
+```{r, echo=FALSE}
 summary(pressure)
 ```
 ````
@@ -630,7 +879,7 @@ summary(pressure)
 If you want to only show the code but not run the code, you can use the argument `eval=FALSE`.
 
 ````
-```{r, eval=FALSE}`r ''`
+```{r, eval=FALSE}
 summary(pressure)
 ```
 ````
@@ -643,8 +892,8 @@ By default, the code will run and the output will be shown.
 
 After you get the template rmd file, click this **knit**:
 
-<img src="1.png"
-     width="70%" height="70%">
+&lt;img src="1.png"
+     width="70%" height="70%"&gt;
 
 This button will process your source code into the final document, if your code has no error.
 
@@ -654,8 +903,8 @@ This button will process your source code into the final document, if your code 
 
 To insert a new code chunk, click this:
 
-<img src="2.png"
-     width="70%" height="70%">
+&lt;img src="2.png"
+     width="70%" height="70%"&gt;
 
 This button will insert a new code chunk in the current cursor line.
 
@@ -665,8 +914,8 @@ This button will insert a new code chunk in the current cursor line.
 
 To run scripts in a code chunk, click this:
 
-<img src="4.png"
-     width="70%" height="70%">
+&lt;img src="4.png"
+     width="70%" height="70%"&gt;
 
 This button will copy all of the codes inside that code chunk into the console, and run it.
 
@@ -676,8 +925,8 @@ This button will copy all of the codes inside that code chunk into the console, 
 
 You can find the knit settings here:
 
-<img src="3.png"
-     width="50%" height="50%">
+&lt;img src="3.png"
+     width="50%" height="50%"&gt;
 
 You can change to word using the output format.
 
@@ -691,8 +940,9 @@ The environment of your R Markdown document is separate from the Console!
 First, run the following in the console
 
 .small[
-```{r eval = FALSE}
-x <- 2
+
+```r
+x &lt;- 2
 x * 3
 ```
 ]
@@ -704,7 +954,8 @@ x * 3
 Then, add the following in an R chunk in your R Markdown document and try to knit it.
 
 .small[
-```{r eval = FALSE}
+
+```r
 x * 3
 ```
 ]
@@ -722,7 +973,7 @@ When adding the x * 3 command to an R chunk in the R Markdown document, an error
 
 ### Explanation:
 
-> When adding the `x * 3` command to an R chunk in the R Markdown document, an error will occur because the variable x was not defined within the R markdown environment. The R Markdown environment is separate from the console environment, so any variables created or functions defined in the console will **not carry over to the R Markdown document** unless they are specifically included or imported.
+&gt; When adding the `x * 3` command to an R chunk in the R Markdown document, an error will occur because the variable x was not defined within the R markdown environment. The R Markdown environment is separate from the console environment, so any variables created or functions defined in the console will **not carry over to the R Markdown document** unless they are specifically included or imported.
 
 
 ---
@@ -739,3 +990,120 @@ Create new code chunks; Run codes; Write your own response.
 - Additional reading: Matloff Chapter 2
 - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
 - [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -529,7 +529,7 @@ In the template, you will see several things to note.
 
 ---
 
-# The header
+# The YAML header
 
 At the top you see:
 
@@ -664,8 +664,8 @@ output: pdf_document
 
 ## Reading:
 
-[Getting started with R and RStudio](http://rafalab.dfci.harvard.edu/dsbook/getting-started.html)
+- [Getting started with R and RStudio](http://rafalab.dfci.harvard.edu/dsbook/getting-started.html)
+- [R markdown](http://rafalab.dfci.harvard.edu/dsbook/reproducible-projects-with-rstudio-and-r-markdown.html#r-markdown)
+- [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
+- R for Data Science Chapters 1, 2, 27
 
-[R markdown](http://rafalab.dfci.harvard.edu/dsbook/reproducible-projects-with-rstudio-and-r-markdown.html#r-markdown)
-
----
