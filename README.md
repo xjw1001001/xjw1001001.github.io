@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Website for STA 35A at UC Davis, Fall 2022
+# Website for STA 032 at UC Davis, Spring 2023
 
 ## Attribution
 
