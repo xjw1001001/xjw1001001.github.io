@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>List and data frame</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-04-10" />
+    <script src="lecture4_files/header-attrs-2.20/header-attrs.js"></script>
+    <link href="lecture4_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture4_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture4_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture4_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture4_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture4_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture4_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture4_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# List and data frame
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 4
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### April 10, 2023
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+## Reminders
+
+- Homework 1 has been assigned: (Due April 14 midnight, cover lecture 1-3)
+  - PDF files only
+  - Submission through Gradescope (accessible through Canvas)
+  - If you get stuck, it's encouraged to communicate with your mate about solution.
+  - But you should type your solution by your own.
+  - If you collaborate with others, write their names in your submission
+
+- Office hours: 
+  - TBD
+
+- Lecture 1 - 3 we covered vectors and basics of R, R markdown.
+
+- From now on we will start working with data.
+
+---
+
+## Today
+
+- Introduction to lists
+
+- Data frames, or more generally "data sets"
+
+???
+
+Today's topics are lists and data frames, which are both important data structures in R.
+
+---
+
+## Lists
+- Lists are a generic container
+- Sequence of values, _not_ necessarily all of the same type 
+  - (Vector has to be the same type!)
+
+
+```r
+my.distribution &lt;- list("exponential", 7, FALSE)
+my.distribution
+```
+
+```
+[[1]]
+[1] "exponential"
+
+[[2]]
+[1] 7
+
+[[3]]
+[1] FALSE
+```
+
+- Most of what you can do with vectors you can also do with lists
+- This is an unnamed list
+
+???
+
+Lists are a generic container in R that can hold a sequence of values that are not necessarily all of the same type. Unlike vectors, which have to be the same type, lists can contain elements of any type.
+
+In the example code shown on the slide, we create a list called my.distribution that contains three elements: the string "exponential", the number 7, and the Boolean value FALSE. We can see that this list is created using the list() function, which takes the individual elements as arguments.
+
+Most of what we can do with vectors in R, we can also do with lists. This includes subsetting, indexing, and applying functions to the elements of the list. In fact, lists are often used in R to store complex data structures that are difficult to represent using vectors or other data types.
+
+It's important to note that the list shown on the slide is an unnamed list, which means that its elements are not named. 
+
+---
+## Lists
+
+- Elements can be vectors of **any type**, or other data structures like data frame (We will cover that later this lecture)
+
+- This is a named list
+
+
+```r
+l &lt;- list(
+  x = 1:4,
+  y = c("hi", "hello", "jello"),
+  z = data.frame(a = c(1,2), b = c(3,4))
+)
+l
+```
+
+```
+$x
+[1] 1 2 3 4
+
+$y
+[1] "hi"    "hello" "jello"
+
+$z
+  a b
+1 1 3
+2 2 4
+```
+
+???
+
+Elements of a list can be vectors of any type or other data structures, like data frames. This makes lists can be used to represent complex data structures.
+
+In the example code shown on the slide, we create a named list called l that contains three elements:
+
+A vector of integers from 1 to 4, named x
+A vector of strings, named y
+A data frame with two columns named a and b, respectively, containing the values 1, 2 and 3, 4.
+
+We can see that each element in the list is named using the syntax name = value. This allows us to access individual elements of the list by name, which can be very useful when working with complex data structures.
+
+---
+## Lists
+Make an empty list to fill in later
+
+```r
+myList &lt;- vector(mode = "list", length = 4)
+myList
+```
+
+```
+[[1]]
+NULL
+
+[[2]]
+NULL
+
+[[3]]
+NULL
+
+[[4]]
+NULL
+```
+
+???
+
+In the example code shown on the slide, we create an empty list called myList with a length of 4 using the vector() function. We can see that this creates a list with four elements that are all NULL.
+
+This technique of creating an empty list is useful when we want to store data that we will collect or compute later in our code.
+
+---
+
+## Accessing pieces of lists
+Can use `[ ]` as with vectors  
+
+or use `[[ ]]`, but only with a single index  
+`[[ ]]` drops names and structures, `[ ]` does not
+
+
+```r
+l[1]
+```
+
+```
+$x
+[1] 1 2 3 4
+```
+
+```r
+l[[1]]
+```
+
+```
+[1] 1 2 3 4
+```
+&lt;small&gt;Does `l[[1:2]]` work?&lt;/small&gt;
+
+
+???
+
+In R, we can use [ ] to subset a list and access individual elements, just like with vectors. We can use integer indices or Boolean vectors to subset the list.
+
+Alternatively, we can use [[ ]] to access individual elements, but only with a single index. [[ ]] drops any names and structures associated with the element and returns only its value.
+
+In the example code shown on the slide, l[1] returns a new list containing only the first element of l, while l[[1]] returns the actual value of the first element.
+
+Does `l[[1:2]]` work?
+
+We cannot use [[ ]] with a range of indices, like l[[1:2]].
+
+It's important to note that [[ ]] drops names and structures associated with the element, while [ ] does not.
+
+---
+## Accessing pieces of lists
+Helpful illustration from R for Data Science (Chapter 20.5.3):
+
+.pull-left[
+&lt;img src="img/pepperShaker1.png" width="110%" /&gt;
+]
+
+.pull-right[
+&lt;img src="img/pepperShaker2.png" width="110%" /&gt;
+]
+
+&gt; Summary: [] subset will still be a list, not an element. If you want to access the element, use [[]]
+
+
+???
+
+???
+
+In R, we can use [ ] to subset a list and access individual elements, just like with vectors. We can use integer indices or Boolean vectors to subset the list.
+
+Alternatively, we can use [[ ]] to access individual elements, but only with a single index. [[ ]] drops any names and structures associated with the element and returns only its value.
+
+In the example code shown on the slide, l[1] returns a new list containing only the first element of l, while l[[1]] returns the actual value of the first element.
+
+We cannot use [[ ]] with a range of indices, like l[[1:2]].
+
+It's important to note that [[ ]] drops names and structures associated with the element, while [ ] does not.
+
+---
+
+
+## Working with lists 
+
+.pull-left[
+
+```r
+my.distribution
+```
+
+```
+[[1]]
+[1] "exponential"
+
+[[2]]
+[1] 7
+
+[[3]]
+[1] FALSE
+```
+]
+
+.pull-right[
+
+```r
+is.character(my.distribution)
+```
+
+```
+[1] FALSE
+```
+
+```r
+is.character(my.distribution[[1]])
+```
+
+```
+[1] TRUE
+```
+
+```r
+my.distribution[[2]]^2
+```
+
+```
+[1] 49
+```
+]
+
+&lt;small&gt;What happens if you try `my.distribution[2]^2`?&lt;/small&gt;
+&lt;small&gt;What happens if you try `[[ ]]` on a vector?&lt;/small&gt;
+
+???
+
+In the code shown on the slide, we have a list called my.distribution with three elements of different types. We can use is.character() to check if my.distribution is a character vector, which returns FALSE. However, if we use is.character() on my.distribution[[1]], we get TRUE because the first element is a character string.
+
+We can also perform arithmetic operations on the elements of the list, such as my.distribution[[2]]^2 which squares the second element of the list, returning the value 49.
+
+What happens if you try `my.distribution[2]^2`
+
+What happens if you try `[[ ]]` on a vector?
+
+If we try to use the [ ] or [[ ]] operator on a vector instead of a list, we get the same result, because a vector is treated as a list with a single element. For example, my.vector &lt;- c(1, 2, 3) and my.vector[[2]] both return the value 2. However, we cannot use the [[ ]] operator with a range of indices on a vector, because it returns an error.
+
+---
+## Filling in lists 
+
+```r
+myList[[1]] &lt;- 1:10
+# Fill the first element with a vector 1:10
+myList
+```
+
+```
+[[1]]
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+[[2]]
+NULL
+
+[[3]]
+NULL
+
+[[4]]
+NULL
+```
+&lt;small&gt;What happens if you try `myList[1] &lt;- 1:10`?&lt;/small&gt;
+
+&gt; Summary: Rememeber when you want to **access** or **assign** with an element in a list, use [[]]!!!
+
+???
+
+It will be an error. number of items to replace is not a multiple of replacement length
+
+It's important to remember to use [[ ]] to access or assign individual elements of a list, and to use [ ] only for subsetting a list or extracting multiple elements at once.
+
+---
+
+## Expanding and contracting lists
+
+Add to lists with `c()` (also works with vectors):
+
+```r
+my.distribution &lt;- c(my.distribution, 7)
+my.distribution
+```
+
+```
+[[1]]
+[1] "exponential"
+
+[[2]]
+[1] 7
+
+[[3]]
+[1] FALSE
+
+[[4]]
+[1] 7
+```
+
+```r
+# vector:
+a = c(1,2,3)
+c(a, 4)
+```
+
+```
+[1] 1 2 3 4
+```
+
+???
+
+We can use the c() function to concatenate or add new elements to a list.
+
+In the example code shown on the slide, we use c() to add the value 7 to the end of the list my.distribution. We can see that the new value is added as a separate element at the end of the list.
+
+We can also use c() to add new elements to a vector or create a new vector by combining two or more existing vectors, as shown in the example code for the vector a. In this case, the c() function returns a new vector that includes the original vector a and the value 4 concatenated together.
+
+---
+
+Chop off the end of a list by setting the length to something smaller (also works with vectors):
+
+
+```r
+length(my.distribution)
+```
+
+```
+[1] 4
+```
+
+```r
+length(my.distribution) &lt;- 3
+my.distribution
+```
+
+```
+[[1]]
+[1] "exponential"
+
+[[2]]
+[1] 7
+
+[[3]]
+[1] FALSE
+```
+
+```r
+length(a) = 3
+a
+```
+
+```
+[1] 1 2 3
+```
+
+???
+In the example code shown on the slide, we use length() to get the current length of my.distribution. We then modify the length of the list by setting it to 3, effectively removing the last element of the list.
+
+We can also use length() to modify the length of a vector, as shown in the example code for the vector a. In this case, we set the length of the vector to 3, effectively removing the last element of the vector.
+
+---
+
+## Naming list elements
+
+- We saw how to name elements of a list while constructing them
+
+- We can also add names later on:
+
+
+```r
+my.distribution &lt;- list("exponential", 7, FALSE)
+names(my.distribution) &lt;- c("family", "mean", "is.symmetric")
+my.distribution
+```
+
+```
+$family
+[1] "exponential"
+
+$mean
+[1] 7
+
+$is.symmetric
+[1] FALSE
+```
+???
+
+We can assign names to the elements of a list by using the names() function. This function takes a list as its argument. 
+
+In the example code shown on the slide, we first create a list called my.distribution with three elements of different types. We then assign names to the elements of the list using the names() function, where the character vector c("family", "mean", "is.symmetric") represents the names we want to assign to the elements of the list. We can see that the names are added to the list and displayed next to each element, making it easier to understand the contents of the list.
+
+Assigning names to the elements of a list can be useful when working with large or complex data structures, as it allows us to refer to specific elements by name rather than index, making our code more readable and easier to understand.
+
+---
+
+## Accessor sign `$`
+
+Lists have a special short-cut way of using names, `$` (which removes names and structures):
+
+
+```r
+my.distribution[["family"]]
+```
+
+```
+[1] "exponential"
+```
+
+```r
+my.distribution$family
+```
+
+```
+[1] "exponential"
+```
+
+```r
+my.distribution[1]
+```
+
+```
+$family
+[1] "exponential"
+```
+
+&gt; Using the $ operator can make our code more readable and easier to understand, especially when working with large or complex data structures
+ 
+???
+
+We can use the $ symbol as a shortcut for accessing the elements of a list by name. 
+
+In the example code shown on the slide, we use the $ operator to access the "family" element of the list my.distribution. We can see that this returns the same value as using the [[ ]] operator with the name of the element as its argument.
+
+Using the $ operator can make our code more readable and easier to understand, especially when working with large or complex data structures where we need to refer to specific elements by name.
+
+---
+
+## Names in lists 
+
+Creating a list with names:
+
+```r
+another.distribution &lt;- list(family="gaussian", mean = 7, 
+                             sd = 1, is.symmetric = TRUE)
+```
+
+Adding named elements:
+
+```r
+my.distribution$was.estimated &lt;- FALSE
+my.distribution[["last.updated"]] &lt;- "2011-08-30"
+```
+
+Removing a named list element, by assigning it the value `NULL`:
+
+```r
+my.distribution$was.estimated &lt;- NULL
+```
+
+???
+
+We can create a named list using the list() function and the name=value syntax. We can add named elements to an existing list using the $ or [[ ]] operators and the name=value syntax. To remove a named element from a list, we can assign it the value NULL.
+
+---
+
+## Structure of lists
+
+- `str()` is particularly useful for lists, since it allows us to easily get an idea of what is in the list. 
+
+- We can use str() to see the structure of a list, including the data types and names of each element in the list.
+
+
+```r
+str(my.distribution)
+```
+
+```
+List of 4
+ $ family      : chr "exponential"
+ $ mean        : num 7
+ $ is.symmetric: logi FALSE
+ $ last.updated: chr "2011-08-30"
+```
+
+---
+
+## Data frames
+
+- A data frame is a special **list** containing vectors of **equal length**
+
+- Data frame = the classic data table, `\(n\)` rows for observations, `\(p\)` columns for variables
+
+- Lots of the statistical parts of R presume data frames
+
+- *columns can have different types*: String, numeric, Date, Boolen, etc
+
+???
+
+n R, a data frame is a special type of list that contains vectors of equal length. It is used to store a table of data with rows representing observations and columns representing variables. Many statistical parts of R are designed to work specifically with data frames.
+
+Unlike a simple list, data frames have a specific structure that allows columns to have different data types such as strings, numerics, dates, and booleans. 
+
+---
+## Creating data frames 
+
+* Use the data.frame() function to create a dataframe
+
+* We can use `dim()` function to know how many row and columns.
+
+
+```r
+# create a data frame with three variables
+my.df &lt;- data.frame(
+  x = 1:3,
+  y = c("a", "b", "c"),
+  z = c(TRUE, FALSE, TRUE)
+)
+# print the data frame
+my.df
+```
+
+```
+  x y     z
+1 1 a  TRUE
+2 2 b FALSE
+3 3 c  TRUE
+```
+
+```r
+dim(my.df)
+```
+
+```
+[1] 3 3
+```
+
+???
+
+In this example, we use the data.frame() function to create a data frame called my.df with three variables. The first variable, x, is a sequence of integers from 1 to 3. The second variable, y, is a vector of character strings that correspond to the letters "a", "b", and "c". The third variable, z, is a vector of Boolean values that correspond to TRUE, FALSE, and TRUE.
+
+After creating the data frame, we can print it to the console to see its contents. The output shows that my.df has three variables and three observations.
+
+We can use `dim()` function to know how many row and columns.
+
+---
+
+## Accessing dataframe
+
+* Use $ accessor to access a specific column of a data frame by name. 
+
+* For example, `my.df$column_name` returns the values of the `column_name` column. 
+   - (Which will be a vector)
+
+
+```r
+my.df$x
+```
+
+```
+[1] 1 2 3
+```
+
+* Row and column index: we can use the [ ] operator with row and column index to access individual elements of a data frame. 
+  - For example, `my_df[row_index, col_index]` returns the value in the `row_index`-th row and `col_index`-th column.
+
+
+```r
+my.df[2, 3]
+```
+
+```
+[1] FALSE
+```
+
+???
+
+We can access individual elements, rows, and columns of a data frame using different indexing methods:
+
+dollar accessor: we can use to access a specific column of a data frame by name. For example, `my_df$column_name` returns the values of the column_name column.
+
+Row and column index: we can use the [ ] operator with row and column index to access individual elements of a data frame. For example, `my_df[row_index, col_index]` returns the value in the `row_index`-th row and `col_index`-th column.
+
+---
+
+* Rows or columns by index: we can use the [ ] operator to access entire rows or columns of a data frame by index
+  - For example, `my_df[row_index, ]` returns the `row_index`-th row of the data frame, and `my_df[, col_index]` returns the `col_index`-th column.
+
+
+```r
+# Use row index to get a row
+my.df[3, ]
+```
+
+```
+  x y    z
+3 3 c TRUE
+```
+
+```r
+# Use column index to get a column
+my.df[, 2]
+```
+
+```
+[1] "a" "b" "c"
+```
+
+* You can also use index vectors on the row or column arguments.
+
+
+```r
+my.df[c(1,2),c(1,2)]
+```
+
+```
+  x y
+1 1 a
+2 2 b
+```
+
+---
+
+## Adding rows and columns
+
+We can add columns using $ accessor
+
+
+```r
+# Adding columns
+my.df$new.col &lt;- 4:6
+my.df
+```
+
+```
+  x y     z new.col
+1 1 a  TRUE       4
+2 2 b FALSE       5
+3 3 c  TRUE       6
+```
+
+We can also add columns similar to a list
+
+
+```r
+my.df[["newer.col"]] &lt;- c(7, 8, 9)
+my.df
+```
+
+```
+  x y     z new.col newer.col
+1 1 a  TRUE       4         7
+2 2 b FALSE       5         8
+3 3 c  TRUE       6         9
+```
+
+---
+
+## remove column
+
+Now remove `newCol`
+
+
+```r
+# Removing column 3
+my.df &lt;- my.df[, -3]
+# We can also remove by this way
+my.df$new.col &lt;- NULL
+```
+
+&gt; Some are very similar to a list operation.
+
+---
+## `rbind()` and `cbind()`
+
+We can also add rows or columns to an array or data-frame with `rbind()` and `cbind()`.
+
+.panelset[
+.panel[.panel-name[rbind]
+
+```r
+# Create a data frame
+df &lt;- data.frame(
+  x = 1:3,
+  y = c("a", "b", "c"),
+  z = c(TRUE, FALSE, TRUE)
+)
+
+# Add a new row
+new_row &lt;- data.frame(x = 4, y = "d", z = FALSE)
+df &lt;- rbind(df, new_row)
+df
+```
+
+```
+  x y     z
+1 1 a  TRUE
+2 2 b FALSE
+3 3 c  TRUE
+4 4 d FALSE
+```
+
+]
+.panel[.panel-name[rbind_df]
+
+```r
+# Creating two data frames to combine
+df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 &lt;- data.frame(x = 4:6, y = c("d", "e", "f"))
+
+# Using rbind to combine rows
+df3 &lt;- rbind(df1, df2)
+df3
+```
+
+```
+  x y
+1 1 a
+2 2 b
+3 3 c
+4 4 d
+5 5 e
+6 6 f
+```
+
+]
+.panel[.panel-name[cbind]
+
+```r
+# Create a data frame
+df &lt;- data.frame(
+  x = 1:3,
+  y = c("a", "b", "c"),
+  z = c(TRUE, FALSE, TRUE)
+)
+
+# Add a new column
+new_col &lt;- c(4, 5, 6)
+df &lt;- cbind(df, new_col)
+df
+```
+
+```
+  x y     z new_col
+1 1 a  TRUE       4
+2 2 b FALSE       5
+3 3 c  TRUE       6
+```
+
+]
+.panel[.panel-name[cbind_df]
+
+```r
+# Creating two data frames to combine
+df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 &lt;- data.frame(z = c(TRUE, FALSE, TRUE), w = c(0.5, 1.2, 2.1))
+
+# Using cbind to combine columns
+df3 &lt;- cbind(df1, df2)
+df3
+```
+
+```
+  x y     z   w
+1 1 a  TRUE 0.5
+2 2 b FALSE 1.2
+3 3 c  TRUE 2.1
+```
+
+]
+]
+
+???
+
+The rbind() function requires that both data frames have the same number of columns, while cbind() requires that both data frames have the same number of rows.
+
+Remember the vector can be treat as dataframes.
+
+This is because rbind() stacks the data frames vertically, while cbind() stacks them horizontally.
+
+---
+
+## More complicated data structures: structures of structures
+
+
+.panelset[
+.panel[.panel-name[Words]
+- Internally, a data frame is basically a list of vectors  
+- List elements can even be other lists, 
+  - which may contain other data structures, including other lists,  
+  - which may contain other data structures...
+
+- This **recursion** lets us build arbitrarily complicated data structures from the basic ones
+
+]
+.panel[.panel-name[Code example]
+
+```r
+df1 &lt;- data.frame(x = 1:3, y = c("a", "b", "c"))
+df2 &lt;- data.frame(x = 4:6, y = c("d", "e", "f"))
+nested_list &lt;- list(df1 = df1, df2 = df2)
+str(nested_list)
+```
+
+```
+List of 2
+ $ df1:'data.frame':	3 obs. of  2 variables:
+  ..$ x: int [1:3] 1 2 3
+  ..$ y: chr [1:3] "a" "b" "c"
+ $ df2:'data.frame':	3 obs. of  2 variables:
+  ..$ x: int [1:3] 4 5 6
+  ..$ y: chr [1:3] "d" "e" "f"
+```
+
+]
+.panel[.panel-name[Output]
+
+```r
+nested_list
+```
+
+```
+$df1
+  x y
+1 1 a
+2 2 b
+3 3 c
+
+$df2
+  x y
+1 4 d
+2 5 e
+3 6 f
+```
+
+]
+
+.panel[.panel-name[Explanation]
+In this example, we create two data frames, `df1` and `df2`, and then create a list called `nested_list` containing these two data frames as elements. We can see that nested_list is a list with two elements, each of which is a data frame, by using the `str()` function to print the structure of the list.
+]
+]
+
+???
+
+In this example, we create two data frames, df1 and df2, and then create a list called nested_list containing these two data frames as elements. We can see that nested_list is a list with two elements, each of which is a data frame, by using the str() function to print the structure of the list.
+
+
+---
+## More complicated data structures: structures of structures
+
+Most complicated objects are (usually) lists of data structures
+
+
+```r
+a &lt;- list(a = 1:3, b = "a string", c = pi, d = list(-1, -5))
+str(a)
+```
+
+```
+List of 4
+ $ a: int [1:3] 1 2 3
+ $ b: chr "a string"
+ $ c: num 3.14
+ $ d:List of 2
+  ..$ : num -1
+  ..$ : num -5
+```
+
+---
+
+## Data frames, data sets  
+
+- We've seen data frames. This is a commonly used data structure that we get after reading in a data set into R. 
+
+- In a data set in general, 
+  - Each row is an **observation**, `\(n\)`
+  - Each column is a **variable**, `\(p\)`
+
+- Often, the first things we want to do when given a data set are to figure out
+  1. What is in it (what dimensions, what variables)
+  2. What the main characteristics of the variables are. 
+
+- We've seen a few tools and functions for working with data frames in "base R," now we will look at some tools from `dplyr`
+
+---
+
+# Readings
+
+- R for Data Science Chapter 4, 20
+- Additional reading: Matloff Chapter 2
+- [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
+- [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
