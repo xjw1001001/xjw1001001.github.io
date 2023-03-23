@@ -95,7 +95,7 @@ Last lecture we also went over the basics of R markdown. Hopefully you would hav
 
 - Operators
 
-- Data structures
+- Install packages
 
 - Vectors
 
@@ -491,6 +491,32 @@ When adding the x * 3 command to an R chunk in the R Markdown document, an error
 ### Explanation:
 
 > When adding the `x * 3` command to an R chunk in the R Markdown document, an error will occur because the variable x was not defined within the R markdown environment. The R Markdown environment is separate from the console environment, so any variables created or functions defined in the console will **not carry over to the R Markdown document** unless they are specifically included or imported.
+
+---
+
+## Installing R packages
+
+* What you get after your first install is base R
+
+* extra functionality comes from add-ons available from developers
+
+* R makes it very easy to install packages from within R. For example, type this in console
+
+```{r eval=F}
+install.packages("tidyverse")
+```
+
+After we install the package, we can then load the package into our R sessions using the library function:
+
+```{r eval=F}
+library(tidyverse)
+```
+
+If you want to use the add-on functions in the package, you need to library the package first.
+
+???
+
+The functionality provided by a fresh install of R is only a small fraction of what is possible. In fact, we refer to what you get after your first install as base R. The extra functionality comes from add-ons available from developers. However, because not everybody needs all available functionality, R instead makes different components available via packages. R makes it very easy to install packages from within R. For example, type this in console:
 
 ---
 

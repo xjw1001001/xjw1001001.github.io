@@ -1,0 +1,224 @@
+---
+title: "Introduction and R Basics"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 3"
+author: "Jingwei Xiong"
+date: April 7, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      # ratio: "16:9"
+      # highlightLines: true
+      # highlightStyle: solarized-light
+      countIncrementalSlides: false
+---
+
+```{r, echo = FALSE}
+#library(renderthis)
+#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
+
+
+```{css, echo = FALSE}
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+```
+
+## Reminders
+
+- First homework has been assigned. Due next Friday at 11:59 PM.
+  - PDF files only
+  - Submission through Gradescope (accessible through Canvas)
+  - If you collaborate with others, write their names in your submission
+
+- Office hours: 
+  - TBD
+
+---
+## Questions from last class: NA vs. NaN
+- `NaN` means "not a number" and it means there is a result, but it cannot be represented by the computer
+```{r}
+0 / 0 # note that 1 / 0 returns Inf
+```
+
+- `NA` means missing; when working with data sets this is the more common one you will encounter
+- `is.na()` returns `TRUE` for both missing values (`NA`) and `NaN`
+
+```{r}
+is.na(0 / 0)
+NA + NaN 
+```  
+- For more, see https://jameshoward.us/2016/07/18/nan-versus-na-r/.
+
+---
+
+## Recap: Vector covered last lecture:
+
+* How to create a vector: `c()`, `1:5`, `seq()`, `vector(length = 7)`
+
+* How to subset a vector using index
+
+* How to subset a vector using name
+
+And today we will continue with more on vectors.
+
+
+???
+
+In our last lecture, we covered some basic concepts related to vectors in R. We learned about various ways of creating a vector, such as using the c() function, 1:5, seq(), and vector(). We also learned about how to subset a vector using index and name.
+
+Today, we will continue our discussion on vectors and cover some more topics. Specifically, we will look at factors, dates, some common operations that can be performed on vectors, such as arithmetic operations and logical operations. We will also discuss some important functions for working with vectors in R.  So, let's dive in!
+
+---
+## Vectors with additional attributes: Factors
+- Factors are built on top of integer vectors
+
+- These have a fixed and known set of possible values. 
+
+- Factors have two components: level numbers (integers) and level labels (characters) 
+
+```{r}
+tmp <- factor(c("BS", "MS", "PhD", "MS"))
+tmp
+as.integer(tmp)
+```
+
+> In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
+
+???
+
+In addition to regular numeric and character vectors, R also has a special type of vector called factors. Factors are built on top of integer vectors and are used to represent categorical data.
+
+One key feature of factors is that they have a fixed and known set of possible values, which are known as levels. The levels of a factor are stored as integers and their corresponding labels are stored as characters.
+
+In the example code shown on the slide, we create a factor called tmp using the factor() function. The c() function is used to specify the values of the factor. We can see that the levels of the factor are automatically assigned integer values based on the order in which they appear. In this case, "BS" is assigned level 1, "MS" is assigned level 2, and "PhD" is assigned level 3.
+
+To view the integer values of the levels, we can use the as.integer() function to convert the factor to an integer vector.
+
+In summary, factors are a useful data type in R for representing categorical data with a fixed and known set of possible values.
+
+---
+
+## Vectors with additional attributes: Dates
+
+- Dates and date-times are built on top of numeric vectors
+
+- Dates are represented internally as the number of days since the origin, 1 Jan 1970
+
+```{r}
+z <- as.Date("2020-01-01")
+z
+typeof(z)
+str(z)
+```
+
+---
+
+## Vectors with additional attributes: Dates
+
+- Dates and date-times are built on top of numeric vectors
+
+- Dates are represented internally as the number of days since the origin, 1 Jan 1970
+
+```{r}
+z <- as.Date("2020-01-01")
+z
+typeof(z)
+str(z)
+```
+
+---
+
+## Vectors with additional attributes: Dates
+
+```{r}
+z
+as.integer(z)
+as.integer(z) / 365 # roughly 50 yrs
+```
+
+We will talk more about packages later on in the class, but the `lubridate` package is particularly useful for dealing with dates. 
+
+---
+
+## Vector arithmetic
+
+In R, arithmetic operations on vectors occur _element-wise_. For a quick example:
+
+```{r}
+x <- c(7, 8, 10, 45)
+y <- c(-7, -8, -10, -45)
+x + y
+x * y
+x^c(1, 0, -1, 0.5)
+```
+
+---
+## Vector arithmetic
+
+R will implicitly coerce the types of vectors to be compatible.  E.g.:
+```{r}
+TRUE + 4
+```
+---
+## Recycling
+- R will also implicitly coerce the length of vectors.
+
+- This is called vector **recycling**: 
+
+  - When a shorter vector is combined with a longer one, elements of the shorter vector are repeated or recycled, to make it the same length as the longer vector.
+
+```{r}
+x <- c(7, 8, 10, 45)
+x + c(-7, -8)
+```
+
+Single numbers are vectors of length 1 for purposes of recycling:
+```{r}
+2*x
+```
+
+
+---
+---
+
+## Summary
+
+--
+
+- We write programs by composing functions to manipulate data
+
+- The basic data types represent Booleans, numbers, and characters
+
+- Data structures group related values together
+
+- Vectors group values of the same type
+
+- Vector creating and subsetting
+
+---
+
+## Reading:
+
+R for Data Science Chapter 4, 20
