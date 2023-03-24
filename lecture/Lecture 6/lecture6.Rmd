@@ -1,0 +1,261 @@
+---
+title: "Data Manipulation 2"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 6"
+author: "Jingwei Xiong"
+date: April 14, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = FALSE, eval = FALSE}
+library(renderthis)
+to_pdf(from = "lecture6.Rmd",complex_slides = TRUE)
+```
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
+
+
+```{css, echo = FALSE}
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+```
+
+## Reminders
+
+- HW 1 is due tomorrow at 9pm
+
+  - I posted an updated version with few clarifications:
+  
+    - Vectors: You can put anything you’d like in the vector, i.e., any suitable input to the first argument of `sample()`.
+    - Arrays: the last line of instructions is for the first matrix.
+    - Matrices: the vector to multiply with is a length 3 vector. It may be 3 x 1 or 1 x 3 to be compatible with the dimensions of the matrix that you are multiplying with, and the matrix should be the original one, and not the one that is multiplied by 3.
+
+  - If you've already started working with the Rmd file of the original version, there is no need to update to the new version.
+  
+- HW 2 will be posted on Friday afternoon on the course website 
+
+
+---
+## Today
+
+- Data manipulation using tidyverse
+
+
+???
+
+# Readings
+
+- [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
+
+- R for Data Science Chapter 5
+
+
+
+<!-- your comment
+
+---
+
+## Vocabulary of statistics
+
+* A **subject**: A person, place or thing from which we collect data.
+
+* A **population**: The collection of all subjects of interest.
+
+* A **sample**: A subset of the population, from which we have collected data
+
+> **Sample size**: number of subjects in a sample
+
+* A **variable**: A characteristic of a subject
+
+---
+
+### Examples in datasets
+
+.panelset[
+.panel[.panel-name[murders]
+
+For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
+
+```{r}
+library(dslabs)
+head(murders, 3)
+```
+
+* **subject** is one US state. 
+* **population** is ALL US state. 
+* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
+* **variable** include: region, population, total (murders)
+
+]
+.panel[.panel-name[heights help page]
+
+For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
+
+```{r eval = F}
+?heights
+```
+
+* Self-Reported Heights
+
+> Description: Self-reported heights in inches for males and females.
+
+>Usage: data(heights)
+
+>Format: An object of class "data.frame".
+
+>Details:sex. Male or Female.
+
+> height. Height in inches.
+
+]
+
+.panel[.panel-name[heights]
+
+```{r}
+head(heights, 3)
+# Here we have 1050 observations
+dim(heights)
+```
+
+So for this dataset:
+
+* **subject** is one student (possibly in some school). 
+* **population** is all students inside that school. 
+* **sample** is the 1050 students inside the dataset.
+* **variable** include: sex, height
+]
+.panel[.panel-name[Sample VS population]
+
+* Sample is a subgroup of population!
+
+* Ideally, a sample should be **representative** of the population.
+
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("img/sample-size-definition.png")
+```
+
+]
+]
+
+---
+
+## Terminology: Number of variables involved
+
+- **Univariate** data analysis: distribution of single variable
+
+- **Bivariate** data analysis: relationship between two variables
+
+- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
+
+---
+
+### Type of variables
+
+In statistics, different types of variables are analyzed in different ways.
+
+.panelset[
+.panel[.panel-name[Concepts]
+
+* The four main types are: 
+
+* **Categorical** variables: (*Not a number*)
+
+    - **Nominmal**: categorical variables with no inherent order. Examples: gender, ethnicity, and religion.
+    
+    > All genders, ethnicity, religions are equal!
+    
+    - **Ordinal**: categorical variables with a natural order or ranking. Examples: education level (e.g., high school, college, graduate school)
+    
+* **Numerical** variables: (*Numbers*)
+    
+    - **Continuous**: Numbers can take any value
+    
+    - **Discrete**: Numbers can only take on a *finite* or *countably infinite set* of possible values
+
+]
+.panel[.panel-name[murders]
+
+In murders dataset:
+
+```{r}
+head(murders, 3)
+```
+
+* abb, region are categorical; nominal
+
+* population and total are numeric; discrete
+
+]
+
+.panel[.panel-name[heights]
+
+```{r}
+head(heights)
+```
+
+
+* sex is categorical; nominal
+
+* height is numeric; continuous
+
+  - Though here it seems to only include integer values.
+
+]
+.panel[.panel-name[Small quiz]
+
+What are the types of these variables?
+
+- Number of people in each class
+
+- Letter grades
+
+- Shape of leaf
+
+- Zip code: (95618 for Davis, 95776 for Woodland)
+
+- Heights of newborn babies
+]
+
+.panel[.panel-name[solution]
+- Number of people in each class **discrete**
+
+- Letter grades **ordinal**
+
+- Shape of leaf **nominal**
+
+- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
+
+- Heights of newborn babies **continuous**
+]
+]
+---
+
+
+-->
+
+

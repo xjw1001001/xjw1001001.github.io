@@ -1,8 +1,8 @@
 ---
-title: "Introduction to data science 1"
+title: "Data Manipulation 1"
 subtitle: "<br><br> STA 032: Gateway to data science Lecture 5"
 author: "Jingwei Xiong"
-date: April 10, 2023
+date: April 12, 2023
 output:
   xaringan::moon_reader:
     # css: [default, metropolis, metropolis-fonts]
@@ -10,15 +10,15 @@ output:
     # css: ["../xaringan-themer.css", "../slides.css"]
     # lib_dir: libs
     nature:
-      # ratio: "16:9"
-      # highlightLines: true
-      # highlightStyle: solarized-light
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
       countIncrementalSlides: false
 ---
 
-```{r, echo = FALSE}
-#library(renderthis)
-#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```{r, echo = FALSE, eval = FALSE}
+library(renderthis)
+to_pdf(from = "lecture5.Rmd",complex_slides = TRUE)
 ```
 
 
@@ -45,23 +45,623 @@ library(unvotes)
 .small .remark-code { font-size: 80%; }
 ```
 
----
-
 ## Today
 
-- Introduction to lists
+- Data manipulation using tidyverse
 
-- Data frames, or more generally "data sets"
-
-- Auto complete and How to use help in R
 
 ???
 
-Today's topics are lists and data frames, which are both important data structures in R.
+---
+### Introduction
+
+Up to now we have been manipulating vectors   by subsetting them through indexing. 
+
+However, once we start more advanced analyses, the preferred unit for data storage is not the vector but the **data frame**.  
+
+We will learn to work **directly** with data frames, which greatly facilitate the organization of information. 
+
+We can load all the tidyverse packages at once by installing and loading the __tidyverse__ package:
+
+```{r, message=FALSE, warning=FALSE}
+#install.packages(tidyverse)
+library(tidyverse)
+```
 
 ---
 
+## Data manipulation using `dplyr` (included in tidyverse)
+
+.pull-left[
+```{r dplyr-part-of-tidyverse, echo=FALSE, out.width="70%", caption = "dplyr is part of the tidyverse"}
+knitr::include_graphics("img/dplyr-part-of-tidyverse.png")
+```
+]
+.pull-right[
+.midi[
+- `select`: pick columns by name
+- `arrange`: reorder rows
+- `slice`: pick rows using index(es)
+- `filter`: pick rows matching criteria
+- `distinct`: filter for unique rows
+- `mutate`: add new variables
+- `summarize`: reduce variables to values
+- `group_by`: for grouped operations
+- ... (many more)
+]
+]
+
+As we go over the examples, think about how you would do these in base R, you will understand how powerful it is.
+
+???
+
+In this section, we will be discussing some of the most commonly used dplyr functions for data manipulation. These functions are essential for cleaning and transforming data in preparation for analysis.
+
+The functions we will cover include select, arrange, slice, filter, distinct, mutate, summarize, and group_by. These functions allow you to pick columns by name, reorder rows, pick rows using index(es), pick rows matching criteria, filter for unique rows, add new variables, reduce variables to values, and perform grouped operations.
+
+As we go through the examples, it's important to consider how you would perform the same tasks using base R. This will help you understand the power and simplicity of the dplyr package for data manipulation.
 ---
 
+## Rules of `dplyr` functions
+
+- First argument is always a data frame
+
+- Subsequent arguments say what to do with that data frame
+
+- Always return a data frame
+
+- Don't modify in place
+  - Meaning that you need an assignment operation if you want an "updated" version of the data frame 
+
+---
+
+## Data: Hotel bookings
+
+- Data from two hotels: one resort and one city hotel
+
+- Observations: Each row represents a hotel booking
+
+- Goal for original data collection: Development of prediction models to classify a hotel booking's likelihood to be cancelled ([Antonia et al., 2019](https://www.sciencedirect.com/science/article/pii/S2352340918315191#bib5))
+
+```{r message=FALSE}
+hotels <- readr::read_csv("data/hotels.csv")
+```
+
+.footnote[
+Source: [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-02-11/readme.md)
+]
+
+???
+
+We will show how to use the dplyr functions in the example of data from two hotels: one resort and one city hotel. 
+
+Each row of the data represents a hotel booking, and the original goal of the data collection was to develop prediction models to classify the likelihood of a hotel booking being cancelled.
+---
+
+## `glimpse`: What is in the data set?
+
+.panelset[
+.panel[.panel-name[Example]
+
+.tiny[
+```{r output.lines=18}
+dplyr::glimpse(hotels)
+```
+]
+]
+.panel[.panel-name[glimpse]
+
+- glimpse from the dplyr package
+
+- It allows you to quickly inspect the structure of a data frame
+
+- It provides a compact and informative summary of the data frame
+
+- Shows the number of observations, variables, and data type of each variable
+
+- Useful for data exploration and identifying issues or inconsistencies
+
+- Can verify that the data frame has been loaded correctly and variables are in the expected format
+
+]]
+???
+
+glimpse is a function from the dplyr package that allows you to quickly inspect the structure of a data frame. It provides a compact and informative summary of the data frame, showing the number of observations, the number of variables, and the data type of each variable.
+
+glimpse is a useful tool for data exploration and can help you quickly identify any issues or inconsistencies in your data, such as missing values or unexpected data types. It can also be used to verify that the data frame has been loaded correctly and that all the variables are in the expected format.
+---
+
+### `select()`: Select columns
+
+.panelset[
+.panel[.panel-name[single column]
+
+View only `lead_time` (number of days between booking and arrival date):
+.pull-left[
+```{r}
+select(hotels, lead_time)
+```
+]
+.pull-right[
+- First argument: data frame we're working with , `hotels`
+- Second argument: variable we want to select, `lead_time`
+- Result: data frame with `r nrow(hotels)` rows and 1 column
+- This is an alternative to `hotels$lead_time`
+]
+]
+.panel[.panel-name[multiple columns]
+
+View only the `hotel` type and `lead_time` columns:
+```{r}
+select(hotels, hotel, lead_time)
+```
+
+]
+
+.panel[.panel-name[exclude columns]
+
+- We saw earlier that `select()` keeps variables
+- `select()` can also exclude variables, using the `-` sign
+
+.tiny[
+```{r output.lines=18}
+select(hotels, -agent) 
+```
+
+]
+]]
+
+---
+
+### `select()`: Select columns, continue
+
+.panelset[
+.panel[.panel-name[a range of variables]
+
+- Instead of writing out all the variable names, `select()` also accepts a range of variables 
+
+- This follows the order they are listed in the data frame
+
+.pull-left[
+.tiny[
+```{r}
+colnames(hotels)[1:10]
+```
+]]
+.pull-right[
+.tiny[
+```{r}
+select(hotels, hotel:arrival_date_month) 
+```
+]]
+]
+.panel[.panel-name[starts_with]
+
+- We can also select columns with certain characteristics
+.tiny[
+```{r}
+select(hotels, starts_with("arrival"))
+```
+]
+]
+
+.panel[.panel-name[ends_with]
+
+- We can also select columns with certain characteristics
+
+.tiny[
+```{r}
+select(hotels, ends_with("type")) 
+```
+]]
+
+]
+
+---
+
+### Select helpers
+
+- `starts_with()`: Starts with a prefix
+- `ends_with()`: Ends with a suffix
+- `contains()`: Contains a literal string
+- `num_range()`: Matches a numerical range like x01, x02, x03
+- `one_of()`: Matches variable names in a character vector
+- `everything()`: Matches all variables
+- `last_col()`: Select last variable, possibly with an offset
+- `matches()`: Matches a regular expression (a sequence of symbols/characters expressing a string/pattern to be searched for within text)
+
+> But you can always select by listing column names in this course. These methods are for situations where there are lots of variables.
+
+.footnote[
+See help for any of these functions for more info, e.g. `?everything`.
+]
+
+---
+
+## `select()`, then `arrange()`
+
+What if we wanted to select these columns, and then sort the data in order of lead time?
+
+.small[
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>%
+  arrange(lead_time)
+```
+]
+
+> Wait, what is that **%>%**???
+
+---
+
+# Pipes
+
+In Data science we can perform a series of operations, in the previous example we `select` and then `arrange`, by sending the results of one function to another using what is called the _pipe operator_: `|>`.  or `%>%`
+
+To illustrate the operations, it can be shown as:
+
+$$ \mbox{original data }
+\rightarrow \mbox{ select }
+\rightarrow \mbox{ arrange } $$
+For such an operation, we can use the pipe `|>`. The code looks like this:
+
+```{r eval = F}
+hotels |>  select(hotel, lead_time) |> arrange(lead_time)
+```
+
+---
+
+## Pipes
+
+In Data science we can perform a series of operations, in the previous example we `select` and then `arrange`, by sending the results of one function to another using what is called the _pipe operator_: `|>`.  or `%>%`. They are equivalent
+
+.pull-left[
+- Start with the data frame `hotels`, and pass it to the `select()` function,
+]
+.pull-right[
+.small[
+```{r}
+hotels %>% #<<
+  select(hotel, lead_time) %>%
+  arrange(lead_time)
+```
+]
+]
+
+---
+
+## Pipes
+
+In Data science we can perform a series of operations, in the previous example we `select` and then `arrange`, by sending the results of one function to another using what is called the _pipe operator_: `|>`.  or `%>%`. They are equivalent
+
+.pull-left[
+- Start with the data frame `hotels`, and pass it to the `select()` function,
+- then we select the variables `hotel` and `lead_time`,
+]
+.pull-right[
+.small[
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>% #<<
+  arrange(lead_time)
+```
+]
+]
+
+---
+
+In Data science we can perform a series of operations, in the previous example we `select` and then `arrange`, by sending the results of one function to another using what is called the _pipe operator_: `|>`.  or `%>%`. They are equivalent
+
+.pull-left[
+- Start with the data frame `hotels`, and pass it to the `select()` function,
+- then we select the variables `hotel` and `lead_time`,
+- and then we arrange the data frame by `lead_time`.
+]
+.pull-right[
+.small[
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>% 
+  arrange(lead_time) #<<
+```
+]
+]
+
+Note that the pipe operator is implemented in the package `magrittr`, but is **automatically loaded** when we use `library(dplyr)` or `library(tidyverse)`.
+
+---
+
+## How does a pipe work?
+
+- You can think about the following sequence of actions - find keys, 
+unlock car, start car, drive to work, park.
+
+- Expressed as a set of nested functions in R pseudocode this would look like:
+```{r eval=FALSE}
+park(drive(start_car(find("keys")), to = "work"))
+```
+
+- Writing it out using pipes give it a more natural (and easier to read) 
+structure:
+```{r eval=FALSE}
+find("keys") %>%
+  start_car() %>%
+  drive(to = "work") %>%
+  park()
+```
+
+- Note this is the **coding style** you need to follow. Each line represents an action about the dataset, and connected with pipes.
+
+---
+
+## Simple example
+- We can write `exp(1)` with pipes as `1 %>% exp`, and `log(exp(1))` as `1 %>% exp %>% log`
+
+```{r}
+exp(1)
+1 %>% exp
+1 %>% exp %>% log
+```
+
+- **Remarks: Tidyverse functions are at their best when composed together using the pipe operator**
+
+---
+## `arrange()` in ascending or descending order
+
+- We saw earlier that `arrange()` defaults to ascending order
+
+- For descending order, use `desc()`
+
+.pull-left[
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>% 
+  arrange(lead_time)
+```
+]
+.pull-right[
+```{r}
+hotels %>%
+  select(hotel, lead_time) %>% 
+  arrange(desc(lead_time))
+```
+]
+
+---
+
+## `slice()` for certain row numbers
+
+This is an alternative indexing option for `hotels[1:5, ]`
+
+```{r output.lines=17}
+hotels %>%
+  slice(1:5) 
+```
+
+---
+
+## Reminder: comments in R
+
+- Any text following `#` will be printed as is, and won't be run as code
+
+- This is useful for leaving comments and for temporarily disabling 
+certain lines of code (for debugging, trying out different things)
+
+.tiny[
+```{r output.lines=5}
+hotels %>%
+  # slice the first five rows  # this line is a comment
+  #select(hotel) %>%           # this one doesn't run
+  slice(1:5)                   # this line runs
+```
+]
+
+---
+
+## `filter()` to select a subset of rows
+
+.small[
+```{r output.lines=17}
+# bookings in City Hotels
+hotels %>%
+  filter(hotel == "City Hotel") 
+```
+]
+
+<small>What was the base R alternative that we saw?</small>
+
+???
+
+logical subsetting
+
+---
+
+## `filter()` for many conditions at once
+
+```{r}
+hotels %>%
+  filter( 
+    adults == 0,     
+    children >= 1    
+    ) %>% 
+  select(adults, babies, children)
+```
+
+---
+
+## `filter()` for more complex conditions
+
+```{r}
+# bookings with no adults and some children or babies in the room
+hotels %>%
+  filter( 
+    adults == 0,     
+    children >= 1 | babies >= 1   
+    ) %>%
+  select(adults, babies, children)
+```
+
+---
+
+## Reminder: Logical operators in R
+
+<br>
+
+operator    | definition                   || operator     | definition
+------------|------------------------------||--------------|----------------
+`<`         | less than                    ||`x`&nbsp;&#124;&nbsp;`y`     | `x` OR `y` 
+`<=`        |	less than or equal to        ||`is.na(x)`    | test if `x` is `NA`
+`>`         | greater than                 ||`!is.na(x)`   | test if `x` is not `NA`
+`>=`        |	greater than or equal to     ||`x %in% y`    | test if `x` is in `y`
+`==`        |	exactly equal to             ||`!(x %in% y)` | test if `x` is not in `y`
+`!=`        |	not equal to                 ||`!x`          | not `x`
+`x & y`     | `x` AND `y`                  ||              |
+
+---
+
+## `mutate()` to add a new variable
+
+```{r}
+hotels %>%
+  mutate(little_ones = children + babies) %>% 
+  select(children, babies, little_ones) %>%
+  arrange(desc(little_ones))
+```
+
+<small>What are these functions doing? How do to the same in base R? Think about it after class!</small>
+
+---
+
+### A small question
+
+```{r eval = F}
+hotels %>%
+  mutate(little_ones = children + babies) %>% 
+  select(children, babies, little_ones) %>%
+  arrange(desc(little_ones))
+```
+
+Notice that here we used `children` and `babies` inside the function, which are objects that are **not** defined in our workspace. But why don't we get an error?
+
+This is one of __dplyr__'s main features. Functions in this package, such as `mutate`, know to **look for variables** in the data frame provided in the first argument. In the call to mutate above, `children` will have the values in `hotels$children`. This approach makes the code much more **readable**. 
+
+---
+
+## `summarize()` for summary stats
+
+```{r}
+# mean average daily rate for all bookings
+hotels %>%
+  summarize(mean_adr = mean(adr)) 
+```
+
+- `summarize()` changes the data frame entirely
+
+- Rows are collapsed into a single summary statistic
+
+- Columns that are irrelevant to the calculation are removed
+
+
+---
+## `summarize()` is often used with `group_by()`
+
+- For grouped operations
+
+- There are two types of `hotel`, city and resort hotels
+
+- We want the mean daily rate for bookings at city vs. resort hotels
+
+```{r}
+hotels %>%
+  group_by(hotel) %>% 
+  summarize(mean_adr = mean(adr))
+```
+
+- `group_by()` can be used with more than one group
+
+---
+
+## Multiple summary statistics
+
+`summarize` can be used for multiple summary statistics as well
+
+```{r}
+hotels %>%
+  summarize(
+    n = n(), # frequencies
+    min_adr = min(adr),
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
+    )
+```
+
+---
+
+#### head() and the top $n$ 
+
+When datasets are large, output all results will fill up the page with the entire dataset. 
+
+.panelset[
+.panel[.panel-name[head]
+* We can use head() to show the first several rows
+
+```{r}
+hotels |> head(5)
+```
+]
+.panel[.panel-name[top_n]
+* Or top_n() to show the rows regarding to the largest variables.
+
+*Note that rows are not sorted by `adr`, only filtered. If we want to sort, we need to use `arrange`.
+
+* Note that if the second argument is left blank, `top_n` filters by the last column.
+]]
+
+```{r}
+hotels |> top_n(3, adr)
+```
+
+---
+
+###  Tidyverse coding style
+
+```
+result <- dataset |>
+  mutate SOMETHING |> 
+  filter SOMETHING |> 
+  select SOMETHING |>
+  group_by SOMETHING |>
+  summarise SOMETHING
+```
+
+If you write your code according to this workflow, it will be very clear and easy to understand. In homework 2 I suggest you try to practice writing code like this.
+
+---
+
+## Summary
+--
+
+- Data manipulation tools 
+
+  - `select()`: selects columns by name
+  
+  - `arrange()`: reorders rows
+  
+  - `slice()`: selects rows using index(es)
+  
+  - `filter()`: selects rows matching criteria
+  
+  - `mutate()`: adds new variables
+  
+  - `summarize()`: reduces variables to values
+  
+  - `group_by()`: for grouped operations
+---
 
 # Readings
+
+- [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
+
+- R for Data Science Chapter 5
+

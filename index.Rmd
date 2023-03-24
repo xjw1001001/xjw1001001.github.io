@@ -76,13 +76,35 @@ There are three optional textbooks. They are all available online and are free.
     - [Chapter 3](http://rafalab.dfci.harvard.edu/dsbook/programming-basics.html)
     
 
-- Wed April 12: Introduction to data science 1
+- Wed April 12: Data Manipulation 1
   - Notes: [Lecture 5](https://xjw1001001.github.io/lecture/Lecture 5/lecture5.html)
   - Reading: 
+    - [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
+    - R for Data Science Chapter 5
 
-- Fri April 14: Introduction to data science 2
+- Fri April 14: Data Manipulation 2
   - Notes: [Lecture 6](https://xjw1001001.github.io/lecture/Lecture 6/lecture6.html)
   - Reading: 
+
+
+  - Homework 2: (Due April 26 midnight, cover lecture 5-8) [Html](https://xjw1001001.github.io/homework/homework2/HW2.html) [Rmd](https://xjw1001001.github.io/homework/homework2/HW2.Rmd)
+  
+### Week 3: Introduction to data visualization
+- Homework 1: (Due April 17 midnight)
+
+- Mon April 17: 
+  - Notes: [Lecture 7](https://xjw1001001.github.io/lecture/Lecture 7/lecture7.html)
+  - Reading: 
+    
+- Wed April 19: 
+  - Notes: [Lecture 8](https://xjw1001001.github.io/lecture/Lecture 8/lecture8.html)
+  - Reading: 
+
+- Frin April 21: 
+  - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
+  - Reading: 
+
+### Week 4:
 
 
 <!-- your comment 
