@@ -75,6 +75,16 @@ There are three optional textbooks. They are all available online and are free.
     - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
     - [Chapter 3](http://rafalab.dfci.harvard.edu/dsbook/programming-basics.html)
     
+
+- Wed April 12: Introduction to data science 1
+  - Notes: [Lecture 5](https://xjw1001001.github.io/lecture/Lecture 5/lecture5.html)
+  - Reading: 
+
+- Fri April 14: Introduction to data science 2
+  - Notes: [Lecture 6](https://xjw1001001.github.io/lecture/Lecture 6/lecture6.html)
+  - Reading: 
+
+
 <!-- your comment 
 
 
