@@ -16,9 +16,9 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r, echo = FALSE}
-#library(renderthis)
-#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```{r, eval = FALSE, echo = FALSE}
+library(renderthis)
+to_pdf(from = "lecture2.Rmd",complex_slides = TRUE)
 ```
 
 
