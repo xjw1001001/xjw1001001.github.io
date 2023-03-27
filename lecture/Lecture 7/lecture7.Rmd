@@ -1094,6 +1094,84 @@ murders |> ggplot(aes(population/10^6, total, label = abb)) +
 ```
 ]
 ]
+---
+## A note on piping and layering
+
+- Pipe `%>%` used mainly in `dplyr` pipelines
+  - Pipe the output of the previous line of code as the first input of the next line of code
+
+- `+` used in `ggplot2` plots is used for "layering"
+  - Create the plot in layers, separated by `+`
+
+---
+```{r message=FALSE, echo = FALSE}
+hotels <- readr::read_csv("../lecture 6/data/hotels.csv")
+```
+
+## dplyr
+
+`r emo::ji("x")`
+
+```{r error=TRUE}
+hotels +
+  select(hotel, lead_time)
+```
+
+`r emo::ji("white_check_mark")`
+
+```{r eval=FALSE}
+hotels %>%
+  select(hotel, lead_time)
+```
+
+.tiny[
+```{r echo=FALSE, output.lines=6}
+hotels %>%
+  select(hotel, lead_time)
+```
+]
+
+---
+
+## ggplot2
+
+`r emo::ji("x")`
+
+.small[
+```{r error=TRUE}
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) %>%
+  geom_bar()
+```
+]
+
+`r emo::ji("white_check_mark")`
+
+```{r out.width="25%"}
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) +
+  geom_bar()
+```
+
+
+---
+## Code styling
+
+Many of the styling principles are consistent across `%>%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+`r emo::ji("x")`
+
+```{r eval=FALSE}
+ggplot(hotels,aes(x=hotel,y=deposit_type))+geom_bar()
+```
+
+`r emo::ji("white_check_mark")`
+
+```{r eval=FALSE}
+ggplot(hotels, aes(x = hotel, y = deposit_type)) + 
+  geom_bar()
+```
 
 ---
 

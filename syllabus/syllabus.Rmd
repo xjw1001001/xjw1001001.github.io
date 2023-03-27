@@ -78,8 +78,8 @@ Collaboration is encouraged and students are encouraged to discuss course materi
 
 | Assignment | Percentage |
 |:------------:|:------------:|
-| Homework Level 1  | 35\% |
-| Homework Level 2  | 5+\% |
+| Homework Level 1  | 32\% |
+| Homework Level 2  | 8+\% |
 | Participation  | 5\% |
 | Exam I | 15\% |
 | Exam II | 20\% |
@@ -123,11 +123,11 @@ Collaboration is encouraged and students are encouraged to discuss course materi
 | Monday, April 3, 2023      | Instruction Begins                         |
 | Friday, April 14, 2023     | Drop day for 10-day-drop courses            |
 | Tuesday, April 18, 2023     | Last day: For wait lists; To add courses        |
-| Friday, February 3     | STA 32 Exam 1                               |
+| Saturday, April 29, 2023     | STA 32 Exam 1 (Take home)                              |
 | Friday, May 5, 2023    | Last day to opt for P/NP or S/U grading     |
-| Friday, March 3        | STA 32 Exam 2                               |
+| Friday, May 26        | STA 32 Exam 2   (In person)                             |
 | Thursday, June 8, 2023      | Last day of lecture                         |
-| Thursday | STA 32 Final Exam                           |
+| TBD | STA 32 Final Exam                           |
 
 * Syllabus is subject to change.
 

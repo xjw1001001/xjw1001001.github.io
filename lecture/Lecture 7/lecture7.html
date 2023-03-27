@@ -992,6 +992,113 @@ murders |&gt; ggplot(aes(population/10^6, total, label = abb)) +
 &lt;img src="lecture7_files/figure-html/unnamed-chunk-46-1.png" width="504" /&gt;
 ]
 ]
+---
+## A note on piping and layering
+
+- Pipe `%&gt;%` used mainly in `dplyr` pipelines
+  - Pipe the output of the previous line of code as the first input of the next line of code
+
+- `+` used in `ggplot2` plots is used for "layering"
+  - Create the plot in layers, separated by `+`
+
+---
+
+
+## dplyr
+
+❌
+
+
+```r
+hotels +
+  select(hotel, lead_time)
+```
+
+```
+Error in select(hotel, lead_time): object 'hotel' not found
+```
+
+✅
+
+
+```r
+hotels %&gt;%
+  select(hotel, lead_time)
+```
+
+.tiny[
+
+```
+# A tibble: 119,390 × 2
+   hotel        lead_time
+   &lt;chr&gt;            &lt;dbl&gt;
+ 1 Resort Hotel       342
+ 2 Resort Hotel       737
+ 3 Resort Hotel         7
+ 4 Resort Hotel        13
+ 5 Resort Hotel        14
+ 6 Resort Hotel        14
+ 7 Resort Hotel         0
+ 8 Resort Hotel         9
+ 9 Resort Hotel        85
+10 Resort Hotel        75
+# … with 119,380 more rows
+```
+]
+
+---
+
+## ggplot2
+
+❌
+
+.small[
+
+```r
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) %&gt;%
+  geom_bar()
+```
+
+```
+Error in `geom_bar()`:
+! `mapping` must be created by `aes()`
+ℹ Did you use `%&gt;%` or `|&gt;` instead of `+`?
+```
+]
+
+✅
+
+
+```r
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) +
+  geom_bar()
+```
+
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-52-1.png" width="25%" /&gt;
+
+
+---
+## Code styling
+
+Many of the styling principles are consistent across `%&gt;%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+❌
+
+
+```r
+ggplot(hotels,aes(x=hotel,y=deposit_type))+geom_bar()
+```
+
+✅
+
+
+```r
+ggplot(hotels, aes(x = hotel, y = deposit_type)) + 
+  geom_bar()
+```
 
 ---
 
@@ -1026,7 +1133,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 
 .panelset[
 .panel[.panel-name[Plot]
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-49-1.png" width="70%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-57-1.png" width="70%" /&gt;
 ]
 .panel[.panel-name[Code]
 
@@ -1064,7 +1171,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-50-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-58-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1084,7 +1191,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-51-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-59-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1106,7 +1213,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-52-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-60-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1130,7 +1237,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-53-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-61-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1156,7 +1263,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-54-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-62-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1184,7 +1291,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-55-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-63-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1214,7 +1321,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-56-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-64-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1247,7 +1354,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-57-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-65-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1282,7 +1389,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-58-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-66-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1319,7 +1426,7 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-59-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-67-1.png" width="100%" /&gt;
 ]
 
 ---
@@ -1358,14 +1465,14 @@ ggplot(data = penguins,
 ]
 ]
 .pull-right[
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-60-1.png" width="100%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-68-1.png" width="100%" /&gt;
 ]
 
 ---
 
 .panelset[
 .panel[.panel-name[Plot]
-&lt;img src="lecture7_files/figure-html/unnamed-chunk-61-1.png" width="70%" /&gt;
+&lt;img src="lecture7_files/figure-html/unnamed-chunk-69-1.png" width="70%" /&gt;
 ]
 .panel[.panel-name[Code]
 
