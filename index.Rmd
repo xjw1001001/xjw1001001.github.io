@@ -39,7 +39,7 @@ There are three optional textbooks. They are all available online and are free.
 ## Class Schedule
 
 ### Week 1: Introduction, R programming basics
-- Homework 0: [Check in](https://canvas.ucdavis.edu/courses/784688/assignments/1035051)
+- **Homework 0**: [Check in](https://canvas.ucdavis.edu/courses/784688/assignments/1035051)
 
 - Mon April 3: Introduction, R, Rstudio
   - Notes: [Lecture 1](https://xjw1001001.github.io/lecture/Lecture 1/lecture1.html)
@@ -64,7 +64,7 @@ There are three optional textbooks. They are all available online and are free.
     - Additional reading: Matloff Chapter 2
     - [Chapter 2:R basics](http://rafalab.dfci.harvard.edu/dsbook/r-basics.html)
     - [R markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
-  - Homework 1: (Due April 17 midnight, cover lecture 1-4) [Html](https://xjw1001001.github.io/homework/homework1/HW1.html) [Rmd](https://xjw1001001.github.io/homework/homework1/HW1.Rmd)
+  - **Homework 1**: (Due April 17 midnight, cover lecture 1-4) [Html](https://xjw1001001.github.io/homework/homework1/HW1.html) [Rmd](https://xjw1001001.github.io/homework/homework1/HW1.Rmd)
     
 ### Week 2: Introduction to data manipulation
 
@@ -89,35 +89,48 @@ There are three optional textbooks. They are all available online and are free.
     - [Data Wrangling with Tidyverse](https://hbctraining.github.io/Intro-to-R/lessons/tidyverse_data_wrangling.html)
     - [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
 
-  - Homework 2: (Due April 26 midnight, cover lecture 5-8) [Html](https://xjw1001001.github.io/homework/homework2/HW2.html) [Rmd](https://xjw1001001.github.io/homework/homework2/HW2.Rmd)
+  - **Homework 2**: (Due April 26 midnight, cover lecture 5-8) [Html](https://xjw1001001.github.io/homework/homework2/HW2.html) [Rmd](https://xjw1001001.github.io/homework/homework2/HW2.Rmd)
   
 ### Week 3: Introduction to data visualization
-- Homework 1: (Due April 17 midnight)
+- **Homework 1: (Due April 17 midnight)**
 
-- Mon April 17: 
+- Mon April 17: Data visualization 1
   - Notes: [Lecture 7](https://xjw1001001.github.io/lecture/Lecture 7/lecture7.html)
   - Reading: 
     - [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
     - [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
 
     
-- Wed April 19: 
+- Wed April 19: Data visualization 2
   - Notes: [Lecture 8](https://xjw1001001.github.io/lecture/Lecture 8/lecture8.html)
   - Reading: 
 
-- Frin April 21: 
+- Fri April 21: Descriptive statistics
   - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
   - Reading: 
 
-  - Homework 3: (Due May 1 midnight, cover lecture 9-12) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
+  - **Homework 3**: (Due May 1 midnight, cover lecture 9-12) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
 
-### Week 4:
+### Week 4: Descriptive statistics, EDA and reviews for midterm 1
 
+- Mon April 24:
+  - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
+  - Reading: 
 
-  - Midterm 1: (Due April 29 midnight, cover lecture 1-12) 
+    
+- Wed April 26:
+  - Notes: [Lecture 11](https://xjw1001001.github.io/lecture/Lecture 11/lecture11.html)
+  - Reading: 
+  - **Homework 2: (Due April 26 midnight)**
+
+- Fri April 28: Review for midterm 1
+  - Notes: [Lecture 12](https://xjw1001001.github.io/lecture/Lecture 12/lecture12.html)
+  - Reading: 
+
+-  **Midterm 1: (Due April 29 midnight, cover lecture 1-12)**
   
   
-
+### Week 5: 
   
 <!-- your comment 
 
