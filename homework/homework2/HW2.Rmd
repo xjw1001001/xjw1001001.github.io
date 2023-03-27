@@ -337,11 +337,16 @@ Hint: Use `filter` and `summarize` and use the `na.rm = TRUE` argument when comp
 
 6\. For males between the ages of 40-49, summarise the average systolic blood pressure across race as reported in the `Race1` variable. Order the resulting table from lowest to highest average systolic blood pressure. hint: `arrange()`
 
-## Problem 6: Data visualization 2
+## Problem 6: Data visualization 2, GDP and life expectancy
+
+We'll be illustrating visualization process using a dataset comprising observations of life expectancies at birth for men, women, and the general population, along with GDP per capita and total population for 158 countries at approximately five-year intervals from 2000 to 2019.
+
+* Observational units: countries.
+
+* Variables: country, year, life expectancy at birth (men, women, overall), GDP per capita, total population, region (continent), and subregion.
 
 
 
-## Problem 7: Data visualization 2
 
 ## Include the person you coop with:
 
