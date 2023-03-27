@@ -1509,6 +1509,9 @@ must be available when the assignment is submitted.</p></li>
 homework, but must clearly indicate with whom they collaborated. Every
 student must upload their own submission.</p></li>
 <li><p>Start to work on it as early as possible</p></li>
+<li><p>When you want to show your result as a vector that is too long,
+slice the first 10 objects. When you want to show your result as a data
+frame, use <code>head()</code> on it.</p></li>
 </ul>
 </div>
 <div id="level-1-parts" class="section level1">
@@ -1752,12 +1755,7 @@ city_temps &lt;- data.frame(name = city, temperature = temp)</code></pre>
 of each state from smallest population size to biggest. Save these ranks
 in an object called <code>ranks</code>, then create a data frame with
 the state name and its rank. Call the data frame <code>my_df</code>.</p>
-<p>6. Repeat the previous exercise, but this time order
-<code>my_df</code> so that the states are ordered from least populous to
-most populous. Hint: create an object <code>ind</code> that stores the
-indexes needed to order the population values. Then use the bracket
-operator <code>[</code> to re-order each column in the data frame.</p>
-<p>7. The <code>na_example</code> vector represents a series of counts.
+<p>6. The <code>na_example</code> vector represents a series of counts.
 You can quickly examine the object using:</p>
 <pre class="r"><code>data(&quot;na_example&quot;)  
 str(na_example)</code></pre>
@@ -1771,7 +1769,7 @@ us which entries are <code>NA</code>. Assign this logical vector to an
 object called <code>ind</code> and determine how many <code>NA</code>s
 does <code>na_example</code> have. (Hint: use <code>sum</code> on the
 logical object)</p>
-<p>8. Now compute the average again, but only for the entries that are
+<p>7. Now compute the average again, but only for the entries that are
 not <code>NA</code>. Hint: the <code>!</code> operator, try
 <code>!(c(TRUE, FALSE, TRUE))</code>.</p>
 </div>

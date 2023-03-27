@@ -561,6 +561,11 @@ hotels %>%
 
 - Columns that are irrelevant to the calculation are removed
 
+???
+
+summarize() function is used for calculating summary statistics. We show an example of using summarize() to calculate the mean average daily rate for all bookings in the hotels data frame.
+
+One important thing to note about summarize() is that it changes the data frame entirely. Rows are collapsed into a single summary statistic, and columns that are irrelevant to the calculation are removed. This can be useful when you want to quickly calculate a summary statistic, but it's important to keep in mind that the resulting data frame will have a different structure than the original.
 
 ---
 ## `summarize()` is often used with `group_by()`
@@ -579,11 +584,19 @@ hotels %>%
 
 - `group_by()` can be used with more than one group
 
+???
+
+Here is the common use case of combining summarize() with group_by() to perform grouped operations. We use the example of a dataset containing two types of hotels - city and resort - and show how we can use group_by() and summarize() to calculate the mean daily rate for bookings at each type of hotel.
+
+group_by() is used to group the data by the hotel column, and summarize() is used to calculate the mean average daily rate for each group. This results in a data frame with two rows, one for each type of hotel, and the mean average daily rate for each group.
+
+It's important to note that group_by() can be used with more than one group, allowing you to perform more complex grouped operations.
+
 ---
 
 ## Multiple summary statistics
 
-`summarize` can be used for multiple summary statistics as well
+`summarize` can be used for multiple summary statistics as well.
 
 ```{r}
 hotels %>%

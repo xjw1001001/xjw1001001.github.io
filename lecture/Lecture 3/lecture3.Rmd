@@ -740,12 +740,10 @@ When adding the x * 3 command to an R chunk in the R Markdown document, an error
 
 Create new code chunks; Run codes; Write your own response.
 
+> Remember, when you make sure the code is correct when running in the console, put them into the code chunk for that problem.
 
+> If you run into an object not found problem when knitting the document, it is because you did not include the variable definition in the RMD file, but you defined it in your console.
 
-
----
-
-## Next week: Datasets
 
 ---
 

@@ -1,0 +1,1509 @@
+---
+title: "Data visualization 1"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 7"
+author: "Jingwei Xiong"
+date: April 17, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = FALSE, eval = FALSE}
+library(renderthis)
+to_pdf(from = "lecture7.Rmd",complex_slides = TRUE)
+```
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
+
+
+```{css, echo = FALSE}
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+```
+
+
+## Reminders
+
+- HW 1 is due April 17th at 12pm
+
+- HW 2 due April 26 12pm.
+
+- Please start the homework as soon as possible.
+
+- Discussion will cover homework problems.
+
+---
+
+## Recap
+--
+
+- Data manipulation tools in `tidyverse`
+
+- Data visualization introduction examples
+
+> Remember, before using all tidyverse functions, you need to library(tidyverse) first!
+
+> Remember, before using all ggplot2 functions, you need to library(ggplot2) first!
+
+---
+
+## Today
+
+Generate this plot:
+
+.panelset[
+.panel[.panel-name[Picture]
+
+```{r ggplot-example-plot-0, echo=FALSE, message=FALSE, warning=FALSE, fig.height=5.5}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(dslabs)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[Code]
+```{r ggplot-example-plot-01, eval=F, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]]
+
+---
+## Data visualization using `ggplot2` 
+.panelset[
+.panel[.panel-name[Slide]
+
+.pull-left[
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("img/ggplot2-part-of-tidyverse.png")
+```
+] 
+.pull-right[ 
+- ggplot2 is the tidyverse's data visualization package 
+
+- `gg` in "ggplot2" stands for Grammar of Graphics 
+
+- Inspired by the book Grammar of Graphics by Leland Wilkinson
+
+- We will also look at some plotting functions in base R  
+]
+.pull-right[ 
+- ggplot2 is the tidyverse's data visualization package 
+
+- create relatively **complex** and **aesthetically pleasing** plots
+
+- syntax is **intuitive** and comparatively easy to remember. 
+
+- `gg` in "ggplot2" stands for Grammar of Graphics 
+
+- Inspired by the book Grammar of Graphics by Leland Wilkinson
+
+]]
+
+.panel[.panel-name[Words 1]
+
+Throughout the lecture, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. 
+
+Many other approaches are available for creating plots in R. We chose to use __ggplot2__ because it breaks plots into components in a way that permits beginners to create relatively **complex** and **aesthetically pleasing** plots using syntax that is **intuitive** and comparatively easy to remember. 
+
+One reason __ggplot2__ is generally more intuitive for beginners is that it uses a grammar of graphics^[http://www.springer.com/us/book/9780387245447], the _gg_ in __ggplot2__. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of __ggplot2__ building blocks and its grammar, you will be able to create hundreds of different plots. 
+
+]
+.panel[.panel-name[Words 2]
+
+Another reason __ggplot2__ is easy for beginners is that it is possible to create informative and elegant graphs with relatively simple and readable code.
+
+To use __ggplot2__  you will have to learn several functions and arguments. These commands may be hard to memorize, but you can always return back to this tutorial and grab the code you want. Or you can simply perform an internet search for [ggplot2 cheat sheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf).
+
+]]
+
+???
+
+Throughout the lecture, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. 
+
+Many other approaches are available for creating plots in R. We chose to use __ggplot2__ because it breaks plots into components in a way that permits beginners to create relatively **complex** and **aesthetically pleasing** plots using syntax that is **intuitive** and comparatively easy to remember. 
+
+One reason __ggplot2__ is generally more intuitive for beginners is that it uses a grammar of graphics^[http://www.springer.com/us/book/9780387245447], the _gg_ in __ggplot2__. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of __ggplot2__ building blocks and its grammar, you will be able to create hundreds of different plots. 
+
+Another reason __ggplot2__ is easy for beginners is that it is possible to create informative and elegant graphs with relatively simple and readable code.
+
+To use __ggplot2__  you will have to learn several functions and arguments. These commands may be hard to memorize, but you can always return back to this tutorial and grab the code you want. Or you can simply perform an internet search for [ggplot2 cheat sheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf).
+
+---
+
+## Grammar of Graphics
+
+.panelset[
+.panel[.panel-name[Slide]
+
+.pull-left-narrow[
+A grammar of graphics is a tool that enables us to concisely describe the components of a graphic
+]
+.pull-right-wide[
+```{r echo=FALSE, out.width="75%"}
+knitr::include_graphics("img/grammar-of-graphics.png")
+```
+]
+
+How these are implemented in `ggplot2`: https://ggplot2.tidyverse.org/reference/
+]
+
+.panel[.panel-name[Words]
+Some of the key components of a graphic that can be described using the grammar of graphics include:
+
+**Data**: the dataset being visualized
+
+**Aesthetics**: the visual properties of the plot, such as color or size
+
+**Geometries**: the visual elements that represent the data, such as points or lines
+
+**Scales**: the mapping between data values and their visual representation on the plot
+
+**Facets**: a way to split the data into smaller subsets and create multiple plots
+
+**Themes**: the overall look and feel of the plot, such as font size or background color
+
+]]
+
+
+.footnote[ Source: [BloggoType](http://bloggotype.blogspot.com/2016/08/holiday-notes2-grammar-of-graphics.html)]
+
+???
+
+A grammar of graphics is a systematic approach to describe the components of a graphic. It provides a framework to build a wide range of plots by breaking down the components into small pieces, making it easy to combine them in different ways.
+
+Some of the key components of a graphic that can be described using the grammar of graphics include:
+
+Data: the dataset being visualized
+Aesthetics: the visual properties of the plot, such as color or size
+Geometries: the visual elements that represent the data, such as points or lines
+Scales: the mapping between data values and their visual representation on the plot
+Facets: a way to split the data into smaller subsets and create multiple plots
+Themes: the overall look and feel of the plot, such as font size or background color
+By using this systematic approach, it becomes easier to build complex graphics and customize them to meet specific needs. In R, the ggplot2 package is built on the grammar of graphics, making it a popular choice for data visualization.
+
+---
+
+### The components of a graph
+
+.panelset[
+.panel[.panel-name[Picture]
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=5.5}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(dslabs)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[Code]
+```{r eval=F, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[Words]
+The first step in learning __ggplot2__ is to be able to break a graph apart into components. Let's break down the plot above and introduce some of the __ggplot2__ terminology. The main three components to note are:
+
+* __Data__: The US murders dataset is being summarized. We refer to this as the __data__ component. 
+
+*  __Geometry__: The plot above is a scatterplot. This is referred to as the __geometry__ component. Other possible geometries are barplot, histogram, smooth densities, qqplot, and boxplot.
+
+* __Aesthetic mapping__: The plot uses several visual cues to represent the information provided by the dataset. The two most important cues in this plot are the point positions on the x-axis and y-axis, which represent population size and the total number of murders, respectively. Each point represents a different observation, and we __map__ data about these observations to visual cues like x- and y-scale. Color is another visual cue that we map to region. We refer to this as the __aesthetic mapping__ component. How we define the mapping depends on what __geometry__ we are using. 
+]
+]
+
+???
+
+The first step in learning __ggplot2__ is to be able to break a graph apart into components. Let's break down the plot above and introduce some of the __ggplot2__ terminology. The main three components to note are:
+
+* __Data__: The US murders dataset is being summarized. We refer to this as the __data__ component. 
+
+*  __Geometry__: The plot above is a scatterplot. This is referred to as the __geometry__ component. Other possible geometries are barplot, histogram, smooth densities, qqplot, and boxplot.
+
+* __Aesthetic mapping__: The plot uses several visual cues to represent the information provided by the dataset. The two most important cues in this plot are the point positions on the x-axis and y-axis, which represent population size and the total number of murders, respectively. Each point represents a different observation, and we __map__ data about these observations to visual cues like x- and y-scale. Color is another visual cue that we map to region. We refer to this as the __aesthetic mapping__ component. How we define the mapping depends on what __geometry__ we are using. 
+
+We also note that:
+
+* The points are labeled with the state abbreviations.
+
+* The range of the x-axis and y-axis appears to be defined by the range of the data. They are both on log-scales. 
+
+* There are labels, a title, a legend, and we use the style of The Economist magazine.
+
+__Don't be afraid__, we will now construct the plot piece by piece.
+
+---
+
+## ggplot2
+.panelset[
+.panel[.panel-name[Overview]
+
+- `ggplot()` is the main function in the `ggplot2` package
+
+- Plots are constructed in layers concat by `+`
+
+- Structure of the code for plots can be summarized as
+
+```{r eval = FALSE}
+ggplot(data = [dataset], 
+       mapping = aes(x = [x-variable], y = [y-variable])) +
+   geom_xxx() +
+   other options
+```
+]
+.panel[.panel-name[ggplot()]
+
+First step: define a `ggplot` object
+
+```{r eval=FALSE}
+# load the data:
+library(dslabs); dataset(murders)
+ggplot(data = murders)
+```
+
+We can also pipe the data in as the first argument:
+
+```{r fig.height=2}
+murders |> ggplot()
+```
+
+]
+.panel[.panel-name[continue]
+It renders a plot, but it's blank since no geometry (plot) has been defined.
+
+What has happened above is that the object was created and, because it was not assigned, it was automatically evaluated. 
+
+(just like 1 + 1) But we can assign our plot to an object, for example like this:
+
+```{r}
+p = ggplot(data = murders)
+class(p)
+```
+
+To render the plot associated with this object, we simply print the object `p`. The following two lines of code each produce the same plot we see above:
+
+```{r, eval=FALSE}
+print(p)
+p
+```
+
+]]
+???
+
+The first step in creating a __ggplot2__ graph is to define a `ggplot` object (just similar to you define a variable). We do this with the function `ggplot`, which initializes the graph, telling the computer that you want to make a plot based on the dataset `murders`.
+
+We can also pipe the data in as the first argument:
+
+So this line of code is equivalent to the one above:
+
+It renders a plot, but it's blank since no geometry (plot) has been defined.
+
+What has happened above is that the object was created and, because it was not assigned, it was automatically evaluated. (just like 1 + 1) But we can assign our plot to an object, for example like this:
+
+To render the plot associated with this object, we simply print the object `p`. The following two lines of code each produce the same plot we see above:
+---
+
+## Geometries
+
+In `ggplot2` we create graphs by adding _layers_. Layers can define geometries, compute summary statistics, define what scales to use, or even change styles.
+
+To add layers, we use the symbol `+`. In general, a line of code will look like this:
+
+>> DATA |> `ggplot()` + LAYER 1 + LAYER 2 + ... + LAYER N
+
+Usually, the first added layer defines the geometry. We want to make a scatterplot. What geometry do we use?
+
+Taking a quick look at the [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf), we see that the function used to create plots with this geometry is `geom_point`.
+
+Geometry function names follow the pattern: `geom_X` where X is the name of the geometry. Some examples include `geom_point`, `geom_bar`, and `geom_histogram`.
+
+---
+
+## Aesthetic mappings
+
+.panelset[
+.panel[.panel-name[Code]
+```{r eval = F, fig.height=4}
+p = murders |> ggplot() + 
+  geom_point(aes(x = population/10^6, y = total)) #<<
+p
+```
+
+* X axis: (state) population/10^6
+
+* Y axis: total (murders)
+
+]
+.panel[.panel-name[Result]
+```{r echo = F, fig.height=4}
+p = murders |> ggplot() + 
+  geom_point(aes(x = population/10^6, y = total)) #<<
+p
+```
+]
+.panel[.panel-name[Words]
+For `geom_point` to run properly we need to provide data and a mapping. We have already connected the object `p` with the `murders` data table, and if we add the layer `geom_point` it defaults to using this data. 
+
+ __Aesthetic mappings__ describe how properties of the data connect with features of the graph, such as distance along an axis, size, or color. The `aes` function connects data with what we see on the graph by defining aesthetic mappings and will be one of the functions you use most often when plotting. The outcome of the `aes` function is often used as the argument of a geometry function. This example produces a scatterplot of total murders versus population in millions.
+
+ 
+> Like  __dplyr__ functions, `aes` also uses the variable names from the object component: we can use `population` and `total` without having to call them as `murders$population` and `murders$total`. The behavior of recognizing the variables from the data component is quite specific to `aes`.
+]
+
+]
+
+
+???
+
+For `geom_point` to run properly we need to provide data and a mapping. We have already connected the object `p` with the `murders` data table, and if we add the layer `geom_point` it defaults to using this data. 
+
+ __Aesthetic mappings__ describe how properties of the data connect with features of the graph, such as distance along an axis, size, or color. The `aes` function connects data with what we see on the graph by defining aesthetic mappings and will be one of the functions you use most often when plotting. The outcome of the `aes` function is often used as the argument of a geometry function. This example produces a scatterplot of total murders versus population in millions:
+ 
+Here we use the population/10^6 as the x axis, total murder as the y axis.
+
+Like  __dplyr__ functions, `aes` also uses the variable names from the object component: we can use `population` and `total` without having to call them as `murders$population` and `murders$total`. The behavior of recognizing the variables from the data component is quite specific to `aes`. With most functions, if you try to access the values of `population` or `total` outside of `aes` you receive an error. 
+
+---
+
+## Add text Layers
+
+.panelset[
+.panel[.panel-name[Code]
+
+```{r eval = F}
+p = murders |> ggplot() +
+  geom_point(aes(x = population/10^6, y = total)) +
+  geom_text(aes(x = population/10^6, y = total, label = abb)) #<<
+
+p
+```
+
+* mapping between point and label through the `label` argument of `aes`: `label = abb`
+
+]
+
+.panel[.panel-name[Result]
+
+```{r echo = F, fig.height=5}
+p = murders |> ggplot() +
+  geom_point(aes(x = population/10^6, y = total)) +
+  geom_text(aes(x = population/10^6, y = total, label = abb)) #<<
+
+p
+```
+
+* We have successfully added a second layer to the plot. (Though the labels are quite messy) 
+
+]
+
+.panel[.panel-name[Word]
+
+A second layer in the plot we wish to make involves adding a label to each point to identify the state. The `geom_label` and `geom_text` functions permit us to add text to the plot with and without a rectangle behind the text, respectively.
+
+Because each point (each state in this case) has a label, we need an **aesthetic mapping** to make the connection between points and labels. By reading the help file, we learn that we supply the mapping between point and label through the `label` argument of `aes`.  So the code looks like this:
+
+We have successfully added a second layer to the plot. (Though the labels are quite messy) 
+
+
+]
+]
+
+???
+
+A second layer in the plot we wish to make involves adding a label to each point to identify the state. The `geom_label` and `geom_text` functions permit us to add text to the plot with and without a rectangle behind the text, respectively.
+
+Because each point (each state in this case) has a label, we need an **aesthetic mapping** to make the connection between points and labels. By reading the help file, we learn that we supply the mapping between point and label through the `label` argument of `aes`.  So the code looks like this:
+
+We have successfully added a second layer to the plot. (Though the labels are quite messy) 
+
+---
+
+## Tinkering with arguments
+
+.panelset[
+.panel[.panel-name[Code]
+
+```{r eval = F}
+p = murders |> ggplot() + 
+  geom_point(aes(population/10^6, total), size = 3) + #<<
+  geom_text(aes(population/10^6, total, label = abb)) 
+p
+```
+
+* Change `size=3` for another point size.
+
+* It is **not** inside `aes()` so it applies to **ALL** points!
+
+]
+
+.panel[.panel-name[Result]
+
+```{r echo = F, fig.height=5}
+p = murders |> ggplot() + 
+  geom_point(aes(population/10^6, total), size = 3) + #<<
+  geom_text(aes(population/10^6, total, label = abb)) 
+p
+```
+
+* It is **not** inside `aes()` so it applies to **ALL** points!
+
+]
+
+.panel[.panel-name[Code2]
+
+```{r eval = F}
+p = murders |> ggplot() + 
+  geom_point(aes(population/10^6, total), size = 3) +
+  geom_text(aes(population/10^6, total, label = abb), nudge_x = 1.5)#<<
+p
+```
+
+* `nudge_x` argument moves the text slightly to the right or to the left.
+
+* It is **not** inside `aes()` so it applies to **ALL** points!
+
+]
+
+.panel[.panel-name[Result2]
+
+```{r echo = F, fig.height=5}
+p = murders |> ggplot() + 
+  geom_point(aes(population/10^6, total), size = 3) +
+  geom_text(aes(population/10^6, total, label = abb), nudge_x = 1.5)#<<
+p
+```
+
+This is preferred as it makes it easier to read the text. 
+
+]
+
+.panel[.panel-name[Word]
+
+Each geometry function has many arguments other than `aes` and `data`. They tend to be specific to the function.
+
+For example, in the plot we wish to make, the points are larger than the default size. In the help file we see that `size` is an aesthetic and we can change it like this:
+
+In this case `size` is __not__ a mapping: whereas mappings use data from specific observations and need to be inside `aes()`, operations we want to affect **all the points the same way** do not need to be included inside `aes`.
+
+Now because the points are larger it is hard to see the labels. If we read the help file for `geom_text`, we see the `nudge_x` argument, which moves the text slightly to the right or to the left.
+
+This is preferred as it makes it easier to read the text. 
+]
+]
+
+???
+
+Each geometry function has many arguments other than `aes` and `data`. They tend to be specific to the function. For example, in the plot we wish to make, the points are larger than the default size. In the help file we see that `size` is an aesthetic and we can change it like this:
+
+---
+
+## Global versus local aesthetic mappings
+
+
+.panelset[
+.panel[.panel-name[Global mapping]
+
+In the previous line of code, we define the mapping `aes(population/10^6, total)` twice, once in each geometry. We can do this when we define the blank slate `ggplot` object.
+
+By using a __global__ aesthetic mapping: 
+
+```{r eval = F}
+p = murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) #<<
+# the aes(population/10^6, total, label = abb)
+# will be used for every layer
+```
+
+* The `aes(population/10^6, total, label = abb)` will be used for every layer
+
+* For the `aes()`, the default first and second arguments are `x` and `y`.
+
+]
+
+.panel[.panel-name[part 2]
+
+and then we can simply write the following code to produce the same plot:
+
+```{r eval = F}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) + 
+  geom_text(nudge_x = 1.5)
+```
+
+Compared to before:
+
+```{r eval = F}
+p = murders |> ggplot() + 
+  geom_point(aes(population/10^6, total), size = 3) +
+  geom_text(aes(population/10^6, total, label = abb), nudge_x = 1.5)
+```
+
+* The `geom_point` function does not need a `label` argument and therefore **ignores** that aesthetic.
+
+]
+
+.panel[.panel-name[Override]
+
+If necessary, we can override the global mapping by defining a new mapping within each layer. 
+
+These _local_ definitions **override** the _global_. Here is an example:
+
+```{r, eval = F}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(aes(x = 10, y = 800, label = "Hello there!")) #<<
+```
+
+Clearly, the second call to `geom_text` does not use `population` and `total`.
+
+]
+.panel[.panel-name[Plot]
+```{r, fig.height=5}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(aes(x = 10, y = 800, label = "Hello there!"))
+```
+]]
+
+???
+
+In the previous line of code, we define the mapping `aes(population/10^6, total)` twice, once in each geometry. We can avoid this by using a __global__ aesthetic mapping. We can do this when we define the blank slate `ggplot` object.
+
+If we define a mapping in `ggplot()`, all the geometries that are added as layers will **default to this mapping**.
+
+```{r eval = F}
+murders |> ggplot(aes(population/10^6, total, label = abb))
+```
+
+* The `aes(population/10^6, total, label = abb)` will be used for every layer
+
+* For the `aes()`, the default first and second arguments are `x` and `y`.
+
+and then we can simply write the following code to produce the previous plot:
+
+```{r ggplot-example-7, fig.height=4}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) + 
+  geom_text(nudge_x = 1.5)
+```
+
+We keep the `size` and `nudge_x` arguments in `geom_point` and `geom_text`, respectively, because we want to only increase the size of points and only nudge the labels. If we put those arguments in `aes` then they would apply to both plots. Also note that the `geom_point` function does not need a `label` argument and therefore **ignores** that aesthetic.
+
+If necessary, we can override the global mapping by defining a new mapping within each layer. These _local_ definitions **override** the _global_. Here is an example:
+
+```{r ggplot-example-8, fig.height=4}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(aes(x = 10, y = 800, label = "Hello there!"))
+```
+
+Clearly, the second call to `geom_text` does not use `population` and `total`.
+
+---
+
+## Scales
+
+.panelset[
+.panel[.panel-name[Scales]
+
+* The points are too crowded in the bottom left.
+
+* Our desired scales are in log-scale
+
+* use the `scale_x_continuous` function.
+
+```{r eval = F}
+p = murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(nudge_x = 0.08) + 
+  scale_x_continuous(trans = "log10") + #<<
+  scale_y_continuous(trans = "log10")    #<<
+```
+
+* Because we are in the log-scale now, the _nudge_ must be made smaller.
+
+]
+.panel[.panel-name[Plot]
+
+```{r echo = F, fig.height=5.5}
+p = murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(nudge_x = 0.08) + 
+  scale_x_continuous(trans = "log10") + #<<
+  scale_y_continuous(trans = "log10")    #<<
+p
+```
+
+]
+.panel[.panel-name[Alias]
+This particular transformation is so common that __ggplot2__ provides the specialized functions `scale_x_log10` and `scale_y_log10`, which we can use to rewrite the code like this:
+
+```{r, eval=F, fig.height=4}
+murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() + #<<
+  scale_y_log10() #<<
+```
+]
+]
+
+???
+
+First, our desired scales are in log-scale. This is not the default, so this change needs to be added through a _scales_ layer. We use the `scale_x_continuous` function lets us control the behavior of scales:
+
+```{r ggplot-example-9, fig.height=4}
+
+```
+
+Because we are in the log-scale now, the _nudge_ must be made smaller.
+
+This particular transformation is so common that __ggplot2__ provides the specialized functions `scale_x_log10` and `scale_y_log10`, which we can use to rewrite the code like this:
+
+---
+
+## Labels and titles
+.panelset[
+.panel[.panel-name[Code]
+
+* To change labels and title we can:
+
+```{r fig.height=5.5, eval = F}
+p = murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") +  #<<
+  ylab("Total number of murders (log scale)") +#<<
+  ggtitle("US Gun Murders in 2010") #<<
+```
+
+]
+.panel[.panel-name[Result]
+```{r fig.height=5.5, echo = F}
+p = murders |> 
+  ggplot(aes(population/10^6, total, label = abb)) +
+  geom_point(size = 3) +  
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+p
+```
+]]
+
+---
+
+## Categories as colors
+.panelset[
+.panel[.panel-name[Code 1]
+
+* We can change the color of the points using the `col` argument in the `geom_point` function.
+
+```{r eval = F}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(size = 3, color ="blue") + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+```
+
+]
+.panel[.panel-name[Result 1]
+```{r echo = F, fig.height=5.5}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(size = 3, color ="blue") + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+p
+```
+
+* But every point is changed into blue, this is not we want.
+
+]
+.panel[.panel-name[Code 2]
+
+* We want to assign color depending on the **geographical region**. 
+
+* in __ggplot2__ if we assign a categorical variable to color in **aes mapping**, it automatically assigns a different color to each category and also adds a legend.
+
+```{r eval = F}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3) + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+```
+
+]
+.panel[.panel-name[Result 2]
+
+
+* Here we see yet another useful default behavior: __ggplot2__ **automatically adds a legend that maps color to region**.
+
+```{r  echo = F, fig.height=4}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3) + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+p
+```
+]
+.panel[.panel-name[Suppress legend]
+To avoid adding this legend we set the `geom_point` argument `show.legend = FALSE`. 
+```{r eval = F}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3,
+             show.legend = FALSE) + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+```
+]
+.panel[.panel-name[Result 3]
+```{r  echo = F, fig.height=5.5}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3,
+             show.legend = FALSE) + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010")
+p
+```
+]
+.panel[.panel-name[Change legend name]
+We can make changes to the legend via the `scale_color_discrete` function. In our plot the word _region_ is capitalized and we can change it like this:
+
+```{r eval = F}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3) + 
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name = "Region") #<<
+p
+```
+]
+.panel[.panel-name[Result 4]
+```{r  echo = F, fig.height=5.5}
+p <-  murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3) + 
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name = "Region") #<<
+p
+```
+]
+]
+---
+
+## Add a line using geom_abline (Extra reading)
+.panelset[
+.panel[.panel-name[Calculate the avg rate]
+
+We often want to add shapes or annotation to figures that are not derived directly from the aesthetic mapping; examples include labels, boxes, shaded areas, and lines.
+
+Here we want to add a line that represents the **average murder rate** for the entire country. Once we determine the per million rate to be $r$, this line is defined by the formula: $y = r x$, with $y$ and $x$ our axes: total murders and population in millions, respectively. In the log-scale this line turns into: $\log(y) = \log(r) + \log(x)$. So in our plot it's a line with slope 1 and intercept $\log(r)$. To compute this value, we use our __dplyr__ skills:
+
+```{r}
+r <- murders |> 
+  summarize(rate = sum(total) /  sum(population) * 10^6) |> 
+  pull(rate)
+```
+
+]
+.panel[.panel-name[Add the line]
+
+To add a line we use the `geom_abline` function. __ggplot2__ uses `ab` in the name to remind us we are supplying the intercept (`a`) and slope (`b`).
+
+Here `geom_abline` does not use any information from the data object.
+
+```{r eval = F}
+murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3,
+             show.legend = FALSE) + #<<
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") + 
+  geom_abline(slope = 1, intercept = log10(r)) #<<
+```
+
+
+
+]
+.panel[.panel-name[Change line type]
+
+We can change the line type and color of the lines using arguments. Also, we draw it first so it doesn't go over our points. 
+
+```{r eval = FALSE}
+murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3,
+             show.legend = FALSE) + 
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") + 
+  geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") #<<
+```
+]
+.panel[.panel-name[Result]
+```{r echo = FALSE, fig.height=5.5}
+murders |> ggplot(aes(population/10^6, total, label = abb)) + 
+  geom_point(aes(color = region), size = 3,
+             show.legend = FALSE) + 
+  geom_text(nudge_x = 0.08) + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") + 
+  geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") #<<
+```
+]
+]
+---
+
+## Add-on packages
+.panelset[
+.panel[.panel-name[Intro]
+* The power of __ggplot2__ is augmented further due to the availability of add-on packages.
+
+* These packages provide additional geoms, scales, and themes that can be used to create more complex and sophisticated visualizations.
+
+* Some popular ggplot2 add-on packages include:
+    - **ggthemes**: provides additional themes for ggplot2 plots, including options for customizing plot backgrounds, fonts, and colors.
+    - **ggmap**: allows for the integration of maps and geographic data into ggplot2 plots.
+    - **ggrepel**: adds options for preventing text labels from overlapping on ggplot2 plots.
+    - **plotly**: allows for the creation of interactive ggplot2 plots that can be explored and manipulated in a web browser.
+    - **ggpubr**: provides several functions to customize the appearance of plots
+    - **ggridge**: provides functions for creating ridge plots
+
+]
+.panel[.panel-name[ggthemes]
+
+* After installing the `ggthemes` package, you can change the style by adding a layer like this:
+
+```{r, fig.height=4 }
+library(ggthemes)
+# We have already define p in previous part
+p + theme_economist()
+```
+
+]
+.panel[.panel-name[another theme]
+* You can see how some of the other themes look by simply changing the function. For instance, you might try the `theme_fivethirtyeight()` theme instead.
+
+* [link of possible themes of ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
+
+```{r, fig.height=4 }
+p + theme_fivethirtyeight()
+```
+]
+.panel[.panel-name[ggrepel]
+* The add-on package __ggrepel__ includes a geometry that adds labels while ensuring that they don't fall on top of each other.
+
+*  We simply change `geom_text` with `geom_text_repel`. Don't forget to `install.packages(ggrepel)` and `library(ggrepel)`!
+
+```{r}
+#install.packages(ggrepel)
+library(ggrepel)
+# Picture and code in the next slide
+```
+
+]
+]
+
+---
+
+## Putting it all together
+
+Now that we are done testing, we can write one piece of code that produces our desired plot from scratch. 
+
+.panelset[
+.panel[.panel-name[Code]
+```{r final-ggplot-example, eval = F}
+library(ggthemes)
+library(ggrepel)
+r <- murders |> 
+  summarize(rate = sum(total) /  sum(population) * 10^6) |>
+  pull(rate)
+
+murders |> ggplot(aes(population/10^6, total, label = abb)) +   
+  geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") +
+  geom_point(aes(col=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") + 
+  scale_color_discrete(name = "Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[Plot]
+```{r fig.height=5, echo = F}
+library(ggthemes)
+library(ggrepel)
+r <- murders |> 
+  summarize(rate = sum(total) /  sum(population) * 10^6) |>
+  pull(rate)
+
+murders |> ggplot(aes(population/10^6, total, label = abb)) +   
+  geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") +
+  geom_point(aes(col=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") + 
+  scale_color_discrete(name = "Region") +
+  theme_economist()
+```
+]
+]
+
+---
+
+## Another example: Palmer Penguins
+
+Data contains information on 344 penguins, including: penguin species, island in Palmer Archipelago, size (flipper length, body mass, bill dimensions), and sex.
+
+```{r echo=FALSE, out.width="40%"}
+knitr::include_graphics("img/penguins.png")
+```
+
+---
+
+```{r}
+library(palmerpenguins)
+dplyr::glimpse(penguins)
+```
+
+---
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r ref.label = "penguins", echo = FALSE, warning = FALSE, out.width = "70%", fig.width = 8}
+```
+]
+.panel[.panel-name[Code]
+
+.small[
+```{r penguins, fig.show = "hide"}
+ggplot(data = penguins, 
+       mapping = aes(x = bill_depth_mm, 
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", 
+       y = "Bill length (mm)",
+       color = "Species",
+       caption = "Source: Palmer Station LTER / palmerpenguins package") +
+  scale_color_viridis_d()
+```
+]
+]
+]
+---
+
+.midi[
+> **Start with the `penguins` data frame**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-0, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins) #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-0", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> **map bill depth to the x-axis**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-1, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm)) #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-1", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> **and map bill length to the y-axis.**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-2, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm)) #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-2", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> **Represent each observation with a point**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-3, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm)) + 
+  geom_point() #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-3", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> **and map species to the color of each point.**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-4, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) + #<<
+  geom_point()
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-4", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> **Title the plot "Bill depth and length"**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-5, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length") #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-5", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> Title the plot "Bill depth and length", 
+> **add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins"**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-6, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins") #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-6", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> Title the plot "Bill depth and length", 
+> add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+> **label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-7, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", 
+       y = "Bill length (mm)") #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-7", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> Title the plot "Bill depth and length", 
+> add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+> label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively,
+> **label the legend "Species"**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-8, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", 
+       y = "Bill length (mm)",
+       color = "Species") #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-8", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> Title the plot "Bill depth and length", 
+> add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+> label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively,
+> label the legend "Species", 
+> **and add a caption for the data source.**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-9, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", 
+       y = "Bill length (mm)",
+       color = "Species",
+       caption = "Source: Palmer Station LTER / palmerpenguins package") #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-9", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.midi[
+> Start with the `penguins` data frame,
+> map bill depth to the x-axis
+> and map bill length to the y-axis. 
+> Represent each observation with a point
+> and map species to the color of each point.
+> Title the plot "Bill depth and length", 
+> add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+> label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively,
+> label the legend "Species", 
+> and add a caption for the data source.
+> **Finally, use a discrete color scale that is designed to be perceived by viewers with common forms of color blindness.**
+]
+
+.tiny[
+.pull-left[
+```{r penguins-10, fig.show = "hide", warning = FALSE}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", 
+       y = "Bill length (mm)",
+       color = "Species",
+       caption = "Source: Palmer Station LTER / palmerpenguins package") +
+  scale_color_viridis_d() #<<
+```
+]
+]
+.pull-right[
+```{r ref.label = "penguins-10", echo = FALSE, warning = FALSE, out.width = "100%", fig.width = 8}
+```
+]
+
+---
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r ref.label="penguins-10-nohighlight", echo = FALSE, warning = FALSE, out.width = "70%", fig.width = 8}
+```
+]
+.panel[.panel-name[Code]
+
+.small[
+```{r penguins-10-nohighlight, fig.show = "hide"}
+ggplot(data = penguins,
+       mapping = aes(x = bill_depth_mm,
+                     y = bill_length_mm,
+                     color = species)) +
+  geom_point() +
+  labs(title = "Bill depth and length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill depth (mm)", y = "Bill length (mm)",
+       color = "Species",
+       caption = "Source: Palmer Station LTER / palmerpenguins package") +
+  scale_color_viridis_d()
+```
+]
+]
+.panel[.panel-name[Narrative]
+.pull-left-wide[
+.midi[
+Start with the `penguins` data frame,
+map bill depth to the x-axis
+and map bill length to the y-axis. 
+
+Represent each observation with a point
+and map species to the color of each point.
+
+Title the plot "Bill depth and length", 
+add the subtitle "Dimensions for Adelie, Chinstrap, and Gentoo Penguins", 
+label the x and y axes as "Bill depth (mm)" and "Bill length (mm)", respectively,
+label the legend "Species", 
+and add a caption for the data source.
+
+Finally, use a discrete color scale that is designed to be perceived by viewers with common forms of color blindness.
+]
+]
+]
+]
+
+
+---
+
+# Readings
+
+
+- [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
+
+- [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)

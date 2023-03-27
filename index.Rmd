@@ -82,10 +82,12 @@ There are three optional textbooks. They are all available online and are free.
     - [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
     - R for Data Science Chapter 5
 
-- Fri April 14: Data Manipulation 2
+- Fri April 14: Data Manipulation 2, intro to data visualization
   - Notes: [Lecture 6](https://xjw1001001.github.io/lecture/Lecture 6/lecture6.html)
   - Reading: 
-
+    - [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
+    - [Data Wrangling with Tidyverse](https://hbctraining.github.io/Intro-to-R/lessons/tidyverse_data_wrangling.html)
+    - [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
 
   - Homework 2: (Due April 26 midnight, cover lecture 5-8) [Html](https://xjw1001001.github.io/homework/homework2/HW2.html) [Rmd](https://xjw1001001.github.io/homework/homework2/HW2.Rmd)
   
@@ -95,6 +97,9 @@ There are three optional textbooks. They are all available online and are free.
 - Mon April 17: 
   - Notes: [Lecture 7](https://xjw1001001.github.io/lecture/Lecture 7/lecture7.html)
   - Reading: 
+    - [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
+    - [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
+
     
 - Wed April 19: 
   - Notes: [Lecture 8](https://xjw1001001.github.io/lecture/Lecture 8/lecture8.html)
@@ -104,9 +109,16 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
   - Reading: 
 
+  - Homework 3: (Due May 1 midnight, cover lecture 9-12) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
+
 ### Week 4:
 
 
+  - Midterm 1: (Due April 29 midnight, cover lecture 1-12) 
+  
+  
+
+  
 <!-- your comment 
 
 
@@ -287,3 +299,189 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 25](https://xhtai.github.io/statdatasci/lectures/lecture25/lecture25.html)
 
 -->
+
+
+
+<!-- your comment
+
+---
+
+## Vocabulary of statistics
+
+* A **subject**: A person, place or thing from which we collect data.
+
+* A **population**: The collection of all subjects of interest.
+
+* A **sample**: A subset of the population, from which we have collected data
+
+> **Sample size**: number of subjects in a sample
+
+* A **variable**: A characteristic of a subject
+
+---
+
+### Examples in datasets
+
+.panelset[
+.panel[.panel-name[murders]
+
+For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
+
+```{r}
+library(dslabs)
+head(murders, 3)
+```
+
+* **subject** is one US state. 
+* **population** is ALL US state. 
+* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
+* **variable** include: region, population, total (murders)
+
+]
+.panel[.panel-name[heights help page]
+
+For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
+
+```{r eval = F}
+?heights
+```
+
+* Self-Reported Heights
+
+> Description: Self-reported heights in inches for males and females.
+
+>Usage: data(heights)
+
+>Format: An object of class "data.frame".
+
+>Details:sex. Male or Female.
+
+> height. Height in inches.
+
+]
+
+.panel[.panel-name[heights]
+
+```{r}
+head(heights, 3)
+# Here we have 1050 observations
+dim(heights)
+```
+
+So for this dataset:
+
+* **subject** is one student (possibly in some school). 
+* **population** is all students inside that school. 
+* **sample** is the 1050 students inside the dataset.
+* **variable** include: sex, height
+]
+.panel[.panel-name[Sample VS population]
+
+* Sample is a subgroup of population!
+
+* Ideally, a sample should be **representative** of the population.
+
+```{r echo=FALSE, out.width="100%"}
+#knitr::include_graphics("img/sample-size-definition.png")
+```
+
+]
+]
+
+---
+
+## Terminology: Number of variables involved
+
+- **Univariate** data analysis: distribution of single variable
+
+- **Bivariate** data analysis: relationship between two variables
+
+- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
+
+---
+
+### Type of variables
+
+In statistics, different types of variables are analyzed in different ways.
+
+.panelset[
+.panel[.panel-name[Concepts]
+
+* The four main types are: 
+
+* **Categorical** variables: (*Not a number*)
+
+    - **Nominmal**: categorical variables with no inherent order. Examples: gender, ethnicity, and religion.
+    
+    > All genders, ethnicity, religions are equal!
+    
+    - **Ordinal**: categorical variables with a natural order or ranking. Examples: education level (e.g., high school, college, graduate school)
+    
+* **Numerical** variables: (*Numbers*)
+    
+    - **Continuous**: Numbers can take any value
+    
+    - **Discrete**: Numbers can only take on a *finite* or *countably infinite set* of possible values
+
+]
+.panel[.panel-name[murders]
+
+In murders dataset:
+
+```{r}
+head(murders, 3)
+```
+
+* abb, region are categorical; nominal
+
+* population and total are numeric; discrete
+
+]
+
+.panel[.panel-name[heights]
+
+```{r}
+head(heights)
+```
+
+
+* sex is categorical; nominal
+
+* height is numeric; continuous
+
+  - Though here it seems to only include integer values.
+
+]
+.panel[.panel-name[Small quiz]
+
+What are the types of these variables?
+
+- Number of people in each class
+
+- Letter grades
+
+- Shape of leaf
+
+- Zip code: (95618 for Davis, 95776 for Woodland)
+
+- Heights of newborn babies
+]
+
+.panel[.panel-name[solution]
+- Number of people in each class **discrete**
+
+- Letter grades **ordinal**
+
+- Shape of leaf **nominal**
+
+- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
+
+- Heights of newborn babies **continuous**
+]
+]
+---
+
+
+-->
+
+

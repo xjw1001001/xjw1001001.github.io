@@ -18,6 +18,8 @@ output:
 
 + Start to work on it as early as possible
 
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it.
+
 ```{r setup, include=FALSE}
 # Don't change anything here
 knitr::opts_chunk$set(
@@ -237,9 +239,7 @@ city_temps <- data.frame(name = city, temperature = temp)
 
 Use the `rank` function to determine the population rank of each state from smallest population size to biggest. Save these ranks in an object called `ranks`, then create a data frame with the state name and its rank. Call the data frame `my_df`.
 
-6\. Repeat the previous exercise, but this time order `my_df` so that the states are ordered from least populous to most populous. Hint: create an object `ind` that stores the indexes needed to order the population values. Then use the bracket operator `[` to re-order each column in the data frame.
-
-7\. The `na_example` vector represents a series of counts. You can quickly examine the object using:
+6\. The `na_example` vector represents a series of counts. You can quickly examine the object using:
     
 ```{r}
 data("na_example")  
@@ -254,7 +254,7 @@ mean(na_example)
     
 The `is.na` function returns a logical vector that tells us which entries are `NA`. Assign this logical vector to an object called `ind` and determine how many `NA`s does `na_example` have. (Hint: use `sum` on the logical object)
     
-8\. Now compute the average again, but only for the entries that are not `NA`. Hint: the `!` operator, try `!(c(TRUE, FALSE, TRUE))`.
+7\. Now compute the average again, but only for the entries that are not `NA`. Hint: the `!` operator, try `!(c(TRUE, FALSE, TRUE))`.
 
 ## Include the person you coop with:
 

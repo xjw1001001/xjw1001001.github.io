@@ -47,215 +47,742 @@ library(unvotes)
 
 ## Reminders
 
-- HW 1 is due tomorrow at 9pm
+- HW 1 is due April 17th at 12pm
 
-  - I posted an updated version with few clarifications:
-  
-    - Vectors: You can put anything you’d like in the vector, i.e., any suitable input to the first argument of `sample()`.
-    - Arrays: the last line of instructions is for the first matrix.
-    - Matrices: the vector to multiply with is a length 3 vector. It may be 3 x 1 or 1 x 3 to be compatible with the dimensions of the matrix that you are multiplying with, and the matrix should be the original one, and not the one that is multiplied by 3.
+- HW 2 will be posted on the course website, due April 26 12pm.
 
-  - If you've already started working with the Rmd file of the original version, there is no need to update to the new version.
+- Please start the homework as soon as possible.
+
+- Discussion will cover homework problems.
+
+---
+
+## Recap
+--
+
+- Data manipulation tools in `tidyverse`
+
+  - `select()`
   
-- HW 2 will be posted on Friday afternoon on the course website 
+  - `arrange()`
+  
+  - `slice()`
+  
+  - `filter()`
+
+> Remember, before using all tidyverse functions, you need to library(tidyverse) first!
+
+---
+
+## Today
+- Data manipulation tools continue
+
+  - `distinct()`: filter for unique rows
+  
+  - `mutate()`: adds new variables
+  
+  - `count()`: create frequency tables
+  
+  - `summarise()`: perform column summarization operations
+  
+  - `group_by()`: for grouped operations
+  
+  - `pull()`: access column data as a vector or a number
+  
+  - `rename()`:  rename an existing column
+  
+  - `inner_join()`, `left_join()`: join together a pair of data frames based on a variable present in both data frames that uniquely identify all observations
+
+- Data visualization introduction
+
+---
+
+## Data: Hotel bookings
+
+- Data from two hotels: one resort and one city hotel
+
+- Observations: Each row represents a hotel booking
+
+- Goal for original data collection: Development of prediction models to classify a hotel booking's likelihood to be cancelled ([Antonia et al., 2019](https://www.sciencedirect.com/science/article/pii/S2352340918315191#bib5))
+
+```{r message=FALSE}
+hotels <- readr::read_csv("data/hotels.csv")
+```
+
+.footnote[
+Source: [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-02-11/readme.md)
+]
+
+---
+
+## First question: What is in the data set?
+
+.tiny[
+```{r output.lines=18}
+dplyr::glimpse(hotels)
+```
+]
+
+---
+## `distinct()` to filter for unique rows
+
+.small[
+.pull-left[
+```{r}
+hotels %>% 
+  distinct(market_segment) 
+```
+]
+
+.pull-left[
+Recall: `arrange()` to order alphabetically
+```{r}
+hotels %>% 
+  distinct(market_segment) %>%
+  arrange(market_segment)
+```
+]
+]
+
+---
+#### `distinct()` using more than one variable 
+```{r output.lines=13}
+hotels %>% 
+  distinct(hotel, market_segment) %>% #<<
+  arrange(hotel, market_segment)
+```
+
+> dinstinct() is useful when you want to extract only the unique combinations of one or more columns in a data frame, and remove duplicate rows.
+
+---
+## `mutate()` to add a new variable
+
+```{r}
+hotels %>%
+  mutate(little_ones = children + babies) %>% 
+  select(children, babies, little_ones) %>%
+  arrange(desc(little_ones))
+```
+
+<small>What are these functions doing? How do to the same in base R?</small>
+
+> Remember vector arithmetic? We can do similar things in homework 1 using `mutate()`
+
+---
+
+> Remember vector arithmetic? We can do similar things in homework 1 using `mutate()`
+
+
+.panelset[
+.panel[.panel-name[HW1, Problem 4.1]
+```{r}
+temp <- c(35, 88, 42, 84, 81, 30)
+city <- c("Beijing", "Lagos", "Paris", "Rio de Janeiro", 
+          "San Juan", "Toronto")
+city_temps <- data.frame(name = city, temperature = temp)
+
+city_temps %>% mutate(Celsius_temp = 5/9 * (temperature - 32))
+```  
+]
+.panel[.panel-name[HW1, Problem 5.1]
+
+```{r}
+library(dslabs)
+data(murders)
+murders %>% mutate(rate = total/population * 100000) %>% head()
+```
+]
+
+.panel[.panel-name[HW1, Problem 7.5]
+
+```{r}
+murders %>% mutate(rank = rank(population)) %>%
+  arrange(desc(rank)) %>% head()
+```
+]]
+
+---
+
+## `count()` to create frequency tables
+
+.pull-left[
+```{r}
+# alphabetical order by default
+hotels %>%
+  count(market_segment) #<<
+```
+]
+
+.pull-right[
+```{r}
+# descending frequency order
+hotels %>%
+  count(market_segment, 
+        sort = TRUE) #<<
+```
+]
+
+- Base R version: `table()`
+
+---
+
+## `count()` and `arrange()`
+
+.pull-left[
+```{r}
+# ascending frequency order
+hotels %>%
+  count(market_segment) %>%
+  arrange(n) #<<
+```
+]
+.pull-right[
+```{r}
+# descending frequency order
+# just like adding sort = TRUE
+hotels %>%
+  count(market_segment) %>%
+  arrange(desc(n)) #<<
+```
+]
+
+---
+
+## `count()` for multiple variables
+
+```{r}
+hotels %>%
+  count(hotel, market_segment) 
+```
+
+---
+
+## Order affects output when you `count()`
+
+.small[
+.pull-left[
+```{r}
+# hotel type first
+hotels %>%
+  count(hotel, market_segment) #<<
+```
+]
+.pull-right[
+```{r}
+# market segment first
+hotels %>%
+  count(market_segment, hotel) #<<
+```
+]
+]
+
+---
+
+## `summarize()` for summary stats
+
+```{r}
+# mean average daily rate for all bookings
+hotels %>%
+  summarize(mean_adr = mean(adr)) 
+```
+
+- `summarize()` changes the data frame entirely
+
+- Rows are collapsed into a single summary statistic
+
+- Columns that are irrelevant to the calculation are removed
+
+???
+
+summarize() function is used for calculating summary statistics. We show an example of using summarize() to calculate the mean average daily rate for all bookings in the hotels data frame.
+
+One important thing to note about summarize() is that it changes the data frame entirely. Rows are collapsed into a single summary statistic, and columns that are irrelevant to the calculation are removed. This can be useful when you want to quickly calculate a summary statistic, but it's important to keep in mind that the resulting data frame will have a different structure than the original.
+
+---
+## `summarize()` is often used with `group_by()`
+
+- For grouped operations
+
+- There are two types of `hotel`, city and resort hotels
+
+- We want the mean daily rate for bookings at city vs. resort hotels
+
+```{r}
+hotels %>%
+  group_by(hotel) %>% 
+  summarize(mean_adr = mean(adr))
+```
+
+- `group_by()` can be used with more than one group
+
+???
+
+Here is the common use case of combining summarize() with group_by() to perform grouped operations. We use the example of a dataset containing two types of hotels - city and resort - and show how we can use group_by() and summarize() to calculate the mean daily rate for bookings at each type of hotel.
+
+group_by() is used to group the data by the hotel column, and summarize() is used to calculate the mean average daily rate for each group. This results in a data frame with two rows, one for each type of hotel, and the mean average daily rate for each group.
+
+It's important to note that group_by() can be used with more than one group, allowing you to perform more complex grouped operations.
+
+---
+
+## Multiple summary statistics
+
+`summarize` can be used for multiple summary statistics as well.
+
+```{r}
+hotels %>%
+  summarize(
+    n = n(), # frequencies
+    min_adr = min(adr),
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
+    )
+```
+
+---
+
+### pull(): access column data as a vector or a number
+
+After the summarize result, it is a data frame (or tibble). not a vector or number.
+
+```{r}
+# mean average daily rate for all bookings
+hotels %>%
+  summarize(mean_adr = mean(adr)) 
+```
+
+If we want to access the number, we can use the `pull()`
+
+```{r}
+hotels %>%
+  summarize(mean_adr = mean(adr)) %>% pull(mean_adr)
+```
+
+---
+
+Another example:
+
+```{r}
+hotels %>%
+  group_by(hotel) %>% 
+  summarize(mean_adr = mean(adr)) %>% pull(mean_adr)
+```
+
+This can be useful when you want to assign a variable based on the result you calculated from the tidyverse workflow.
+
+```{r}
+mean_adr = hotels %>%
+  summarize(mean_adr = mean(adr)) %>% pull(mean_adr)
+```
+
+---
+
+### rename(): rename an existing column
+
+The syntax is `rename(new_name = old_name)`.
+
+Here we rename hotel column into hotel_name.
+
+```{r}
+hotels %>% select(hotel:lead_time) %>%
+    rename(hotel_name = hotel) %>% head()
+```
+
+---
+
+### `join` family
+
+Dplyr has a powerful group of join operations, which join together a pair of data frames based on a variable or set of variables present in both data frames that uniquely identify all observations. These variables are called keys.
+
+* inner_join: Only the rows with keys present in both datasets will be joined together.
+
+* left_join: Keeps all the rows from the first dataset, regardless of whether in second dataset, and joins the rows of the second that have keys in the first.
+
+* right_join: Keeps all the rows from the second dataset, regardless of whether in first dataset, and joins the rows of the first that have keys in the second.
+
+* full_join: Keeps all rows in both datasets. Rows without matching keys will have NA values for those variables from the other dataset.
+
+---
+
+### `join` family
+
+To practice with the join functions, we can use a couple of built-in R datasets.
+
+.panelset[
+.panel[.panel-name[Dataset]
+```{r}
+data(band_instruments2)
+head(band_instruments2)
+data(band_members)
+head(band_members)
+```
+
+]
+.panel[.panel-name[Inner join]
+```{r}
+
+# Inner join
+band_members %>% inner_join(band_instruments2, by = join_by(name == artist))
+```
+
+]
+.panel[.panel-name[Left join]
+```{r}
+# Left join
+band_members %>% left_join(band_instruments2, by = join_by(name == artist))
+```
+
+]
+.panel[.panel-name[Right join]
+```{r}
+# Right join
+band_members %>% right_join(band_instruments2, by = join_by(name == artist))
+```
+
+]
+.panel[.panel-name[Full join]
+```{r}
+# Full join
+band_members %>% full_join(band_instruments2, by = join_by(name == artist))
+```
+
+]
+]
+
+---
+
+## Introduction to data visualization
+
+* Why we need data visualization?
+
+```{r, message=FALSE, warning=FALSE}
+library(dslabs)
+data(murders)
+head(murders)
+```
+
+* How is variable distributed?
+
+* How can we identity patterns or relationships between variables
+
+???
+
+Why we need data visualization?
+ 
+Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at the US murders data table:
+
+What do you learn from looking at this table? How quickly can you determine which states have the largest populations? Which states have the smallest? Is there a relationship between population size and total murders? How do murder rates vary across regions of the country?
+
+For most human brains, it is quite difficult to extract this information just by looking at the numbers. 
+
+---
+
+In contrast, the answer to all the questions above are readily available from examining this plot: 
+
+.panelset[
+.panel[.panel-name[Picture]
+
+```{r ggplot-example-plot-0, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[Code]
+```{r ggplot-example-plot-01, eval=F, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+library(ggplot2)
+r <- murders |> 
+  summarize(pop=sum(population), tot=sum(total)) |> 
+  mutate(rate = tot/pop*10^6) |> pull(rate)
+murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+  geom_abline(intercept = log10(r), lty=2, col="darkgrey") +
+  geom_point(aes(color=region), size = 3) +
+  geom_text_repel() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  xlab("Populations in millions (log scale)") + 
+  ylab("Total number of murders (log scale)") +
+  ggtitle("US Gun Murders in 2010") +
+  scale_color_discrete(name="Region") +
+  theme_economist()
+```
+]
+.panel[.panel-name[explanation]
+Each state in the dataset was identified in this plot as a colored point with a label next to it. The total number of murders is shown on the y axis in log scale, and the populations are shown on the x axis in millions. The state name is indicated by the text label next to the points, and the color designates the state region. The average murder rate in the US was added as a gray line (in millions).
+]]
+???
+
+Each state in the dataset was identified in this plot as a colored point with a label next to it. The total number of murders is shown on the y axis in log scale, and the populations are shown on the x axis in millions. The state name is indicated by the text label next to the points, and the color designates the state region. The average murder rate in the US was added as a gray line (in millions). This picture is much more informative then the dataset itself.
+
+---
+
+### Why we need data visualization
+
+We are reminded of the saying **"a picture is worth a thousand words"**. Data visualization provides a powerful way to communicate a data-driven finding. 
+
+Data visualization is the strongest tool of what we call _exploratory data analysis_ (EDA). [John W. Tukey](https://en.wikipedia.org/wiki/John_Tukey), considered the father of EDA, once said,
+
+>> "The greatest value of a picture is when it forces us to notice what we never expected to see."
+
+Many widely used data analysis tools were initiated by discoveries made via EDA. EDA is perhaps the most important part of data analysis, yet it is one that is often overlooked.
+
+The growing availability of informative datasets and software tools has led to increased reliance on **data visualizations** across many industries, academia, and government.
+
+---
+
+### Benefits of data visualization:
+
+**Communication**: Data visualization provides a powerful way to communicate complex information to both technical and non-technical audiences.
+
+**Exploration**: Data visualization allows us to explore data and identify patterns or trends that may not be apparent from numerical summaries alone.
+
+**Identification of errors or outliers**: Data visualization can help us identify potential errors or outliers in our data that may impact our analysis.
+
+**Hypothesis generation**: Data visualization can help generate new hypotheses or questions for further investigation.
+
+---
+
+## Another example
+
+.panelset[
+.panel[.panel-name[Picture]
+
+```{r wsj-vaccines-example, echo=FALSE, out.width="100%", fig.height=5}
+#knitr::include_graphics(file.path(img_path,"wsj-vaccines.png"))
+data(us_contagious_diseases)
+the_disease <- "Measles"
+dat <- us_contagious_diseases |>
+  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease) |>
+  mutate(rate = count / population * 100000 * 52 / weeks_reporting) |>
+  mutate(state = reorder(state, rate))
+jet.colors <-
+colorRampPalette(c("#F0FFFF", "cyan", "#007FFF", "yellow", "#FFBF00", "orange", "red", "#7F0000"), bias = 2.25)
+the_breaks <- seq(0, 4000, 1000)
+dat |> ggplot(aes(year, state, fill = rate)) +
+  geom_tile(color = "white", size=0.35) +
+  scale_x_continuous(expand=c(0,0)) +
+  scale_fill_gradientn(colors = jet.colors(16), na.value = 'white',
+                       breaks = the_breaks, 
+                       labels = paste0(round(the_breaks/1000),"k"),
+                       limits = range(the_breaks),
+                       name = "") +
+  geom_vline(xintercept=1963, col = "black") +
+  theme_minimal() + 
+  theme(panel.grid = element_blank()) +
+  coord_cartesian(clip = 'off') +
+  ggtitle(the_disease) +
+  ylab("") +
+  xlab("") +  
+  theme(legend.position = "bottom", text = element_text(size = 8)) + 
+  annotate(geom = "text", x = 1963, y = 50.5, label = "Vaccine introduced", size = 3, hjust=0)
+```
+]
+.panel[.panel-name[Code]
+.tiny[
+```{r wsj-vaccines-example1, eval=FALSE, out.width="100%", fig.height=5}
+#knitr::include_graphics(file.path(img_path,"wsj-vaccines.png"))
+data(us_contagious_diseases)
+the_disease <- "Measles"
+dat <- us_contagious_diseases |>
+  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease) |>
+  mutate(rate = count / population * 100000 * 52 / weeks_reporting) |>
+  mutate(state = reorder(state, rate))
+jet.colors <-
+colorRampPalette(c("#F0FFFF", "cyan", "#007FFF", "yellow", "#FFBF00", "orange", "red", "#7F0000"), bias = 2.25)
+the_breaks <- seq(0, 4000, 1000)
+dat |> ggplot(aes(year, state, fill = rate)) +
+  geom_tile(color = "white", size=0.35) +
+  scale_x_continuous(expand=c(0,0)) +
+  scale_fill_gradientn(colors = jet.colors(16), na.value = 'white',
+                       breaks = the_breaks, 
+                       labels = paste0(round(the_breaks/1000),"k"),
+                       limits = range(the_breaks),
+                       name = "") +
+  geom_vline(xintercept=1963, col = "black") +
+  theme_minimal() + 
+  theme(panel.grid = element_blank()) +
+  coord_cartesian(clip = 'off') +
+  ggtitle(the_disease) +
+  ylab("") +
+  xlab("") +  
+  theme(legend.position = "bottom", text = element_text(size = 8)) + 
+  annotate(geom = "text", x = 1963, y = 50.5, label = "Vaccine introduced", size = 3, hjust=0)
+```
+]]
+.panel[.panel-name[explanation]
+A particularly effective example is a [Wall Street Journal article](http://graphics.wsj.com/infectious-diseases-and-vaccines/?mc_cid=711ddeb86e) showing data related to the impact of vaccines on battling infectious diseases. 
+
+One of the graphs shows measles cases by US state through the years with a vertical line demonstrating when the vaccine was introduced.
+
+.tiny[The plot shows the incidence rate of Measles in US states over time (years on the x-axis), represented by colored tiles for each state (on the y-axis). The incidence rate is calculated as the number of cases per 100,000 population per week, averaged over 52 weeks and adjusted for the number of weeks reporting data. States are sorted by their incidence rates, from lowest to highest, and are colored according to a gradient color scale, ranging from blue (low incidence rates) to red (high incidence rates). The plot includes a vertical line indicating the year when the Measles vaccine was introduced (1963). The plot is useful for visualizing how Measles incidence rates varied across US states over time, and how the introduction of the vaccine impacted the incidence rates.]
+]]
+
+???
+
+A particularly effective example is a [Wall Street Journal article](http://graphics.wsj.com/infectious-diseases-and-vaccines/?mc_cid=711ddeb86e) showing data related to the impact of vaccines on battling infectious diseases. 
+
+The plot shows the incidence rate of Measles in US states over time (years on the x-axis), represented by colored tiles for each state (on the y-axis). The incidence rate is calculated as the number of cases per 100,000 population per week, averaged over 52 weeks and adjusted for the number of weeks reporting data. States are sorted by their incidence rates, from lowest to highest, and are colored according to a gradient color scale, ranging from blue (low incidence rates) to red (high incidence rates). The plot includes a vertical line indicating the year when the Measles vaccine was introduced (1963). The plot is useful for visualizing how Measles incidence rates varied across US states over time, and how the introduction of the vaccine impacted the incidence rates.
+
+---
+
+In the talks [NewInsights on Poverty](https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en), Hans Rosling forces us to notice the unexpected with a series of plots related to world health and economics.
+
+```{r, echo=FALSE}
+html_flag <- knitr::is_html_output()
+fh <- knitr::opts_chunk$get("fig.height")
+fw <- knitr::opts_chunk$get("fig.width")
+img_path <- "img"
+```
+
+
+```{r gampnider-example-plot1, message=FALSE, echo=FALSE, warning=FALSE, fig.height=if (html_flag) fw else fh}
+data(gapminder)
+west <- c("Western Europe","Northern Europe","Southern Europe",
+          "Northern America","Australia and New Zealand")
+gapminder <- gapminder |> 
+  mutate(group = case_when(
+    region %in% west ~ "The West",
+    region %in% c("Eastern Asia", "South-Eastern Asia") ~ "East Asia",
+    region %in% c("Caribbean", "Central America", "South America") ~ "Latin America",
+    continent == "Africa" & region != "Northern Africa" ~ "Sub-Saharan Africa",
+    TRUE ~ "Others"))
+gapminder <- gapminder |> 
+  mutate(group = factor(group, levels = rev(c("Others", "Latin America", "East Asia","Sub-Saharan Africa", "The West"))))
+years <- c(1962, 2013)
+if(html_flag){
+  
+  if(!file.exists(file.path(img_path,"gapminder.gif"))){
+  
+    library(gganimate)
+    p <- filter(gapminder, year%in%years & !is.na(group) & 
+                  !is.na(fertility) & !is.na(life_expectancy)) |>
+      mutate(population_in_millions = population/10^6) |>
+      ggplot(aes(fertility, y = life_expectancy, col = group, size = population_in_millions)) +
+      geom_point(alpha = 0.8) +
+      guides(size = "none") +
+      labs(title = '{frame_time}', x = 'Fertility rate (births per woman)', y = 'Life expectancy') +
+      theme(legend.title = element_blank(),
+            plot.title = element_text(size=30, color = "grey", hjust = 1, vjust = -6)) +
+      transition_time(year) +
+      ease_aes('linear')
+    
+    p <- animate(p, 100, 10, height = 4, width = 6, units = "in", res = 150 ,renderer = gifski_renderer()) 
+    
+      anim_save(file.path(img_path,"gapminder.gif"),animation = p)
+  }
+  knitr::include_graphics(file.path(img_path, "gapminder.gif"))
+} else{
+  filter(gapminder, year%in%years & !is.na(group) & 
+           !is.na(fertility) & !is.na(life_expectancy)) |>
+    mutate(population_in_millions = population/10^6) |>
+    ggplot( aes(fertility, y=life_expectancy, col = group, size = population_in_millions)) +
+    geom_point(alpha = 0.8) +
+    guides(size = "none") +
+    theme(plot.title = element_blank(), legend.title = element_blank()) + 
+    coord_cartesian(ylim = c(30, 85)) + 
+    xlab("Fertility rate (births per woman)") +
+    ylab("Life Expectancy") + 
+    geom_text(aes(x=7, y=82, label=year), cex=12, color="grey") +
+    facet_grid(. ~ year) + 
+    theme(strip.background = element_blank(),
+          strip.text.x = element_blank(),
+          strip.text.y = element_blank(),
+          legend.position = "top")
+}
+```
+
+???
+
+The plot shows a scatterplot of life expectancy on the y-axis against fertility rate on the x-axis, with different colors and sizes of points representing different regions of the world (The West, East Asia, Latin America, Sub-Saharan Africa, and Others) and population sizes, respectively. The plot is animated over time (1962-2013), showing how the relationship between life expectancy and fertility rate changes over time for each region. The plot is useful for visualizing how life expectancy and fertility rate have changed over time for different regions of the world, and how different regions compare to one another.
+
+---
+
+## Data visualization using `ggplot2` 
+
+
+.panelset[
+.panel[.panel-name[Slide]
+
+.pull-left[
+```{r echo=FALSE, out.width="80%"}
+knitr::include_graphics("img/ggplot2-part-of-tidyverse.png")
+```
+] 
+.pull-right[ 
+- ggplot2 is the tidyverse's data visualization package 
+
+- create relatively **complex** and **aesthetically pleasing** plots
+
+- syntax is **intuitive** and comparatively easy to remember. 
+
+- `gg` in "ggplot2" stands for Grammar of Graphics 
+
+- Inspired by the book Grammar of Graphics by Leland Wilkinson
+
+]]
+
+.panel[.panel-name[Words 1]
+
+Throughout the lecture, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. 
+
+Many other approaches are available for creating plots in R. We chose to use __ggplot2__ because it breaks plots into components in a way that permits beginners to create relatively **complex** and **aesthetically pleasing** plots using syntax that is **intuitive** and comparatively easy to remember. 
+
+One reason __ggplot2__ is generally more intuitive for beginners is that it uses a grammar of graphics^[http://www.springer.com/us/book/9780387245447], the _gg_ in __ggplot2__. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of __ggplot2__ building blocks and its grammar, you will be able to create hundreds of different plots. 
+
+]
+.panel[.panel-name[Words 2]
+
+Another reason __ggplot2__ is easy for beginners is that it is possible to create informative and elegant graphs with relatively simple and readable code.
+
+To use __ggplot2__  you will have to learn several functions and arguments. These commands may be hard to memorize, but you can always return back to this tutorial and grab the code you want. Or you can simply perform an internet search for [ggplot2 cheat sheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf).
+
+]]
+
+???
+
+Throughout the lecture, we will be creating plots using the __ggplot2__^[https://ggplot2.tidyverse.org/] package. 
+
+Many other approaches are available for creating plots in R. We chose to use __ggplot2__ because it breaks plots into components in a way that permits beginners to create relatively **complex** and **aesthetically pleasing** plots using syntax that is **intuitive** and comparatively easy to remember. 
+
+One reason __ggplot2__ is generally more intuitive for beginners is that it uses a grammar of graphics^[http://www.springer.com/us/book/9780387245447], the _gg_ in __ggplot2__. This is analogous to the way learning grammar can help a beginner construct hundreds of different sentences by learning just a handful of verbs, nouns and adjectives without having to memorize each specific sentence. Similarly, by learning a handful of __ggplot2__ building blocks and its grammar, you will be able to create hundreds of different plots. 
+
+Another reason __ggplot2__ is easy for beginners is that it is possible to create informative and elegant graphs with relatively simple and readable code.
+
+To use __ggplot2__  you will have to learn several functions and arguments. These commands may be hard to memorize, but you can always return back to this tutorial and grab the code you want. Or you can simply perform an internet search for [ggplot2 cheat sheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf).
+
 
 
 ---
-## Today
 
-- Data manipulation using tidyverse
+## Next week:
 
+Learn how to use `ggplot2` to generate the first example!
 
-???
+---
 
 # Readings
 
 - [Chapter 4:The tidyverse](http://rafalab.dfci.harvard.edu/dsbook/tidyverse.html)
 
-- R for Data Science Chapter 5
+- [Data Wrangling with Tidyverse](https://hbctraining.github.io/Intro-to-R/lessons/tidyverse_data_wrangling.html)
 
-
-
-<!-- your comment
-
----
-
-## Vocabulary of statistics
-
-* A **subject**: A person, place or thing from which we collect data.
-
-* A **population**: The collection of all subjects of interest.
-
-* A **sample**: A subset of the population, from which we have collected data
-
-> **Sample size**: number of subjects in a sample
-
-* A **variable**: A characteristic of a subject
-
----
-
-### Examples in datasets
-
-.panelset[
-.panel[.panel-name[murders]
-
-For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
-
-```{r}
-library(dslabs)
-head(murders, 3)
-```
-
-* **subject** is one US state. 
-* **population** is ALL US state. 
-* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
-* **variable** include: region, population, total (murders)
-
-]
-.panel[.panel-name[heights help page]
-
-For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
-
-```{r eval = F}
-?heights
-```
-
-* Self-Reported Heights
-
-> Description: Self-reported heights in inches for males and females.
-
->Usage: data(heights)
-
->Format: An object of class "data.frame".
-
->Details:sex. Male or Female.
-
-> height. Height in inches.
-
-]
-
-.panel[.panel-name[heights]
-
-```{r}
-head(heights, 3)
-# Here we have 1050 observations
-dim(heights)
-```
-
-So for this dataset:
-
-* **subject** is one student (possibly in some school). 
-* **population** is all students inside that school. 
-* **sample** is the 1050 students inside the dataset.
-* **variable** include: sex, height
-]
-.panel[.panel-name[Sample VS population]
-
-* Sample is a subgroup of population!
-
-* Ideally, a sample should be **representative** of the population.
-
-```{r echo=FALSE, out.width="100%"}
-knitr::include_graphics("img/sample-size-definition.png")
-```
-
-]
-]
-
----
-
-## Terminology: Number of variables involved
-
-- **Univariate** data analysis: distribution of single variable
-
-- **Bivariate** data analysis: relationship between two variables
-
-- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
-
----
-
-### Type of variables
-
-In statistics, different types of variables are analyzed in different ways.
-
-.panelset[
-.panel[.panel-name[Concepts]
-
-* The four main types are: 
-
-* **Categorical** variables: (*Not a number*)
-
-    - **Nominmal**: categorical variables with no inherent order. Examples: gender, ethnicity, and religion.
-    
-    > All genders, ethnicity, religions are equal!
-    
-    - **Ordinal**: categorical variables with a natural order or ranking. Examples: education level (e.g., high school, college, graduate school)
-    
-* **Numerical** variables: (*Numbers*)
-    
-    - **Continuous**: Numbers can take any value
-    
-    - **Discrete**: Numbers can only take on a *finite* or *countably infinite set* of possible values
-
-]
-.panel[.panel-name[murders]
-
-In murders dataset:
-
-```{r}
-head(murders, 3)
-```
-
-* abb, region are categorical; nominal
-
-* population and total are numeric; discrete
-
-]
-
-.panel[.panel-name[heights]
-
-```{r}
-head(heights)
-```
-
-
-* sex is categorical; nominal
-
-* height is numeric; continuous
-
-  - Though here it seems to only include integer values.
-
-]
-.panel[.panel-name[Small quiz]
-
-What are the types of these variables?
-
-- Number of people in each class
-
-- Letter grades
-
-- Shape of leaf
-
-- Zip code: (95618 for Davis, 95776 for Woodland)
-
-- Heights of newborn babies
-]
-
-.panel[.panel-name[solution]
-- Number of people in each class **discrete**
-
-- Letter grades **ordinal**
-
-- Shape of leaf **nominal**
-
-- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
-
-- Heights of newborn babies **continuous**
-]
-]
----
-
-
--->
-
-
+- [Chapter 7:Introduction to data visualization](http://rafalab.dfci.harvard.edu/dsbook/introduction-to-data-visualization.html)
