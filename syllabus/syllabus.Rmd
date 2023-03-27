@@ -78,10 +78,10 @@ Collaboration is encouraged and students are encouraged to discuss course materi
 
 | Assignment | Percentage |
 |:------------:|:------------:|
-| Homework Level 1  | 32\% |
-| Homework Level 2  | 8+\% |
+| Homework Level 1  | 28\% |
+| Homework Level 2  | 7+\% |
 | Participation  | 5\% |
-| Exam I | 15\% |
+| Exam I | 20\% |
 | Exam II | 20\% |
 | Final | 25\% |
 
