@@ -345,8 +345,69 @@ We'll be illustrating visualization process using a dataset comprising observati
 
 * Variables: country, year, life expectancy at birth (men, women, overall), GDP per capita, total population, region (continent), and subregion.
 
+Here we will load the data for you. In this problem you just need to work on the dataset named `data`.
+
+```{r}
+myfile <- "https://raw.githubusercontent.com/xjw1001001/xjw1001001.github.io/main/data/homework%20data/HW2data.csv"
+data = read.csv(myfile) %>% 
+  select(-X) %>%
+  mutate(Year = as.factor(Year))
+head(data)
+```
+
+1\. Construct a scatterplot of `Life.Expectancy` against `GDP.per.capita`; each point corresponds to one country in one year. Change the X axis into 'GDP per capita' and Y axis into 'Life Expectancy at Birth'. Change the title into 'Scatterplot of life expectancy at birth against GDP per capita'. Change the scale of X axis into log2 scale. 
+
+Name the plot object as `p`. Show the plot by call `p` like this:
+
+```
+p = ggplot... +
+    geom_point... +
+    ... +
+    ...
+    
+# Show the plot
+p
+```
+
+* Hint: `trans='log2'` inside some function's (). What's that function?
 
 
+
+2\. Map Year (as nominal) to color in part 1 plot. Change the opacity of all points into 0.8. (`alpha`=0.8 in `geom_point()`) Does this color give you any information?
+
+* I have already transform the Year into factor by `mutate(Year = as.factor(Year))`. Without that Year will be a numeric variable and the color will be assigned continuous.
+
+* Start from the part 1 code. Just make a small modification in `aes` part will be able to do that.
+
+3\. Instead, map region to color, population to size in the `aes()`. Change the opacity of all points into 0.8. Does this plot give you more information?
+
+4\. Now based on the part 3 plot, facet by the year. Use `facet_wrap`.
+
+5\. Apply a new theme from the ggthemes package.
+
+```{r}
+library(ggthemes)
+
+```
+
+6\. Use ggrepel to label the countries in the country list:
+
+```{r}
+library(ggrepel)
+country_list = c("Afghanistan","Belgium","Canada","Djibouti","France","Indonesia","Mexico","Sudan")
+```
+
+Here is the code that you can generate the label for these selected countries. Generate the plot. If you find the result plot texts are colored, it may because you put color and size as global aes mapping. You need to change it into local ones in `geom_point()`. 
+
+* You can try different values of the arguments for `box.padding`, `max.overlaps`, `force` to make it nicer.
+
+```
+geom_text_repel(data = 
+       subset(data, Country.Name %in% country_list),
+       aes(label = Country.Name),
+       box.padding = 0.5, max.overlaps = Inf,
+       force = 1.5)
+```
 
 ## Include the person you coop with:
 
