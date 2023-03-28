@@ -8,7 +8,7 @@ author: "STA 032"
 
 **Instructor**: Jingwei Xiong: jwxxiong@ucdavis.edu
 
-**TA**: 
+**TA**: Xiawei Wang: xxwwang@ucdavis.edu
 
 **Class time**:   
 Lectures are Mondays, Wednesdays and Fridays, 9-9:50 AM at Wellman 6  
@@ -109,12 +109,12 @@ There are three optional textbooks. They are all available online and are free.
 
 - Fri April 21: Describing numerical distributions
   - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
-  - Reading: 
+  - Reading:
+    - [Open Intro Statistics Chapter 1](https://www.webpages.uidaho.edu/~stevel/251/slides/os2_slides_01.pdf)
   - **Homework 3**: (Due May 1 midnight, cover lecture 9-11) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
 
 ### Week 4: Descriptive Statistics: Numerical and Categorical Data and reviews for midterm 1
 
-  
 - Mon April 24: Descriptive Statistics: Numerical and Categorical Data
   - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
   - Reading: 
