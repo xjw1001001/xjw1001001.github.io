@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data visualization 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-04-19" />
+    <script src="lecture8_files/header-attrs-2.20/header-attrs.js"></script>
+    <link href="lecture8_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture8_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture8_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture8_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture8_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture8_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture8_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture8_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Data visualization 2
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 8
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### April 19, 2023
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+
+## Reminders
+
+- HW 2 due April 26 12pm.
+
+- Please start the homework as soon as possible.
+
+---
+
+## Recap
+
+- Data visualization with ggplot
+
+&gt; Remember, before using all tidyverse functions, you need to library(tidyverse) first!
+
+&gt; Remember, before using all ggplot2 functions, you need to library(ggplot2) first!
+
+---
+## A note on piping and layering
+
+- Pipe `%&gt;%` used mainly in `dplyr` pipelines
+  - Pipe the output of the previous line of code as the first input of the next line of code
+
+- `+` used in `ggplot2` plots is used for "layering"
+  - Create the plot in layers, separated by `+`
+
+---
+
+
+## dplyr
+
+❌
+
+
+```r
+hotels +
+  select(hotel, lead_time)
+```
+
+```
+Error in select(hotel, lead_time): object 'hotel' not found
+```
+
+✅
+
+
+```r
+hotels %&gt;%
+  select(hotel, lead_time)
+```
+
+.tiny[
+
+```
+# A tibble: 119,390 × 2
+   hotel        lead_time
+   &lt;chr&gt;            &lt;dbl&gt;
+ 1 Resort Hotel       342
+ 2 Resort Hotel       737
+ 3 Resort Hotel         7
+ 4 Resort Hotel        13
+ 5 Resort Hotel        14
+ 6 Resort Hotel        14
+ 7 Resort Hotel         0
+ 8 Resort Hotel         9
+ 9 Resort Hotel        85
+10 Resort Hotel        75
+# … with 119,380 more rows
+```
+]
+
+---
+
+## ggplot2
+
+❌
+
+.small[
+
+```r
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) %&gt;%
+  geom_bar()
+```
+
+```
+Error in `geom_bar()`:
+! `mapping` must be created by `aes()`
+ℹ Did you use `%&gt;%` or `|&gt;` instead of `+`?
+```
+]
+
+✅
+
+
+```r
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) +
+  geom_bar()
+```
+
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-8-1.png" width="25%" /&gt;
+
+
+---
+## Code styling
+
+Many of the styling principles are consistent across `%&gt;%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+❌
+
+
+```r
+ggplot(hotels,aes(x=hotel,y=deposit_type))+geom_bar()
+```
+
+✅
+
+
+```r
+ggplot(hotels, aes(x = hotel, y = deposit_type)) + 
+  geom_bar()
+```
+
+---
+
+## Today
+
+- Finishing up on `ggplot()`
+
+  - Faceting using `facet_grid()`
+
+  - Time series plot
+  
+- Descriptive statistics 
+
+
+
+---
+
+### `facet_grid()`
+
+
+.panelset[
+.panel[.panel-name[Overview]
+
+- `facet_grid()`:
+    - 2D grid
+    - `rows ~ cols`
+    - use `.` for no split (1D)
+
+- Uses all levels, even if there are no observations; i.e., may produce empty plots 
+
+]
+.panel[.panel-name[2D grid 1]
+
+```r
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+* facet_grid(species ~ sex)
+```
+
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-11-1.png" width="504" /&gt;
+]
+.panel[.panel-name[2D grid 2]
+
+```r
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+* facet_grid(sex ~ species)
+```
+
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-12-1.png" width="504" /&gt;
+]
+.panel[.panel-name[1D grid 1]
+
+```r
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+* facet_grid(. ~ species)
+```
+
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-13-1.png" width="504" /&gt;
+]
+.panel[.panel-name[1D grid 2]
+
+```r
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+* facet_grid(species ~ .)
+```
+
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
+]
+]
+???
+
+The facet_grid() function in ggplot2 allows us to create a 2D grid of plots, with rows and columns defined by the levels of two different categorical variables. 
+
+We specify this using the rows ~ cols syntax. We can also use . to indicate that we only want to split the plots in one dimension, instead of two.
+
+The remaining panels show different examples of how to use facet_grid(). Each example uses the penguins dataset and plots the relationship between two continuous variables, bill_depth_mm and bill_length_mm. The plots are faceted by the species and sex variables in different ways. 
+
+The first two panels show 2D grids with the species variable on the rows and sex variable on the columns, and vice versa. 
+The third and fourth panels show 1D grids with the species variable on the rows or columns, and an empty space for the other dimension. These examples demonstrate the flexibility and usefulness of facet_grid() in creating visualizations for different types of data.
+
+---
+
+## Facet can be used with color
+
+* Perfect for complex comparison
+
+.pull-left[
+
+```r
+ggplot(
+  penguins, 
+  aes(x = bill_depth_mm, 
+      y = bill_length_mm, 
+*     color = species)) +
+  geom_point() +
+  facet_grid(year ~ sex) +
+* scale_color_viridis_d()
+```
+]
+
+.pull-right[
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-15-1.png" width="100%" /&gt;
+]
+
+???
+
+Here we demonstrates how facet_grid() can be used in combination with color to create a multi-panel scatter plot with a legend for color. This type of picture enables us to create complex comparisons between multiple variables.
+
+The example code uses the penguins dataset, mapping bill_depth_mm and bill_length_mm to the x and y aesthetics, respectively, and species to the color aesthetic. facet_grid() is used to create a grid of panels arranged by year and sex. 
+
+Finally, scale_color_viridis_d() is used to specify a color scale for the legend.
+
+---
+
+### `facet_wrap`
+
+
+.panelset[
+.panel[.panel-name[Overview]
+* To explore how the fertility against life_expectancy happened through the years, we can make the plot for several years.
+
+* `facet_wrap` allows us to display multiple rows and columns of plots so that each has viewable dimensions.
+
+* You can change the column numbers in `ncol=?`
+
+* `facet_grid` 1D will make it too thin to show the data.
+
+* The plot shows how most Asian countries have improved at a much faster rate than European ones.
+
+* Default scale are fixed.
+
+]
+.panel[.panel-name[Code]
+
+```r
+library(dslabs)
+data(gapminder)
+years &lt;- c(1962,1970, 1980, 1990, 2000, 2012)
+continents &lt;- c("Europe", "Asia")
+gapminder |&gt; 
+  filter(year %in% years &amp; continent %in% continents) |&gt;
+  ggplot( aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+* facet_wrap(~year, ncol = 3)
+```
+]
+.panel[.panel-name[Plot]
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-17-1.png" width="504" /&gt;
+]
+]
+
+
+
+???
+
+To explore how this the fertility against life_expectancy happened through the years, we can make the plot for several years. For example, we can add 1970, 1980, 1990, and 2000. If we do this, we will not want all the plots on the same row, the default behavior of `facet_grid`, since they will become too thin to show the data. Instead, we will want to use multiple rows and columns. The function `facet_wrap` permits us to do this by automatically wrapping the series of plots so that each display has viewable dimensions:
+
+This plot clearly shows how most Asian countries have improved at a much faster rate than European ones.
+
+The default choice of the range of the axes is important. When not using `facet`, this range is determined by the data shown in the plot. When using `facet`, this range is determined by the data shown in all plots and therefore kept fixed across plots. This makes comparisons across plots much easier. For example, in the above plot, we can see that life expectancy has increased and the fertility has decreased across most countries. We see this because the cloud of points moves. 
+
+---
+
+### Fixed scales or free scales
+
+
+```r
+filter(gapminder, year%in%c(1962, 2012)) |&gt;
+  ggplot(aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+* facet_wrap(. ~ year, scales = "free")
+```
+
+&lt;img src="lecture8_files/figure-html/facet-without-fixed-scales-1.png" width="504" /&gt;
+???
+
+This is not the case if we adjust the scales:
+
+In the plot above, we have to pay special attention to the range to notice that the plot on the right has a larger life expectancy. 
+
+---
+
+
+---
+
+
+# Readings
+
+
+- [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

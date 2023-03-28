@@ -16,13 +16,13 @@ output:
       countIncrementalSlides: false
 ---
 
-```{r, echo = FALSE}
-#library(renderthis)
-#to_pdf(from = "lecture1.Rmd",complex_slides = TRUE)
+```{r echo = FALSE}
+library(renderthis)
+to_pdf(from = "lecture4.html",complex_slides = TRUE)
 ```
 
 
-```{r xaringanExtra, echo=FALSE}
+```{r echo=FALSE}
 xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
 xaringanExtra::use_panelset()
 ```

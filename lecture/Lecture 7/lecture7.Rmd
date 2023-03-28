@@ -18,7 +18,7 @@ output:
 
 ```{r, echo = FALSE, eval = FALSE}
 library(renderthis)
-to_pdf(from = "lecture7.Rmd",complex_slides = TRUE)
+to_pdf(from = "lecture7.html",complex_slides = TRUE)
 ```
 
 

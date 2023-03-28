@@ -1,0 +1,330 @@
+---
+title: "Data visualization 2"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 8"
+author: "Jingwei Xiong"
+date: April 19, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = FALSE, eval = FALSE}
+library(renderthis)
+to_pdf(from = "lecture8.html",complex_slides = TRUE)
+```
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+```
+
+
+```{css, echo = FALSE}
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+```
+
+
+## Reminders
+
+- HW 2 due April 26 12pm.
+
+- Please start the homework as soon as possible.
+
+---
+
+## Recap
+
+- Data visualization with ggplot
+
+> Remember, before using all tidyverse functions, you need to library(tidyverse) first!
+
+> Remember, before using all ggplot2 functions, you need to library(ggplot2) first!
+
+---
+## A note on piping and layering
+
+- Pipe `%>%` used mainly in `dplyr` pipelines
+  - Pipe the output of the previous line of code as the first input of the next line of code
+
+- `+` used in `ggplot2` plots is used for "layering"
+  - Create the plot in layers, separated by `+`
+
+---
+```{r message=FALSE, echo = FALSE}
+library(palmerpenguins)
+hotels <- readr::read_csv("../lecture 6/data/hotels.csv")
+```
+
+## dplyr
+
+`r emo::ji("x")`
+
+```{r error=TRUE}
+hotels +
+  select(hotel, lead_time)
+```
+
+`r emo::ji("white_check_mark")`
+
+```{r eval=FALSE}
+hotels %>%
+  select(hotel, lead_time)
+```
+
+.tiny[
+```{r echo=FALSE, output.lines=6}
+hotels %>%
+  select(hotel, lead_time)
+```
+]
+
+---
+
+## ggplot2
+
+`r emo::ji("x")`
+
+.small[
+```{r error=TRUE}
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) %>%
+  geom_bar()
+```
+]
+
+`r emo::ji("white_check_mark")`
+
+```{r out.width="25%"}
+ggplot(hotels, aes(x = hotel, fill = deposit_type)) +
+  geom_bar()
+```
+
+
+---
+## Code styling
+
+Many of the styling principles are consistent across `%>%` and `+`:
+
+- always a space before
+- always a line break after (for pipelines with more than 2 lines)
+
+`r emo::ji("x")`
+
+```{r eval=FALSE}
+ggplot(hotels,aes(x=hotel,y=deposit_type))+geom_bar()
+```
+
+`r emo::ji("white_check_mark")`
+
+```{r eval=FALSE}
+ggplot(hotels, aes(x = hotel, y = deposit_type)) + 
+  geom_bar()
+```
+
+---
+
+## Today
+
+- Finishing up on `ggplot()`
+
+  - Faceting using `facet_grid()`
+
+  - Time series plot
+  
+- Descriptive statistics 
+
+
+
+---
+
+### `facet_grid()`
+
+
+.panelset[
+.panel[.panel-name[Overview]
+
+- `facet_grid()`:
+    - 2D grid
+    - `rows ~ cols`
+    - use `.` for no split (1D)
+
+- Uses all levels, even if there are no observations; i.e., may produce empty plots 
+
+]
+.panel[.panel-name[2D grid 1]
+```{r warning = FALSE, fig.height=5}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_grid(species ~ sex) #<<
+```
+]
+.panel[.panel-name[2D grid 2]
+```{r warning = FALSE, fig.height=5}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_grid(sex ~ species) #<<
+```
+]
+.panel[.panel-name[1D grid 1]
+```{r warning = FALSE, fig.height = 5}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_grid(. ~ species) #<<
+```
+]
+.panel[.panel-name[1D grid 2]
+```{r warning = FALSE, fig.height=5}
+ggplot(penguins, aes(x = bill_depth_mm, y = bill_length_mm)) + 
+  geom_point() +
+  facet_grid(species ~ .) #<<
+```
+]
+]
+???
+
+The facet_grid() function in ggplot2 allows us to create a 2D grid of plots, with rows and columns defined by the levels of two different categorical variables. 
+
+We specify this using the rows ~ cols syntax. We can also use . to indicate that we only want to split the plots in one dimension, instead of two.
+
+The remaining panels show different examples of how to use facet_grid(). Each example uses the penguins dataset and plots the relationship between two continuous variables, bill_depth_mm and bill_length_mm. The plots are faceted by the species and sex variables in different ways. 
+
+The first two panels show 2D grids with the species variable on the rows and sex variable on the columns, and vice versa. 
+The third and fourth panels show 1D grids with the species variable on the rows or columns, and an empty space for the other dimension. These examples demonstrate the flexibility and usefulness of facet_grid() in creating visualizations for different types of data.
+
+---
+
+## Facet can be used with color
+
+* Perfect for complex comparison
+
+.pull-left[
+```{r facet-color-legend, fig.show = "hide", warning = FALSE}
+ggplot(
+  penguins, 
+  aes(x = bill_depth_mm, 
+      y = bill_length_mm, 
+      color = species)) + #<<
+  geom_point() +
+  facet_grid(year ~ sex) +
+  scale_color_viridis_d() #<<
+```
+]
+
+.pull-right[
+```{r ref.label = "facet-color-legend", echo = FALSE, warning = FALSE, out.width = "100%"}
+```
+]
+
+???
+
+Here we demonstrates how facet_grid() can be used in combination with color to create a multi-panel scatter plot with a legend for color. This type of picture enables us to create complex comparisons between multiple variables.
+
+The example code uses the penguins dataset, mapping bill_depth_mm and bill_length_mm to the x and y aesthetics, respectively, and species to the color aesthetic. facet_grid() is used to create a grid of panels arranged by year and sex. 
+
+Finally, scale_color_viridis_d() is used to specify a color scale for the legend.
+
+---
+
+### `facet_wrap`
+
+
+.panelset[
+.panel[.panel-name[Overview]
+* To explore how the fertility against life_expectancy happened through the years, we can make the plot for several years.
+
+* `facet_wrap` allows us to display multiple rows and columns of plots so that each has viewable dimensions.
+
+* You can change the column numbers in `ncol=?`
+
+* `facet_grid` 1D will make it too thin to show the data.
+
+* The plot shows how most Asian countries have improved at a much faster rate than European ones.
+
+* Default scale are fixed.
+
+]
+.panel[.panel-name[Code]
+```{r  eval = FALSE}
+library(dslabs)
+data(gapminder)
+years <- c(1962,1970, 1980, 1990, 2000, 2012)
+continents <- c("Europe", "Asia")
+gapminder |> 
+  filter(year %in% years & continent %in% continents) |>
+  ggplot( aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_wrap(~year, ncol = 3) #<<
+```
+]
+.panel[.panel-name[Plot]
+```{r  echo = FALSE, fig.height=6}
+library(dslabs)
+data(gapminder)
+years <- c(1962,1970, 1980, 1990, 2000, 2012)
+continents <- c("Europe", "Asia")
+gapminder |> 
+  filter(year %in% years & continent %in% continents) |>
+  ggplot( aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_wrap(~year, ncol = 3)  #<<
+```
+]
+]
+
+
+
+???
+
+To explore how this the fertility against life_expectancy happened through the years, we can make the plot for several years. For example, we can add 1970, 1980, 1990, and 2000. If we do this, we will not want all the plots on the same row, the default behavior of `facet_grid`, since they will become too thin to show the data. Instead, we will want to use multiple rows and columns. The function `facet_wrap` permits us to do this by automatically wrapping the series of plots so that each display has viewable dimensions:
+
+This plot clearly shows how most Asian countries have improved at a much faster rate than European ones.
+
+The default choice of the range of the axes is important. When not using `facet`, this range is determined by the data shown in the plot. When using `facet`, this range is determined by the data shown in all plots and therefore kept fixed across plots. This makes comparisons across plots much easier. For example, in the above plot, we can see that life expectancy has increased and the fertility has decreased across most countries. We see this because the cloud of points moves. 
+
+---
+
+### Fixed scales or free scales
+
+```{r facet-without-fixed-scales, warning=FALSE, fig.height=5}
+filter(gapminder, year%in%c(1962, 2012)) |>
+  ggplot(aes(fertility, life_expectancy, col = continent)) +
+  geom_point() +
+  facet_wrap(. ~ year, scales = "free") #<<
+```
+???
+
+This is not the case if we adjust the scales:
+
+In the plot above, we have to pay special attention to the range to notice that the plot on the right has a larger life expectancy. 
+
+---
+
+
+---
+
+
+# Readings
+
+
+- [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
