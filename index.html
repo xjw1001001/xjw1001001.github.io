@@ -482,8 +482,9 @@ Wrangling with Tidyverse</a></li>
 </ul></li>
 </ul>
 </div>
-<div id="week-3-introduction-to-data-visualization" class="section level3">
-<h3>Week 3: Introduction to data visualization</h3>
+<div id="week-3-introduction-to-data-visualization-descriptive-statistics" class="section level3">
+<h3>Week 3: Introduction to data visualization, descriptive
+statistics</h3>
 <ul>
 <li><p><strong>Homework 1: (Due April 17 midnight)</strong></p></li>
 <li><p>Mon April 17: Data visualization 1</p>
@@ -498,27 +499,34 @@ Wrangling with Tidyverse</a></li>
 8:ggplot2</a></li>
 </ul></li>
 </ul></li>
-<li><p>Wed April 19: Data visualization 2</p>
+<li><p>Wed April 19: Data visualization 2, descriptive statistics</p>
 <ul>
 <li>Notes: <a href="https://xjw1001001.github.io/lecture/Lecture%208/lecture8.html">Lecture
 8</a></li>
-<li>Reading:</li>
-</ul></li>
-<li><p>Fri April 21: Descriptive statistics</p>
+<li>Reading:
 <ul>
-<li><p>Notes: <a href="https://xjw1001001.github.io/lecture/Lecture%209/lecture9.html">Lecture
-9</a></p></li>
-<li><p>Reading:</p></li>
-<li><p><strong>Homework 3</strong>: (Due May 1 midnight, cover lecture
-9-12) <a href="https://xjw1001001.github.io/homework/homework3/HW3.html">Html</a>
-<a href="https://xjw1001001.github.io/homework/homework3/HW3.Rmd">Rmd</a></p></li>
+<li><a href="http://rafalab.dfci.harvard.edu/dsbook/gapminder.html">Chapter
+10:Data visualization in practice</a></li>
+<li><a href="https://www.webpages.uidaho.edu/~stevel/251/slides/os2_slides_01.pdf">Open
+Intro Statistics Chapter 1</a></li>
+</ul></li>
+</ul></li>
+<li><p>Fri April 21: Describing numerical distributions</p>
+<ul>
+<li>Notes: <a href="https://xjw1001001.github.io/lecture/Lecture%209/lecture9.html">Lecture
+9</a></li>
+<li>Reading:</li>
+<li><strong>Homework 3</strong>: (Due May 1 midnight, cover lecture
+9-11) <a href="https://xjw1001001.github.io/homework/homework3/HW3.html">Html</a>
+<a href="https://xjw1001001.github.io/homework/homework3/HW3.Rmd">Rmd</a></li>
 </ul></li>
 </ul>
 </div>
-<div id="week-4-descriptive-statistics-eda-and-reviews-for-midterm-1" class="section level3">
-<h3>Week 4: Descriptive statistics, EDA and reviews for midterm 1</h3>
+<div id="week-4-descriptive-statistics-numerical-and-categorical-data-and-reviews-for-midterm-1" class="section level3">
+<h3>Week 4: Descriptive Statistics: Numerical and Categorical Data and
+reviews for midterm 1</h3>
 <ul>
-<li>Mon April 24:
+<li>Mon April 24: Descriptive Statistics: Numerical and Categorical Data
 <ul>
 <li>Notes: <a href="https://xjw1001001.github.io/lecture/Lecture%2010/lecture10.html">Lecture
 10</a></li>
@@ -539,6 +547,8 @@ Wrangling with Tidyverse</a></li>
 </ul></li>
 <li><strong>Midterm 1: (Due April 29 midnight, cover lecture
 1-12)</strong></li>
+<li>Open book take home exam</li>
+<li>It’s suggested to finish the homework 1,2,3 before midterm 1.</li>
 </ul>
 </div>
 <div id="week-5" class="section level3">
@@ -721,228 +731,6 @@ Wrangling with Tidyverse</a></li>
     - Open Intro Statistics Chapter 6.1
 - Fri Dec 2: Confidence intervals and one-sided tests 
   - Notes: [Lecture 25](https://xhtai.github.io/statdatasci/lectures/lecture25/lecture25.html)
-
--->
-<!-- your comment
-
----
-
-## Vocabulary of statistics
-
-* A **subject**: A person, place or thing from which we collect data.
-
-* A **population**: The collection of all subjects of interest.
-
-* A **sample**: A subset of the population, from which we have collected data
-
-> **Sample size**: number of subjects in a sample
-
-* A **variable**: A characteristic of a subject
-
----
-
-### Examples in datasets
-
-.panelset[
-.panel[.panel-name[murders]
-
-For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
-
-
-```r
-library(dslabs)
-head(murders, 3)
-```
-
-```
-##     state abb region population total
-## 1 Alabama  AL  South    4779736   135
-## 2  Alaska  AK   West     710231    19
-## 3 Arizona  AZ   West    6392017   232
-```
-
-* **subject** is one US state. 
-* **population** is ALL US state. 
-* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
-* **variable** include: region, population, total (murders)
-
-]
-.panel[.panel-name[heights help page]
-
-For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
-
-
-```r
-?heights
-```
-
-* Self-Reported Heights
-
-> Description: Self-reported heights in inches for males and females.
-
->Usage: data(heights)
-
->Format: An object of class "data.frame".
-
->Details:sex. Male or Female.
-
-> height. Height in inches.
-
-]
-
-.panel[.panel-name[heights]
-
-
-```r
-head(heights, 3)
-```
-
-```
-##    sex height
-## 1 Male     75
-## 2 Male     70
-## 3 Male     68
-```
-
-```r
-# Here we have 1050 observations
-dim(heights)
-```
-
-```
-## [1] 1050    2
-```
-
-So for this dataset:
-
-* **subject** is one student (possibly in some school). 
-* **population** is all students inside that school. 
-* **sample** is the 1050 students inside the dataset.
-* **variable** include: sex, height
-]
-.panel[.panel-name[Sample VS population]
-
-* Sample is a subgroup of population!
-
-* Ideally, a sample should be **representative** of the population.
-
-
-
-]
-]
-
----
-
-## Terminology: Number of variables involved
-
-- **Univariate** data analysis: distribution of single variable
-
-- **Bivariate** data analysis: relationship between two variables
-
-- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
-
----
-
-### Type of variables
-
-In statistics, different types of variables are analyzed in different ways.
-
-.panelset[
-.panel[.panel-name[Concepts]
-
-* The four main types are: 
-
-* **Categorical** variables: (*Not a number*)
-
-    - **Nominmal**: categorical variables with no inherent order. Examples: gender, ethnicity, and religion.
-    
-    > All genders, ethnicity, religions are equal!
-    
-    - **Ordinal**: categorical variables with a natural order or ranking. Examples: education level (e.g., high school, college, graduate school)
-    
-* **Numerical** variables: (*Numbers*)
-    
-    - **Continuous**: Numbers can take any value
-    
-    - **Discrete**: Numbers can only take on a *finite* or *countably infinite set* of possible values
-
-]
-.panel[.panel-name[murders]
-
-In murders dataset:
-
-
-```r
-head(murders, 3)
-```
-
-```
-##     state abb region population total
-## 1 Alabama  AL  South    4779736   135
-## 2  Alaska  AK   West     710231    19
-## 3 Arizona  AZ   West    6392017   232
-```
-
-* abb, region are categorical; nominal
-
-* population and total are numeric; discrete
-
-]
-
-.panel[.panel-name[heights]
-
-
-```r
-head(heights)
-```
-
-```
-##      sex height
-## 1   Male     75
-## 2   Male     70
-## 3   Male     68
-## 4   Male     74
-## 5   Male     61
-## 6 Female     65
-```
-
-
-* sex is categorical; nominal
-
-* height is numeric; continuous
-
-  - Though here it seems to only include integer values.
-
-]
-.panel[.panel-name[Small quiz]
-
-What are the types of these variables?
-
-- Number of people in each class
-
-- Letter grades
-
-- Shape of leaf
-
-- Zip code: (95618 for Davis, 95776 for Woodland)
-
-- Heights of newborn babies
-]
-
-.panel[.panel-name[solution]
-- Number of people in each class **discrete**
-
-- Letter grades **ordinal**
-
-- Shape of leaf **nominal**
-
-- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
-
-- Heights of newborn babies **continuous**
-]
-]
----
-
 
 -->
 </div>

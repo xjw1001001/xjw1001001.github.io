@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Data visualization 2</title>
+    <title>Data visualization 2. descriptive statistics</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jingwei Xiong" />
     <meta name="date" content="2023-04-19" />
@@ -20,7 +20,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Data visualization 2
+# Data visualization 2. descriptive statistics
 ]
 .subtitle[
 ## <br><br> STA 032: Gateway to data science Lecture 8
@@ -57,9 +57,17 @@ class: center, middle, inverse, title-slide
 
 - Please start the homework as soon as possible.
 
+## Today
+
+- Facets
+
+- Time series
+
+- Descriptive statistics
+
 ---
 
-## Recap
+## Recap (With lecture7 example recaps)
 
 - Data visualization with ggplot
 
@@ -359,14 +367,540 @@ In the plot above, we have to pay special attention to the range to notice that 
 
 ---
 
+## Time series plots
+
+.panelset[
+.panel[.panel-name[Overview]
+* Time series plots have time on the x-axis and an outcome of interest on the y-axis
+* Effective for exploring temporal changes
+* Use `geom_line()` to connect the points with lines and create curves for each series
+* `color` aesethic assigns different colors to different series and groups the data automatically
+]
+.panel[.panel-name[Points]
+.pull-left[
+.tiny[
+
+```r
+gapminder |&gt; 
+  filter(country == "United States") |&gt; 
+  ggplot(aes(year, fertility)) +
+  geom_point()
+```
+]]
+.pull-right[
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-18-1.png" width="100%" /&gt;
+]
+]
+
+.panel[.panel-name[Curve]
+.pull-left[
+.tiny[
+
+```r
+gapminder |&gt; 
+  filter(country == "United States") |&gt; 
+  ggplot(aes(year, fertility)) +
+  geom_line()
+```
+]]
+.pull-right[
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-19-1.png" width="100%" /&gt;
+]
+]
+.panel[.panel-name[Color]
+.pull-left[
+.tiny[
+
+```r
+countries &lt;- c("South Korea","Germany")
+gapminder |&gt; 
+  filter(country %in% countries &amp;
+           !is.na(fertility)) |&gt; 
+  ggplot(aes(year,fertility,
+             col = country)) +
+  geom_line()
+```
+]]
+.pull-right[
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-20-1.png" width="100%" /&gt;
+]
+]
+]
+
+???
+1-2
+
+The visualizations last slide showed the result changes over time. Once we see these plots, new questions emerge. For example, which countries are improving more and which ones less? Was the improvement constant during the last 50 years or was it more accelerated during certain periods? For a closer look that may help answer these questions, we introduce _time series plots_.
+
+Time series plots have time in the x-axis and an outcome or measurement of interest on the y-axis. For example, here is a trend plot of United States fertility rates:
+
+We see that the trend is not linear at all. Instead there is sharp drop during the 1960s and 1970s to below 2. Then the trend comes back to 2 and stabilizes during the 1990s.
+
+3
+
+When the points are regularly and densely spaced, as they are here, we create curves by joining the points with lines, to convey that these data are from a single series, here a country. To do this, we use the `geom_line` function instead of `geom_point`. 
+
+4
+
+This is particularly helpful when we look at two countries. If we subset the data to include two countries, one from Europe and one from Asia, then we can use the `color` argument to assign different colors to the different countries is that the data is automatically grouped:
+
+The plot clearly shows how South Korea's fertility rate dropped drastically during the 1960s and 1970s, and by 1990 had a similar rate to that of Germany.
+
+---
+
+### Labels instead of legends 
+
+* We can use label instead of legends  using the `geomtextpath` package.
+
+.panelset[
+.panel[.panel-name[code]
+
+```r
+library(geomtextpath)
+gapminder |&gt; 
+  filter(country %in% countries) |&gt; 
+  ggplot(aes(year, life_expectancy, 
+*            col = country, label = country)) +
+  geom_textpath() +
+  theme(legend.position = "none")
+```
+]
+.panel[.panel-name[plot]
+&lt;img src="lecture8_files/figure-html/unnamed-chunk-22-1.png" width="504" /&gt;
+]
+.panel[.panel-name[words]
+For trend plots we recommend labeling the lines rather than using legends since the viewer can quickly see which line is which country. This suggestion actually applies to most plots: labeling is usually preferred over legends.
+
+
+We demonstrate how we can do this using the `geomtextpath` package. We define a data table with the label locations and then use a second mapping just for these labels:
+
+The plot clearly shows how an improvement in life expectancy followed the drops in fertility rates. In 1960, Germans lived 15 years longer than South Koreans, although by 2010 the gap is completely closed. It exemplifies the improvement that many non-western countries have achieved in the last 40 years.
+]
+]
+
+???
+
+For trend plots we recommend labeling the lines rather than using legends since the viewer can quickly see which line is which country. This suggestion actually applies to most plots: labeling is usually preferred over legends.
+
+
+We demonstrate how we can do this using the `geomtextpath` package. We define a data table with the label locations and then use a second mapping just for these labels:
+
+The plot clearly shows how an improvement in life expectancy followed the drops in fertility rates. In 1960, Germans lived 15 years longer than South Koreans, although by 2010 the gap is completely closed. It exemplifies the improvement that many non-western countries have achieved in the last 40 years.
+
+---
+
+## Descriptive statistics
+
+- We've now learned about data manipulation and visualization tools
+
+- What visualizations to do and what summary statistics to actually calculate?
+
+- **Descriptive statistics** are numbers that are used to summarize and describe data
+
+- **Numerical** or **graphical** ways to display the data
+
+- Why is this a useful thing to do?
+
+.tiny[
+&gt;Descriptive statistics are a useful tool in data analysis, as they help us understand and communicate the patterns and characteristics of a dataset. 
+]
+
+???
+
+We've now learned about basic data manipulation and visualization tools. Now we want to learn what visualizations to do and what summary statistics to actually calculate.
+
+First we need to discuss the descriptive statistics, which are used to summarize and describe data in both numerical and graphical ways. 
+
+Descriptive statistics are a useful tool in data analysis, as they help us understand and communicate the patterns and characteristics of a dataset. 
+
+We will start with some terminology used in statistics.
+
+---
+
+## Terminology of statistics
+
+.small[
+* A **subject**: A person, place or thing from which we collect data.
+
+* A **population**: The collection of all subjects of interest.
+
+* A **sample**: A subset of the population, from which we have collected data
+
+&gt; Sample is a subgroup of population!
+
+&gt; **Sample size**: number of subjects in a sample
+
+* Ideally, a sample should be **representative** of the population.
+
+&lt;img src="img/sample-size-definition.png" width="60%" /&gt;
+
+]
+
+???
+
+We introduce some basic definitions and concepts related to descriptive statistics.
+
+In this picture...
+
+---
+
+## Terminology: continued
+
+
+- A **variable**: A characteristic of a subject
+
+- A **distribution** of a variable: the way the values of the variable are spread out or distributed over all possible values.
+
+- **Univariate** data analysis: distribution of single variable
+
+- **Bivariate** data analysis: relationship between two variables
+
+- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
+
+---
+
+## Terminology: Types of variables
+
+- **Numerical** variables
+  - E.g., age, length, temperature
+  
+  - **Continuous** variables can take on an infinite number of values
+  
+  - **Discrete** Numbers can only take on a *finite* or *countably infinite set* (Such as all integers) of possible values
+
+- **Categorical** variables
+
+  - E.g., year in college, type of bike, meal 
+  
+  - **Ordinal** variables have levels that have a natural ordering
+  
+  - **Nominal** variables without any order
+  
+  &gt; All genders, ethnicity, religions are equal!
+
+???
+
+Then, let's illustrate these concepts using the R example.
+
+---
+
+### Examples
+
+.panelset[
+.panel[.panel-name[murders]
+
+For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
+
+
+```r
+library(dslabs)
+head(murders, 3)
+```
+
+```
+    state abb region population total
+1 Alabama  AL  South    4779736   135
+2  Alaska  AK   West     710231    19
+3 Arizona  AZ   West    6392017   232
+```
+
+* **subject** is one US state. 
+* **population** is ALL US state. 
+* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
+* **variable** include: region, population, total (murders)
+
+* abb, region are **categorical; nominal**
+
+* population and total are **numeric; discrete**
+
+]
+.panel[.panel-name[heights help page]
+
+For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
+
+
+```r
+?heights
+```
+
+* Self-Reported Heights
+
+&gt; Description: Self-reported heights in inches for males and females.
+
+&gt;Usage: data(heights)
+
+&gt;Format: An object of class "data.frame".
+
+&gt;Details:sex. Male or Female.
+
+&gt; height. Height in inches.
+
+]
+
+.panel[.panel-name[heights]
+.small[
+
+```r
+head(heights, 3)
+```
+
+```
+   sex height
+1 Male     75
+2 Male     70
+3 Male     68
+```
+
+```r
+# Here we have 1050 observations
+dim(heights)
+```
+
+```
+[1] 1050    2
+```
+
+So for this dataset:
+
+* **subject** is one student (possibly in some school). 
+* **population** is all students inside that school. 
+* **sample** is the 1050 students inside the dataset.
+* **variable** include: sex, height
+
+* sex is **categorical; nominal**
+
+* height is **numeric; continuous**
+
+  - Though here it seems to only include integer values.]
+
+]
+.panel[.panel-name[Small quiz]
+
+What are the types of these variables?
+
+- Number of people in each class
+
+- Letter grades
+
+- Shape of leaf
+
+- Zip code: (95618 for Davis, 95776 for Woodland)
+
+- Heights of newborn babies
+]
+
+.panel[.panel-name[solution]
+- Number of people in each class **discrete**
+
+- Letter grades **ordinal**
+
+- Shape of leaf **nominal**
+
+- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
+
+- Heights of newborn babies **continuous**
+]
+]
+
+---
+
+## Data: Lending Club
+
+- Lending Club is a platform that allows individuals to lend to other individuals
+
+- Data are available in the `openintro` package, called `loans_full_schema`
+
+- Includes 10,000 loans made through the Lending Club; has 55 columns
+
+.tiny[
+
+```r
+library(openintro)
+dplyr::glimpse(loans_full_schema) 
+```
+
+```
+Rows: 10,000
+Columns: 55
+$ emp_title                        &lt;chr&gt; "global config engineer ", "warehouse…
+$ emp_length                       &lt;dbl&gt; 3, 10, 3, 1, 10, NA, 10, 10, 10, 3, 1…
+$ state                            &lt;fct&gt; NJ, HI, WI, PA, CA, KY, MI, AZ, NV, I…
+$ homeownership                    &lt;fct&gt; MORTGAGE, RENT, RENT, RENT, RENT, OWN…
+$ annual_income                    &lt;dbl&gt; 90000, 40000, 40000, 30000, 35000, 34…
+$ verified_income                  &lt;fct&gt; Verified, Not Verified, Source Verifi…
+$ debt_to_income                   &lt;dbl&gt; 18.01, 5.04, 21.15, 10.16, 57.96, 6.4…
+$ annual_income_joint              &lt;dbl&gt; NA, NA, NA, NA, 57000, NA, 155000, NA…
+$ verification_income_joint        &lt;fct&gt; , , , , Verified, , Not Verified, , ,…
+$ debt_to_income_joint             &lt;dbl&gt; NA, NA, NA, NA, 37.66, NA, 13.12, NA,…
+$ delinq_2y                        &lt;int&gt; 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0…
+$ months_since_last_delinq         &lt;int&gt; 38, NA, 28, NA, NA, 3, NA, 19, 18, NA…
+$ earliest_credit_line             &lt;dbl&gt; 2001, 1996, 2006, 2007, 2008, 1990, 2…
+$ inquiries_last_12m               &lt;int&gt; 6, 1, 4, 0, 7, 6, 1, 1, 3, 0, 4, 4, 8…
+$ total_credit_lines               &lt;int&gt; 28, 30, 31, 4, 22, 32, 12, 30, 35, 9,…
+$ open_credit_lines                &lt;int&gt; 10, 14, 10, 4, 16, 12, 10, 15, 21, 6,…
+$ total_credit_limit               &lt;int&gt; 70795, 28800, 24193, 25400, 69839, 42…
+$ total_credit_utilized            &lt;int&gt; 38767, 4321, 16000, 4997, 52722, 3898…
+$ num_collections_last_12m         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ num_historical_failed_to_pay     &lt;int&gt; 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0…
+$ months_since_90d_late            &lt;int&gt; 38, NA, 28, NA, NA, 60, NA, 71, 18, N…
+$ current_accounts_delinq          &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ total_collection_amount_ever     &lt;int&gt; 1250, 0, 432, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ current_installment_accounts     &lt;int&gt; 2, 0, 1, 1, 1, 0, 2, 2, 6, 1, 2, 1, 2…
+$ accounts_opened_24m              &lt;int&gt; 5, 11, 13, 1, 6, 2, 1, 4, 10, 5, 6, 7…
+$ months_since_last_credit_inquiry &lt;int&gt; 5, 8, 7, 15, 4, 5, 9, 7, 4, 17, 3, 4,…
+$ num_satisfactory_accounts        &lt;int&gt; 10, 14, 10, 4, 16, 12, 10, 15, 21, 6,…
+$ num_accounts_120d_past_due       &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, NA, 0, 0, 0, 0, …
+$ num_accounts_30d_past_due        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ num_active_debit_accounts        &lt;int&gt; 2, 3, 3, 2, 10, 1, 3, 5, 11, 3, 2, 2,…
+$ total_debit_limit                &lt;int&gt; 11100, 16500, 4300, 19400, 32700, 272…
+$ num_total_cc_accounts            &lt;int&gt; 14, 24, 14, 3, 20, 27, 8, 16, 19, 7, …
+$ num_open_cc_accounts             &lt;int&gt; 8, 14, 8, 3, 15, 12, 7, 12, 14, 5, 8,…
+$ num_cc_carrying_balance          &lt;int&gt; 6, 4, 6, 2, 13, 5, 6, 10, 14, 3, 5, 3…
+$ num_mort_accounts                &lt;int&gt; 1, 0, 0, 0, 0, 3, 2, 7, 2, 0, 2, 3, 3…
+$ account_never_delinq_percent     &lt;dbl&gt; 92.9, 100.0, 93.5, 100.0, 100.0, 78.1…
+$ tax_liens                        &lt;int&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ public_record_bankrupt           &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0…
+$ loan_purpose                     &lt;fct&gt; moving, debt_consolidation, other, de…
+$ application_type                 &lt;fct&gt; individual, individual, individual, i…
+$ loan_amount                      &lt;int&gt; 28000, 5000, 2000, 21600, 23000, 5000…
+$ term                             &lt;dbl&gt; 60, 36, 36, 36, 36, 36, 60, 60, 36, 3…
+$ interest_rate                    &lt;dbl&gt; 14.07, 12.61, 17.09, 6.72, 14.07, 6.7…
+$ installment                      &lt;dbl&gt; 652.53, 167.54, 71.40, 664.19, 786.87…
+$ grade                            &lt;fct&gt; C, C, D, A, C, A, C, B, C, A, C, B, C…
+$ sub_grade                        &lt;fct&gt; C3, C1, D1, A3, C3, A3, C2, B5, C2, A…
+$ issue_month                      &lt;fct&gt; Mar-2018, Feb-2018, Feb-2018, Jan-201…
+$ loan_status                      &lt;fct&gt; Current, Current, Current, Current, C…
+$ initial_listing_status           &lt;fct&gt; whole, whole, fractional, whole, whol…
+$ disbursement_method              &lt;fct&gt; Cash, Cash, Cash, Cash, Cash, Cash, C…
+$ balance                          &lt;dbl&gt; 27015.86, 4651.37, 1824.63, 18853.26,…
+$ paid_total                       &lt;dbl&gt; 1999.330, 499.120, 281.800, 3312.890,…
+$ paid_principal                   &lt;dbl&gt; 984.14, 348.63, 175.37, 2746.74, 1569…
+$ paid_interest                    &lt;dbl&gt; 1015.19, 150.49, 106.43, 566.15, 754.…
+$ paid_late_fees                   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+```
+]
+
+???
+
+From now on we will use another dataset to illustrate how to describing the distributions.
+
+---
+
+## Selected variables
+
+
+```r
+loans &lt;- loans_full_schema %&gt;%
+  select(loan_amount, interest_rate, term, grade, 
+         state, annual_income, homeownership, debt_to_income,
+         issue_month)
+glimpse(loans)
+```
+
+```
+Rows: 10,000
+Columns: 9
+$ loan_amount    &lt;int&gt; 28000, 5000, 2000, 21600, 23000, 5000, 24000, 20000, 20…
+$ interest_rate  &lt;dbl&gt; 14.07, 12.61, 17.09, 6.72, 14.07, 6.72, 13.59, 11.99, 1…
+$ term           &lt;dbl&gt; 60, 36, 36, 36, 36, 36, 60, 60, 36, 36, 60, 60, 36, 60,…
+$ grade          &lt;fct&gt; C, C, D, A, C, A, C, B, C, A, C, B, C, B, D, D, D, F, E…
+$ state          &lt;fct&gt; NJ, HI, WI, PA, CA, KY, MI, AZ, NV, IL, IL, FL, SC, CO,…
+$ annual_income  &lt;dbl&gt; 90000, 40000, 40000, 30000, 35000, 34000, 35000, 110000…
+$ homeownership  &lt;fct&gt; MORTGAGE, RENT, RENT, RENT, RENT, OWN, MORTGAGE, MORTGA…
+$ debt_to_income &lt;dbl&gt; 18.01, 5.04, 21.15, 10.16, 57.96, 6.46, 23.66, 16.19, 3…
+$ issue_month    &lt;fct&gt; Mar-2018, Feb-2018, Feb-2018, Jan-2018, Mar-2018, Jan-2…
+```
+
+---
+
+## Selected variables
+
+.small[
+Variable        | Description
+----------------|-------------
+`loan_amount`   |	Amount of the loan received, in US dollars
+`interest_rate` |	Interest rate on the loan, in an annual percentage
+`term`	        | The length of the loan, which is always set as a whole number of months
+`grade`	        | Loan grade, which takes a values A through G and represents the quality of the loan and its likelihood of being repaid
+`state`         |	US state where the borrower resides
+`annual_income` |	Borrower’s annual income, including any second income, in US dollars
+`homeownership`	| Indicates whether the person owns, owns but has a mortgage, or rents
+`debt_to_income` | Debt-to-income ratio
+`issue_month` | Month the loan was issued
+]
+
+---
+
+## Variable types
+
+.small[
+Variable        | Description
+----------------|-------------
+`loan_amount`   |	Amount of the loan received, in US dollars
+`interest_rate` |	Interest rate on the loan, in an annual percentage
+`term`	        | The length of the loan, which is always set as a whole number of months
+`grade`	        | Loan grade, which takes a values A through G and represents the quality of the loan and its likelihood of being repaid
+`state`         |	US state where the borrower resides
+`annual_income` |	Borrower’s annual income, including any second income, in US dollars
+`homeownership`	| Indicates whether the person owns, owns but has a mortgage, or rents
+`debt_to_income` | Debt-to-income ratio
+`issue_month` | Month the loan was issued
+]
+
+- Numerical variables: Continuous or discrete?
+- Categorical: Ordinal or not? 
+
+---
+
+## Variable types
+
+Variable        | Type
+----------------|-------------
+`loan_amount`   |	numerical, continuous
+`interest_rate` |	numerical, continuous
+`term`	        | numerical, discrete
+`grade`	        | categorical, ordinal
+`state`         |	categorical, not ordinal
+`annual_income` |	numerical, continuous
+`homeownership`	| categorical, not ordinal
+`debt_to_income` | numerical, continuous
+`issue_month` | date 
+
+
+---
+
+## Following lectures: Describing numerical distributions
+
+- **Visual summaries**:
+  - Histogram
+  - Boxplot
+  - Density plot
+  - Line graph 
+  
+- Measures of **central tendency**: mean, median, mode 
+
+- **Shape**:
+    - Skewness: right-skewed, left-skewed, symmetric 
+    - Modality: unimodal, bimodal, multimodal, uniform
+
+- Measures of **Spread**: variance and standard deviation, range and interquartile range (IQR)
+
+- **Unusual observations**
+
+- A **summary statistic** is a single number summarizing a large amount of data
+
+???
+
+In the next lecture, we will start illustrating Describing numerical distributions using R. We will discuss how to describe numerical distributions using different types of visual summaries and summary statistics. We will learn about different measures of central tendency, shape, and spread, and how to interpret them. We will also discuss how to identify unusual observations and the importance of being aware of them. By the end of the lecture, students should have a good understanding of how to describe numerical distributions using visual summaries and summary statistics, and how to interpret them in a meaningful way.
 
 ---
 
 
 # Readings
 
+- [Chapter 10:Data visualization in practice](http://rafalab.dfci.harvard.edu/dsbook/gapminder.html)
 
-- [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
+- [Open Intro Statistics Chapter 1](https://www.webpages.uidaho.edu/~stevel/251/slides/os2_slides_01.pdf)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -91,7 +91,7 @@ There are three optional textbooks. They are all available online and are free.
 
   - **Homework 2**: (Due April 26 midnight, cover lecture 5-8) [Html](https://xjw1001001.github.io/homework/homework2/HW2.html) [Rmd](https://xjw1001001.github.io/homework/homework2/HW2.Rmd)
   
-### Week 3: Introduction to data visualization
+### Week 3: Introduction to data visualization, descriptive statistics
 - **Homework 1: (Due April 17 midnight)**
 
 - Mon April 17: Data visualization 1
@@ -101,19 +101,21 @@ There are three optional textbooks. They are all available online and are free.
     - [Chapter 8:ggplot2](http://rafalab.dfci.harvard.edu/dsbook/ggplot2.html)
 
     
-- Wed April 19: Data visualization 2
+- Wed April 19: Data visualization 2, descriptive statistics
   - Notes: [Lecture 8](https://xjw1001001.github.io/lecture/Lecture 8/lecture8.html)
   - Reading: 
+    - [Chapter 10:Data visualization in practice](http://rafalab.dfci.harvard.edu/dsbook/gapminder.html)
+    - [Open Intro Statistics Chapter 1](https://www.webpages.uidaho.edu/~stevel/251/slides/os2_slides_01.pdf)
 
-- Fri April 21: Descriptive statistics
+- Fri April 21: Describing numerical distributions
   - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
   - Reading: 
+  - **Homework 3**: (Due May 1 midnight, cover lecture 9-11) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
 
-  - **Homework 3**: (Due May 1 midnight, cover lecture 9-12) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
+### Week 4: Descriptive Statistics: Numerical and Categorical Data and reviews for midterm 1
 
-### Week 4: Descriptive statistics, EDA and reviews for midterm 1
-
-- Mon April 24:
+  
+- Mon April 24: Descriptive Statistics: Numerical and Categorical Data
   - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
   - Reading: 
 
@@ -128,7 +130,8 @@ There are three optional textbooks. They are all available online and are free.
   - Reading: 
 
 -  **Midterm 1: (Due April 29 midnight, cover lecture 1-12)**
-  
+  - Open book take home exam
+  - It's suggested to finish the homework 1,2,3 before midterm 1.
   
 ### Week 5: 
   
@@ -313,188 +316,5 @@ There are three optional textbooks. They are all available online and are free.
 
 -->
 
-
-
-<!-- your comment
-
----
-
-## Vocabulary of statistics
-
-* A **subject**: A person, place or thing from which we collect data.
-
-* A **population**: The collection of all subjects of interest.
-
-* A **sample**: A subset of the population, from which we have collected data
-
-> **Sample size**: number of subjects in a sample
-
-* A **variable**: A characteristic of a subject
-
----
-
-### Examples in datasets
-
-.panelset[
-.panel[.panel-name[murders]
-
-For the `murders` dataset in `dslabs` package, we take a sample of 3 states:
-
-```{r}
-library(dslabs)
-head(murders, 3)
-```
-
-* **subject** is one US state. 
-* **population** is ALL US state. 
-* **sample** is Alabama, Alaska, Arizona for this small sample presented here.
-* **variable** include: region, population, total (murders)
-
-]
-.panel[.panel-name[heights help page]
-
-For the `heights` dataset in `dslabs` package, we use help to get information of `heights` dataset
-
-```{r eval = F}
-?heights
-```
-
-* Self-Reported Heights
-
-> Description: Self-reported heights in inches for males and females.
-
->Usage: data(heights)
-
->Format: An object of class "data.frame".
-
->Details:sex. Male or Female.
-
-> height. Height in inches.
-
-]
-
-.panel[.panel-name[heights]
-
-```{r}
-head(heights, 3)
-# Here we have 1050 observations
-dim(heights)
-```
-
-So for this dataset:
-
-* **subject** is one student (possibly in some school). 
-* **population** is all students inside that school. 
-* **sample** is the 1050 students inside the dataset.
-* **variable** include: sex, height
-]
-.panel[.panel-name[Sample VS population]
-
-* Sample is a subgroup of population!
-
-* Ideally, a sample should be **representative** of the population.
-
-```{r echo=FALSE, out.width="100%"}
-#knitr::include_graphics("img/sample-size-definition.png")
-```
-
-]
-]
-
----
-
-## Terminology: Number of variables involved
-
-- **Univariate** data analysis: distribution of single variable
-
-- **Bivariate** data analysis: relationship between two variables
-
-- **Multivariate** data analysis: relationship between many variables at once, usually focusing on the relationship between two while conditioning for others
-
----
-
-### Type of variables
-
-In statistics, different types of variables are analyzed in different ways.
-
-.panelset[
-.panel[.panel-name[Concepts]
-
-* The four main types are: 
-
-* **Categorical** variables: (*Not a number*)
-
-    - **Nominmal**: categorical variables with no inherent order. Examples: gender, ethnicity, and religion.
-    
-    > All genders, ethnicity, religions are equal!
-    
-    - **Ordinal**: categorical variables with a natural order or ranking. Examples: education level (e.g., high school, college, graduate school)
-    
-* **Numerical** variables: (*Numbers*)
-    
-    - **Continuous**: Numbers can take any value
-    
-    - **Discrete**: Numbers can only take on a *finite* or *countably infinite set* of possible values
-
-]
-.panel[.panel-name[murders]
-
-In murders dataset:
-
-```{r}
-head(murders, 3)
-```
-
-* abb, region are categorical; nominal
-
-* population and total are numeric; discrete
-
-]
-
-.panel[.panel-name[heights]
-
-```{r}
-head(heights)
-```
-
-
-* sex is categorical; nominal
-
-* height is numeric; continuous
-
-  - Though here it seems to only include integer values.
-
-]
-.panel[.panel-name[Small quiz]
-
-What are the types of these variables?
-
-- Number of people in each class
-
-- Letter grades
-
-- Shape of leaf
-
-- Zip code: (95618 for Davis, 95776 for Woodland)
-
-- Heights of newborn babies
-]
-
-.panel[.panel-name[solution]
-- Number of people in each class **discrete**
-
-- Letter grades **ordinal**
-
-- Shape of leaf **nominal**
-
-- Zip code: (95618 for Davis, 95776 for Woodland) **nominal**
-
-- Heights of newborn babies **continuous**
-]
-]
----
-
-
--->
 
 
