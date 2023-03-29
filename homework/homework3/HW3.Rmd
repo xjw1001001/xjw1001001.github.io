@@ -1,0 +1,77 @@
+---
+title: "STA 032 Homework 3"
+author: "CHANGE YOUR NAME HERE"
+date: "DUE: May 3 2023, 12PM"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and homework number (e.g., `xjw18_hw3.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. When asked, answer must be supported by written statements as well as any code used. 
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ Students may choose to collaborate with each other on the homework, but must clearly indicate with whom they collaborated. Every student must upload their own submission.
+
++ Start to work on it as early as possible. Finishing this homework can help prepare midterm 1.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file.
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+```
+
+# Level 1 Parts
+
+If you have not installed these packages, please install them by uncommenting the code. You only need to install the package once.
+
+```{r}
+#install.packages("ggplot2")
+#install.packages("tidyverse")
+#install.packages("ggthemes")
+#install.packages("ggrepel")
+#install.packages("NHANES")
+#install.packages("nycflights13")
+```
+
+## Problem 1: Baby names (Operations on Data Frames)
+
+Here we load the baby names data for you.
+
+```{r}
+myfile <- "https://raw.githubusercontent.com/xjw1001001/xjw1001001.github.io/main/data/homework%20data/baby_names.csv"
+data = read.csv(myfile)
+```
+
+
+
+
+
+## Include the person you coop with:
+
+Names:
+
+## Appendix
+
+```{r eval = TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+
