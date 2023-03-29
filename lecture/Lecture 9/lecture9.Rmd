@@ -616,15 +616,14 @@ Boxplots are particularly useful for identifying outliers and understanding the 
 ## Boxplots 
 
 * Boxplot provide a concise summary of the data
-```{r echo=FALSE, out.width="80%"}
-knitr::include_graphics("img/boxHist.png")
-```
+
+![](https://d33wubrfki0l68.cloudfront.net/153b9af53b33918353fda9b691ded68cd7f62f51/5b616/images/eda-boxplot.png)
 
 ???
 
 Boxplots, also known as box-and-whisker plots, are a type of visualization that displays the distribution of a numerical variable. They provide a quick and effective way to visualize the five-number summary of a dataset, including the minimum and maximum values, the median, and the first and third quartiles. Boxplots are particularly useful for identifying outliers and understanding the spread of the data. 
 
-From this picture we know how Boxplot provide a concise summary of the data
+From this picture we know how Boxplot provide a concise summary of the data.
 
 ---
 

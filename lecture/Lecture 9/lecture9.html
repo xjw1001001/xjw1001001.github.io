@@ -678,13 +678,14 @@ Boxplots are particularly useful for identifying outliers and understanding the 
 ## Boxplots 
 
 * Boxplot provide a concise summary of the data
-&lt;img src="img/boxHist.png" width="80%" /&gt;
+
+![](https://d33wubrfki0l68.cloudfront.net/153b9af53b33918353fda9b691ded68cd7f62f51/5b616/images/eda-boxplot.png)
 
 ???
 
 Boxplots, also known as box-and-whisker plots, are a type of visualization that displays the distribution of a numerical variable. They provide a quick and effective way to visualize the five-number summary of a dataset, including the minimum and maximum values, the median, and the first and third quartiles. Boxplots are particularly useful for identifying outliers and understanding the spread of the data. 
 
-From this picture we know how Boxplot provide a concise summary of the data
+From this picture we know how Boxplot provide a concise summary of the data.
 
 ---
 
@@ -699,7 +700,7 @@ ggplot(loans, aes(x = annual_income)) +
   scale_y_continuous(breaks = NULL)
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-24-1.png" width="504" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-23-1.png" width="504" /&gt;
 
 ???
 
@@ -715,7 +716,7 @@ ggplot(loans, aes(x = loan_amount)) +
   geom_boxplot()
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-25-1.png" width="100%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-24-1.png" width="100%" /&gt;
 ]
 
 .pull-right[
@@ -724,7 +725,7 @@ ggplot(loans, aes(x = loan_amount)) +
 boxplot(loans$loan_amount)
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-26-1.png" width="100%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-25-1.png" width="100%" /&gt;
 ]
 ]
 
@@ -740,7 +741,7 @@ We saw `scale_y_continuous(breaks = NULL)` earlier
 
 .panelset[
 .panel[.panel-name[Plot]
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-27-1.png" width="504" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
 ]
 .panel[.panel-name[Code]
 
@@ -774,7 +775,7 @@ ggplot(loans, aes(x = loan_amount)) +
   geom_density()
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-28-1.png" width="100%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-27-1.png" width="100%" /&gt;
 ]
 
 .pull-right[
@@ -783,7 +784,7 @@ ggplot(loans, aes(x = loan_amount)) +
 plot(density(loans$loan_amount))
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-29-1.png" width="100%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-28-1.png" width="100%" /&gt;
 ]
 ]
 
@@ -805,7 +806,7 @@ ggplot(loans, aes(x = loan_amount)) +
   geom_density(adjust = 0.5)
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-30-1.png" width="50%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-29-1.png" width="50%" /&gt;
 ]
 .panel[.panel-name[adjust = 1]
 
@@ -814,7 +815,7 @@ ggplot(loans, aes(x = loan_amount)) +
   geom_density(adjust = 1) # default bandwidth
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-31-1.png" width="50%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-30-1.png" width="50%" /&gt;
 ]
 .panel[.panel-name[adjust = 2]
 
@@ -823,7 +824,7 @@ ggplot(loans, aes(x = loan_amount)) +
   geom_density(adjust = 2)
 ```
 
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-32-1.png" width="50%" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-31-1.png" width="50%" /&gt;
 ]
 ]
 
@@ -836,7 +837,7 @@ One important aspect of density plots is the bandwidth, which determines the wid
 
 .panelset[
 .panel[.panel-name[Plot]
-&lt;img src="lecture9_files/figure-html/unnamed-chunk-33-1.png" width="504" /&gt;
+&lt;img src="lecture9_files/figure-html/unnamed-chunk-32-1.png" width="504" /&gt;
 ]
 .panel[.panel-name[Code]
 

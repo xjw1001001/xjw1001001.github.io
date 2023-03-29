@@ -115,10 +115,10 @@ There are three optional textbooks. They are all available online and are free.
 
 ### Week 4: Descriptive Statistics: Numerical and Categorical Data
 
-- Mon April 24: Descriptive Statistics: Numerical and Categorical Data
+- Mon April 24: Describing Numerical and Categorical Data
   - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
   - Reading: 
-
+    - R for Data Science Chapter 7
     
 - Wed April 26:
   - Notes: [Lecture 11](https://xjw1001001.github.io/lecture/Lecture 11/lecture11.html)
