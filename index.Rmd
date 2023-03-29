@@ -128,7 +128,7 @@ There are three optional textbooks. They are all available online and are free.
     - [Chapter 11 Data visualization principles](http://rafalab.dfci.harvard.edu/dsbook/data-visualization-principles.html)
   - **Homework 2: (Due April 26 midnight)**
 
-- Fri April 28: 
+- Fri April 28: Introduction to Probability
   - Notes: [Lecture 12](https://xjw1001001.github.io/lecture/Lecture 12/lecture12.html)
   - Reading: 
 
