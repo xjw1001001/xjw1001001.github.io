@@ -111,7 +111,7 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 9](https://xjw1001001.github.io/lecture/Lecture 9/lecture9.html)
   - Reading:
     - [Open Intro Statistics Chapter 1](https://www.webpages.uidaho.edu/~stevel/251/slides/os2_slides_01.pdf)
-  - **Homework 3**: (Due May 1 midnight, cover lecture 9-11) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
+  - **Homework 3**: (Due May 3 midnight, cover lecture 9-11) [Html](https://xjw1001001.github.io/homework/homework3/HW3.html) [Rmd](https://xjw1001001.github.io/homework/homework3/HW3.Rmd)
 
 ### Week 4: Descriptive Statistics: Numerical and Categorical Data
 
@@ -119,10 +119,13 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
   - Reading: 
     - R for Data Science Chapter 7
+    - [Chapter 9 Visualizing data distributions](http://rafalab.dfci.harvard.edu/dsbook/dataviz-distributions.html)
     
-- Wed April 26:
+- Wed April 26: Describing Numerical and Categorical Data, customizing plots
   - Notes: [Lecture 11](https://xjw1001001.github.io/lecture/Lecture 11/lecture11.html)
   - Reading: 
+    - [Chapter 10 Data visualization in practice](http://rafalab.dfci.harvard.edu/dsbook/gapminder.html)
+    - [Chapter 11 Data visualization principles](http://rafalab.dfci.harvard.edu/dsbook/data-visualization-principles.html)
   - **Homework 2: (Due April 26 midnight)**
 
 - Fri April 28: 

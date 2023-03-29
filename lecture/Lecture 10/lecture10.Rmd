@@ -655,16 +655,14 @@ But often, we also want to include row and column totals. To do this, we can use
 The resulting table shows the frequency distribution of the two variables, as well as the row and column totals.
 
 ---
-## Contingency tables with proportions
-- Sometimes, proportions might be more useful than totals
 
-- Row proportions are the proportion out of **row totals**
+## Another way
 
-- Column proportions are the proportion out of **column totals**
+```{r}
+outTable <- xtabs(~ homeownership + grade, data = loans_full_schema)
+addmargins(outTable)
+```
 
-- How do we code **row proportions** in R?
-
-- How about **column proportions**?
 
 ---
 ## Summary
@@ -687,4 +685,12 @@ The resulting table shows the frequency distribution of the two variables, as we
 - Relationships between categorical data
 
   - Contingency tables
+  
+---
+
+## Readings
+
+- [Chapter 9 Visualizing data distributions](http://rafalab.dfci.harvard.edu/dsbook/dataviz-distributions.html)
+
+- R for Data Science Chapter 7
   
