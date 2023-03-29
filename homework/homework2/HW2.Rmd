@@ -31,6 +31,18 @@ knitr::opts_chunk$set(
 
 # Level 1 Parts
 
+If you have not installed these packages, please install them by uncommenting the code. You only need to install the package once.
+
+```{r}
+#install.packages("ggplot2")
+#install.packages("tidyverse")
+#install.packages("ggthemes")
+#install.packages("ggrepel")
+#install.packages("NHANES")
+#install.packages("nycflights13")
+```
+
+
 ## Problem 1: Manipulating data frames
 
 1\. Load the __dplyr__ package and the murders dataset. (In future courses before your project you need to write these code yourself to include package and dataset)
