@@ -1,8 +1,8 @@
 ---
 title: "Describing Numerical and Categorical Data"
-subtitle: "<br><br> STA 032: Gateway to data science Lecture 10"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 11"
 author: "Jingwei Xiong"
-date: April 24, 2023
+date: April 26, 2023
 output:
   xaringan::moon_reader:
     # css: [default, metropolis, metropolis-fonts]
@@ -18,7 +18,7 @@ output:
 
 ```{r, echo = FALSE, eval = FALSE}
 library(renderthis)
-to_pdf(from = "lecture10.html",complex_slides = TRUE)
+to_pdf(from = "lecture11.html",complex_slides = TRUE)
 ```
 
 
@@ -60,7 +60,7 @@ loans <- loans_full_schema %>%
 
 - HW 2 due April 26 12pm.
 
-- HW 3 due May 1 12pm.
+- HW 3 due May 3 12pm.
   - Please start the homework as soon as possible.
   
 - **Midterm 1** (Open book, take home, approximate 2 hours, time limit 5 hours) 
@@ -191,6 +191,7 @@ We have seen some examples of scatterplots in previous lectures, for instance, o
 Let's take a look at an example scatterplot on this slide, where we are plotting the interest rate against the debt-to-income ratio for Lending Club loans.
 
 A small question, Do you remember how to change the theme? 
+
 ---
 
 
@@ -653,18 +654,6 @@ outTableTotals
 But often, we also want to include row and column totals. To do this, we can use the rowSums() and colSums() functions to compute the totals, and then combine these with the original table using cbind() and rbind().
 
 The resulting table shows the frequency distribution of the two variables, as well as the row and column totals.
-
----
-## Contingency tables with proportions
-- Sometimes, proportions might be more useful than totals
-
-- Row proportions are the proportion out of **row totals**
-
-- Column proportions are the proportion out of **column totals**
-
-- How do we code **row proportions** in R?
-
-- How about **column proportions**?
 
 ---
 ## Summary
