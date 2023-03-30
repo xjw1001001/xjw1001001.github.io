@@ -49,6 +49,8 @@ library(unvotes)
 
 - Data manipulation using tidyverse
 
+- Logical conditions in R
+
 
 ???
 

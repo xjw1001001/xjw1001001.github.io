@@ -64,7 +64,17 @@ We can write `population` rather than `murders$population`. The function `mutate
 
 Use the function `mutate` to add a murders column named `rate` with the per 100,000 murder rate as in the example code above. Make sure you redefine `murders` as done in the example code above ( murders <- [your code]) so we can keep using this variable.
 
+```{r}
+murders <- mutate(murders, 
+  rate = total / population * 10^6)
+```
+
 2\. If `rank(x)` gives you the ranks of `x` from lowest to highest, `rank(-x)` gives you the ranks from highest to lowest. Use the function `mutate` to add a column `rank` containing the rank, from highest to lowest murder rate. Make sure you redefine `murders` so we can keep using this variable.
+
+```{r}
+murders <- mutate(murders, 
+  rank = rank(-rate))
+```
 
 3\. With __dplyr__, we can use `select` to show only certain columns. For example, with this code we would only show the states and population sizes:
 
@@ -75,7 +85,7 @@ select(murders, state, population) |> head()
 Use `select` to show the state names and abbreviations in `murders`. Do not redefine `murders`, just show the results.
 
 ```{r}
-
+select(murders, state, abb) |> head()
 ```
 
 
@@ -90,7 +100,12 @@ You can use other logical vectors to filter rows.
 
 Use `filter` to show the top 5 states with the highest murder rates. After we add murder rate and rank, do not change the murders dataset, just show the result. Remember that you can filter based on the `rank` column.
 
- 
+```{r}
+filter(murders, rank > 51-5)
+```
+
+
+
 5\. We can remove rows using the `!=` operator. For example, to remove Florida, we would do this:
 
 ```{r}
@@ -100,6 +115,11 @@ no_florida <- filter(murders, state != "Florida")
 Create a new data frame called `no_south` that removes states from the South region. How many states are in this category? You can use the function `nrow` for this.
 
 
+```{r}
+no_south = filter(murders, region != "South")
+nrow(no_south)
+```
+
 6\. We can also use `%in%` to filter with __dplyr__. You can therefore see the data from New York and Texas like this:
 
 ```{r}
@@ -108,6 +128,10 @@ filter(murders, state %in% c("New York", "Texas"))
 
 Create a new data frame called `murders_nw` with only the states from the Northeast and the West.  How many states are in this category? 
 
+```{r}
+murders_nw = filter(murders, region %in% c("Northeast", "West"))
+nrow(murders_nw)
+```
 
 7\. Suppose you want to live in the Northeast or West **and** want the murder rate to be less than 10. We want to see the data for the states satisfying these options. Note that you can use logical operators with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
 
@@ -116,6 +140,12 @@ filter(murders, population < 5000000 & region == "Northeast")
 ```
 
 Make sure `murders` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: it is in the Northeast or West and the murder rate is less than 10.  Use `select` to show only the state name, the rate, and the rank.
+
+```{r}
+my_states = filter(murders, 
+  rate < 10 & region %in% c("Northeast","West"))
+select(my_states, state, rate, rank)
+```
 
 ## Problem 2: Pipes
 
@@ -126,6 +156,15 @@ my_states <- murders |>
   mutate SOMETHING |> 
   filter SOMETHING |> 
   select SOMETHING
+```
+
+```{r}
+data(murders)
+my_states <- murders |>
+  mutate(rate =  total / population * 100000,
+         rank = rank(-rate)) |> 
+  filter(region %in% c("Northeast", "West") &  rate < 10) |> 
+  select(state, rate, rank)
 ```
 
 ## Problem 3: filter
@@ -168,15 +207,39 @@ Find all flights that
 
 1. Had an arrival delay of two or more hours
 
+```{r}
+filter(flights, dep_delay >= 2) %>% dim()
+```
+
 2. Flew to Houston (IAH or HOU)
+
+```{r}
+filter(flights, dest == "IAH" | dest == "HOU") %>% dim()
+```
 
 3. Were operated by United, American, or Delta
 
+```{r}
+filter(flights, carrier %in% c("UA","AA","DL")) %>% dim()
+```
+
 4. Departed in summer (July, August, and September)
+
+```{r}
+filter(flights, month %in% c(7,8,9)) %>% dim()
+```
 
 5. Arrived more than two hours late, but didn’t leave late
 
-6. Were delayed by at least 30 minutes, but made up over 30 minutes in flight
+```{r}
+filter(flights, arr_delay >= 120 & dep_delay <= 0) %>% dim()
+```
+
+6. Were delayed by at 30 minutes, but made up over 30 minutes in flight
+
+```{r}
+filter(flights, arr_delay <= -30 & dep_delay >= 60) %>% dim()
+```
 
 In each of the problem, only show the `dim(result)` where result is your result for each sub problem. 
 
@@ -206,54 +269,71 @@ p <- ggplot(murders)
 
 and we can also use the pipe:
 
-```{r}
+```{r,}
 p <- murders |> ggplot()
 ```
 
 What is class of the object `p`?
 
+```{r}
+class(p)
+```
  
 2\. Remember that to print an object you can use the command `print` or simply type the object. 
 Print the object `p` defined in exercise one and describe what you see.
 
 a. Nothing happens.
-b. A blank slate plot.
+b. **A blank slate plot.**
 c. A scatterplot.
 d. A histogram.
 
+
 3\. Using the pipe `|>`, create an object `p` but this time associated with the `heights` dataset instead of the `murders` dataset. 
 
-   
+```{r}
+p <- heights |> ggplot()
+```
+
+
 4\. Now we are going to add a layer and the corresponding aesthetic mappings. For the murders data we plotted total murders versus population sizes. Explore the `murders` data frame to remind yourself what are the names for these two variables and select the correct answer. __Hint__: Look at `?murders`.
 
 a. `state` and `abb`.
 b. `total_murders` and `population_size`.
-c. `total` and `population`.
+c. **`total` and `population`.**
 d. `murders` and `size`.
 
 5\. To create the scatterplot we add a layer with `geom_point`. The aesthetic mappings require us to define the x-axis and y-axis variables, respectively. So the code looks like this:
 
-```
+```{r, eval=FALSE}
 murders |> ggplot(aes(x = , y = )) +
   geom_point()
 ```
 
 except we have to define the two variables `x` and `y`. Fill this out with the correct variable names.
 
+```{r, eval=FALSE}
+murders |> ggplot(aes(x = total, y =population )) +
+  geom_point()
+```
+
 
 6\. Note that if we don't use argument names, we can obtain the same plot by making sure we enter the variable names in the right order like this:
 
-```
+```{r, eval=FALSE}
 murders |> ggplot(aes(population, total)) +
   geom_point()
 ```
 
 Remake the plot but now with total in the x-axis and population in the y-axis.
 
+```{r, eval=FALSE}
+murders |> ggplot(aes(total,population)) +
+  geom_point()
+```
 
 7\. If instead of points we want to add text, we can use the `geom_text()` or `geom_label()` geometries. The following code 
 
-```
+```{r, eval=FALSE}
 murders |> ggplot(aes(population, total)) + geom_label()
 ```
 
@@ -262,12 +342,16 @@ will give us the error message: `Error: geom_label requires the following missin
 Why is this?
 
 a. We need to map a character to each point through the label argument in aes.
-b. We need to let `geom_label` know what character to use in the plot.
+b. **We need to let `geom_label` know what character to use in the plot.**
 c. The `geom_label` geometry does not require  x-axis and y-axis values.
 d. `geom_label` is not a ggplot2 command.
 
 
 8\. Rewrite the code above to use abbreviation as the label through `aes`
+
+```{r, eval=FALSE}
+murders |> ggplot(aes(population, total)) + geom_label(aes(label = abb))
+```
 
 
 9\. Change the color of the labels to blue. How will we do this?
@@ -275,25 +359,32 @@ d. `geom_label` is not a ggplot2 command.
 a. Adding a column called `blue` to `murders`.
 b. Because each label needs a different color we map the colors through `aes`.
 c. Use the `color` argument in `ggplot`.
-d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`.
+d. **Because we want all colors to be blue, we do not need to map colors in the aes(), just use the color argument in `geom_label` as color = "blue".**
 
 
 10\. Rewrite the code above to make the labels blue.
 
+```{r, eval=FALSE}
+murders |> ggplot(aes(population, total)) + geom_label(aes(label = abb), color = "blue")
+```
 
 11\. Now suppose we want to use color to represent the different regions. In this case which of the following is most appropriate:
 
 a. Adding a column called `color` to `murders` with the color we want to use.
-b. Because each label needs a different color we map the colors through the color argument of `aes` .
+b. **Because each label needs a different color we map the colors through the color argument of `aes` .**
 c. Use the `color` argument in `ggplot`.
 d. Because we want all colors to be blue, we do not need to map colors, just use the color argument in `geom_label`.
 
 
 12\. Rewrite the code above to make the labels' color be determined by the state's region.
 
+```{r, eval=FALSE}
+murders |> ggplot(aes(population, total)) + geom_label(aes(label = abb, color = region))
+```
+
 13\. Now we are going to change the x-axis to a log scale to account for the fact the distribution of population is skewed. Let's start by defining an object `p` holding the plot we have made up to now
 
-```
+```{r, eval=FALSE}
 p <- murders |> 
   ggplot(aes(population, total, label = abb, color = region)) +
   geom_label() 
@@ -301,9 +392,36 @@ p <- murders |>
 
 To change the y-axis to a log scale we learned about the `scale_x_log10()` function. Add this layer to the object `p` to change the scale and render the plot.
 
+```{r, eval=FALSE}
+p <- murders |> 
+  ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label() +
+  scale_x_log10()
+p
+```
+
 14\. Repeat the previous exercise but now change both axes to be in the log scale.
 
+```{r, eval=FALSE}
+p <- murders |> 
+  ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label() +
+  scale_x_log10() +
+  scale_y_log10() 
+p
+```
+
 15\. Now edit the code above to add the title "Gun murder data" to the plot. Hint: use the `ggtitle` function.
+
+```{r, eval=FALSE}
+p <- murders |> 
+  ggplot(aes(population, total, label = abb, color = region)) +
+  geom_label() +
+  scale_x_log10() +
+  scale_y_log10() +
+  ggtitle("Gun murder data")
+p
+```
 
 # Level 2 parts
 
@@ -338,16 +456,61 @@ Let's now explore the NHANES data.
 
 Hint: Use `filter` and `summarize` and use the `na.rm = TRUE` argument when computing the average and standard deviation. You can also filter the NA values using `filter`.
 
+```{r}
+NHANES |> filter(Gender == "female" &
+              AgeDecade == " 20-29") |>
+  summarize(avg = mean(BPSysAve, na.rm = TRUE),
+            std = sd(BPSysAve, na.rm = TRUE))
+```
+
 2\. Using a pipe, assign the average to a numeric variable `ref_avg`. Hint: Use the code similar to above and then `pull`.
 
+```{r}
+ref_avg = NHANES |> 
+  filter(Gender == "female" &
+              AgeDecade == " 20-29") |>
+  summarize(avg = mean(BPSysAve, na.rm = TRUE),
+            std = sd(BPSysAve, na.rm = TRUE)) |>
+  pull(avg)
+```
 
 3\. Now report the min and max values for the same group.
 
+```{r}
+NHANES |> filter(Gender == "female" &
+              AgeDecade == " 20-29") |>
+  summarize(min = min(BPSysAve, na.rm = TRUE),
+            max = max(BPSysAve, na.rm = TRUE))
+```
+
 4\. Compute the average and standard deviation for females, but for each age group separately rather than a selected decade as in question 1. Note that the age groups are defined by `AgeDecade`. Hint: rather than filtering by age and gender, filter by `Gender` and then use `group_by`.
+
+```{r}
+NHANES |> 
+  filter(Gender == "female") |>
+  group_by(AgeDecade) |>
+  summarize(avg = mean(BPSysAve, na.rm = TRUE),
+            std = sd(BPSysAve, na.rm = TRUE))
+```
 
 5\. We can actually combine both gender summaries into one line of code. This is because `group_by` permits us to group by more than one variable. Obtain one big summary table using `group_by(AgeDecade, Gender)`.
 
+```{r}
+NHANES |> 
+  group_by(Gender, AgeDecade) |>
+  summarize(avg = mean(BPSysAve, na.rm = TRUE),
+            std = sd(BPSysAve, na.rm = TRUE))
+```
+
 6\. For males between the ages of 40-49, summarise the average systolic blood pressure across race as reported in the `Race1` variable. Order the resulting table from lowest to highest average systolic blood pressure. hint: `arrange()`
+
+```{r}
+NHANES |> 
+  filter(Gender == "male" & AgeDecade == " 40-49") |>
+  group_by(Race1) |>
+  summarise(avg = mean(BPSysAve, na.rm = TRUE)) |>
+  arrange(avg)
+```
 
 ## Problem 6: Data visualization 2, GDP and life expectancy
 
@@ -369,6 +532,8 @@ head(data)
 
 1\. Construct a scatterplot of `Life.Expectancy` against `GDP.per.capita`; each point corresponds to one country in one year. Change the X axis into 'GDP per capita' and Y axis into 'Life Expectancy at Birth'. Change the title into 'Scatterplot of life expectancy at birth against GDP per capita'. Change the scale of X axis into log2 scale. 
 
+
+
 Name the plot object as `p`. Show the plot by call `p` like this:
 
 ```
@@ -384,6 +549,17 @@ p
 * Hint: `trans='log2'` inside some function's (). What's that function?
 
 
+```{r}
+p = ggplot(data, aes(x = GDP.per.capita,
+                     y = Life.Expectancy)) +
+    geom_point(alpha = 0.8) +
+    scale_x_continuous(trans = 'log2', 
+                       name = 'GDP per capita') +
+    labs(title = 'Scatterplot of life expectancy at birth against GDP per capita',
+         y = 'Life Expectancy at Birth')
+p
+```
+
 
 2\. Map Year (as nominal) to color in part 1 plot. Change the opacity of all points into 0.8. (`alpha`=0.8 in `geom_point()`) Does this color give you any information?
 
@@ -391,15 +567,51 @@ p
 
 * Start from the part 1 code. Just make a small modification in `aes` part will be able to do that.
 
+```{r}
+p = ggplot(data, aes(x = GDP.per.capita, y = Life.Expectancy, color = Year)) +
+    geom_point(alpha = 0.8) +
+    scale_x_continuous(trans = 'log2', name = 'GDP per capita') +
+    labs(title = 'Scatterplot of life expectancy at birth against GDP per capita',
+         y = 'Life Expectancy at Birth')
+p
+```
+
+
 3\. Instead, map region to color, population to size in the `aes()`. Change the opacity of all points into 0.8. Does this plot give you more information?
 
+```{r}
+p = ggplot(data, aes(x = GDP.per.capita,
+                     y = Life.Expectancy,
+                     color = region, size = Population)) +
+    geom_point(alpha = 0.8) +
+    scale_x_continuous(trans = 'log2', name = 'GDP per capita') +
+    labs(title = 'Scatterplot of life expectancy at birth against GDP per capita',
+         y = 'Life Expectancy at Birth')
+p
+```
+
+
 4\. Now based on the part 3 plot, facet by the year. Use `facet_wrap`.
+
+```{r}
+p = ggplot(data, aes(x = GDP.per.capita, 
+                     y = Life.Expectancy,
+                     color = region, size = Population)) +
+    geom_point(alpha = 0.8) +
+    scale_x_continuous(trans = 'log2', name = 'GDP per capita') +
+    labs(title = 'Scatterplot of life expectancy at birth against GDP per capita',
+         y = 'Life Expectancy at Birth') +
+    facet_wrap(~Year, ncol = 2)
+p
+```
+
+
 
 5\. Apply a new theme from the ggthemes package.
 
 ```{r}
 library(ggthemes)
-
+p + theme_fivethirtyeight()
 ```
 
 6\. Use ggrepel to label the countries in the country list:
@@ -421,6 +633,23 @@ geom_text_repel(data =
        force = 1.5) + 
        facet_wrap(~Year, ncol = 2)
 ```
+
+```{r}
+p = ggplot(data, aes(x = GDP.per.capita, 
+                     y = Life.Expectancy)) +
+    geom_point(aes(color = region, size = Population),
+               alpha = 0.8) +
+    scale_x_continuous(trans = 'log2', name = 'GDP per capita') +
+    labs(title = 'Scatterplot of life expectancy at birth against GDP per capita',
+         y = 'Life Expectancy at Birth') +
+    geom_text_repel(data = 
+       subset(data, Country.Name %in% country_list),
+       aes(label = Country.Name),
+       box.padding = 0.5, max.overlaps = Inf,
+       force = 1.5) + facet_wrap(~Year, ncol = 2)
+p
+```
+
 
 ## Include the person you coop with:
 
