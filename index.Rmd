@@ -134,7 +134,7 @@ There are three optional textbooks. They are all available online and are free.
 
 -  **Midterm 1: (Due April 29 midnight, cover lecture 1-12)**
   - Open book take home exam
-  - It's suggested to finish the homework 1,2,3 before midterm 1.
+  - It's **highly recommended** to finish the homework 1,2,3 before midterm 1.
   
 ### Week 5: 
   
