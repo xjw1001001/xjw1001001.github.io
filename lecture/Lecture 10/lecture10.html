@@ -63,7 +63,6 @@ class: center, middle, inverse, title-slide
   
 - **Midterm 1** (Open book, take home, approximate 2 hours, time limit 5 hours) 
   - **Due April 29 midnight, cover lecture 1-12**
-  - **Will not cover the Level 2 part of Homework 3**
   - Preparing guides: Finish Homework 1-3, be familiar to the lecture slides.
   - You can copy any your own codes in homework 1-3 to finish the open book exam.
   
@@ -652,6 +651,82 @@ Changing the vjust to a negative value will make the number on the top of the ba
 
 ???
 In this example, we are using the diamonds dataset, and we want to create a barplot of the cut variable. We start by creating the basic barplot using geom_bar(). Then we use the geom_text() function to add the count numbers to the bars. We specify the label aesthetic to be ..count.. and use the stat = "count" argument to tell ggplot2 to count the number of observations in each group. Finally, we adjust the vertical justification of the text using the vjust argument. In this case, we set it to 1.5 to place the text just above the top of the bars.
+
+---
+
+#### GGplot bar plot from 2 types of datasets
+
+.panelset[
+.panel[.panel-name[Overview]
+There are 2 types of data to construct bar plot.
+
+  - Each row is 1 observation, with a column indicating category.
+  
+  - Here we use the case 1 code.
+
+  - Each row is 1 category, with a row indicating the counts/totals
+
+  - Here we have to use the case 2 code, `ggplot(T1, aes(x = homeownership, y = n))` +
+  `geom_bar(stat = "identity")`
+]
+.panel[.panel-name[Column is Category]
+
+.tiny[
+
+```r
+head(loans)
+```
+
+```
+# A tibble: 6 × 9
+  loan_amount interest_rate  term grade state annual_i…¹ homeo…² debt_…³ issue…⁴
+        &lt;int&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;      &lt;dbl&gt; &lt;fct&gt;     &lt;dbl&gt; &lt;fct&gt;  
+1       28000         14.1     60 C     NJ         90000 MORTGA…   18.0  Mar-20…
+2        5000         12.6     36 C     HI         40000 RENT       5.04 Feb-20…
+3        2000         17.1     36 D     WI         40000 RENT      21.2  Feb-20…
+4       21600          6.72    36 A     PA         30000 RENT      10.2  Jan-20…
+5       23000         14.1     36 C     CA         35000 RENT      58.0  Mar-20…
+6        5000          6.72    36 A     KY         34000 OWN        6.46 Jan-20…
+# … with abbreviated variable names ¹​annual_income, ²​homeownership,
+#   ³​debt_to_income, ⁴​issue_month
+```
+
+```r
+ggplot(loans, aes(x = homeownership)) +
+  geom_bar()
+```
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-25-1.png" width="504" /&gt;
+]
+]
+.panel[.panel-name[Column is count]
+.tiny[
+
+```r
+T1 = loans %&gt;% count(homeownership)
+T1
+```
+
+```
+# A tibble: 3 × 2
+  homeownership     n
+  &lt;fct&gt;         &lt;int&gt;
+1 MORTGAGE       4789
+2 OWN            1353
+3 RENT           3858
+```
+
+```r
+*ggplot(T1, aes(x = homeownership, y = n)) +
+* geom_bar(stat = "identity")
+```
+
+&lt;img src="lecture10_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
+]
+]]
+???
+
+There are 2 types of data to construct bar plot. One is category in the column, each row stands for 1 observation. Another is Each row is 1 category, with a row indicating the counts/totals.
 
 ---
 ## Contingency tables

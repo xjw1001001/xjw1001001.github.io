@@ -58,23 +58,32 @@ State True or False for each of the statements. Then provide your reason.
 
 1. For a sample dataset, it is not possible for the first quartile to equal the median.
 
+* FALSE. If, for example, the entire dataset was the same value repeated, the median and first quartile could equal
+eachother.
 
 2. If the sample correlation for variable X and Y is zero, then the variable X and Y does not have any relationship.
 
+* FALSE. A correlation of zero means there is no linear relationship between the variables X and Y, but can be non-linear relationship.
 
 3. The standard deviation must always be larger than the mean. 
 
+* FALSE. The standard deviation can be smaller or larger than the mean, depending on the spread of the dataset.
 
 4. Outliers have a strong influence on the standard deviation of a dataset.
 
+* TRUE. Outliers can strongly influence the standard deviation because the standard deviation is based on the deviation of each value from the mean.
 
 5. The salaries of all persons employed by a large university is left skewed.
 
+* FALSE. Only a few will make lot of money, so right skewed.
+
 6. The amounts of the time spent by students on a difficult examination is left skewed.
 
+* TRUE. Most of the student will take a lot of time, so left skewed.
 
 7. We use R to calculate the mean and variance of the student heights in the dataset `heights`. Mean is `mean(heights$height)=68.32` and variance is `var(heights$height)=16.64`. So the population mean is 68.32 and population variance is 16.64.
 
+* FALSE. The calculations using heights give the sample mean and sample variance, not the population mean and population variance. We cannot know the population parameters without data from the entire population.
 
 ## Problem 2: Baby names (Operations on Data Frames)
 
@@ -90,18 +99,42 @@ For this problem, use the dataframe output or function output is enough. No need
 
 1\. What's the dimension of `baby_names`? How many observations (rows) are Male and how many observations (rows) are Female?
 
+```{r}
+# Get the dimensions of the data frame
+dim(data)
+# Count the number of observations for each sex
+table(data$Sex)
+```
 
 
 2\. Count the number of occurrences of each distinct year and then sort the result by year.
 
-
+```{r}
+data %>%
+  count(Year) %>%
+  arrange(Year) %>%
+  head(5)
+```
 
 
 3\. Select Count, Sex, Name, and Year columns, then use filter to retrieve rows of girl names in 2010 that have larger than 3000 counts.
 
+```{r}
+data %>%
+  select(Count, Sex, Name, Year) %>%
+  filter(Sex == "F", Year == 2010, Count > 3000)
+```
 
 
 4\. Use summarize to compute the maximum count and average count of names given for each year in 1995 to 2000, You may need to filter first, and then pipe into `knitr::kable` function to generate table output. Use 3 digits in the table.
+
+```{r}
+data %>%
+  filter(Year >= 1995 & Year <= 2000) %>%
+  group_by(Year) %>%
+  summarize(max_count = max(Count), avg_count = mean(Count)) %>%
+  knitr::kable(digits = 3)
+```
 
 
 5\. **(Level 2)** Display the (first) most common boy and girl names and their counts in each of the years 2005-2010.
@@ -127,9 +160,22 @@ head(diamonds)
   - `labs(x = ?, y = ?, title = ?)`
 
 
+```{r}
+ggplot(diamonds, aes(x = carat)) +
+     geom_histogram(binwidth = 0.5) +
+     labs(x = "x", y = "Frequency", title = "Binwidth 0.5")
+
+ggplot(diamonds, aes(x = carat)) +
+     geom_histogram(binwidth = 0.05) +
+     labs(x = "x", y = "Frequency", title = "Binwidth 0.05")
+```
+
 
 2\. What's the sample correlation between the `price` and `carat`? Hint: You can access the vector using `$`.
 
+```{r}
+cor(diamonds$carat,diamonds$price)
+```
 
 3\. Produce a scatter plot and a hex plot between price and carat. You can try `geom_hex(bins=25)` or another value. Why hex plot is better here?
 
@@ -139,6 +185,17 @@ head(diamonds)
   - `geom_?(?) +`
   - `labs(x = ?, y = ?, title = ?)`
 
+```{r}
+# Scatter plot
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point(alpha = 0.5)
+
+# Hex plot
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_hex(bins=25)
+```
+
+A scatter plot is suitable for visualizing the relationship between two continuous variables. However, when there is a large amount of data, overplotting may occur, making it difficult to see patterns. In such cases, a hex plot may be a better option as it aggregates points within a hexagonal bin and assigns a color to indicate the number of points in that bin.
 
 4\. Create a horizontal boxplot to visualize the distribution of price by cut in the diamonds dataset. Choose appropriate x, y labels and title. Use `fill = "lightblue", color = "blue"` in `geom_boxplot()`. What do you find in this plot?
 
@@ -148,7 +205,15 @@ head(diamonds)
   - `geom_boxplot(fill = "lightblue", color = "blue) +`
   - `labs(x = ?, y = ?, title = ?)`
 
-
+```{r}
+ggplot(diamonds, aes(x = price, y = cut)) + 
+  geom_boxplot(fill = "lightblue", color = "blue") +
+  labs(
+    x = "Price",
+    y = "Cut",
+    title = "Distribution of Diamond Price by Cut"
+  )
+```
 
 5\. Create a density plot of carat facet by color in the diamond dataset. Comment any unusual information you find in the plot.
 
@@ -159,6 +224,12 @@ head(diamonds)
   - `facet_?(?, ? = ?) + `
   - `labs(x = ?, y = ?, title = ?)`
 
+```{r}
+ggplot(diamonds, aes(x = carat, fill = color)) +
+  geom_density(adjust =2) +
+  facet_wrap(~color, nrow = 2) +
+  labs(x = "Carat", y = "Count")
+```
 
 # Level 2 parts:
 
@@ -168,6 +239,13 @@ Display the (first) most common boy and girl names and their counts in each of t
 
 Hint: `slice_max()` Can help you select the row with highest count. So you need pipe `slice_max(Count)` after `group_by`.
 
+```{r}
+data %>%
+  filter(Year >= 2005 & Year <= 2010) %>% # Keep only years 2005-2015
+  group_by(Year, Sex) %>% # Group by year and sex
+  slice_max(Count) %>% # Select the most common name for each group
+  select(Year, Sex, Name, Count) # Select relevant columns
+```
 
 ## Problem 4: Baby name visualization
 
@@ -185,6 +263,16 @@ Hint: `slice_max()` Can help you select the row with highest count. So you need 
   - use some function to change the theme.
   
 
+```{r}
+data %>%
+  group_by(Sex, Year) %>%
+  summarise(total = sum(Count)) %>%
+  filter(Year <= 2015 & Year >= 2008) %>%
+  ggplot(aes(x = Year, y = total, fill = Sex)) +
+  geom_bar(stat = "identity", position = "Dodge") +
+  labs(x = "Year", y = "Count", title = "Total Count of Male vs. Female Names") +
+  theme_economist()
+```
 
 2\. Line chart: We can create a line plot showing the trend in the number of names: Jessica Emily Isabella Amanda Jennifer for all these years.
 
@@ -199,7 +287,18 @@ Hint: `slice_max()` Can help you select the row with highest count. So you need 
   - `scale_color_viridis_d(option = "H")`
   - use some function to change the theme.
 
+```{r}
+names = c("Jessica", "Emily", "Isabella", "Amanda", "Jennifer")
 
+data %>%
+  filter(Name %in% names) %>%
+  filter(Sex == "F") %>%
+  ggplot(aes(x = Year, y = Count, color = Name)) +
+  geom_line() +
+  labs(x = "Year", y = "Total Count", title = "Trend in Number of Selected Names") +
+  scale_color_viridis_d(option = "H") +
+  theme_economist()
+```
 
 
 3\. Word cloud: We can create a word cloud showing the most common names overall. This can give us a visual representation of the most popular names in the dataset.
@@ -215,6 +314,18 @@ Hint: `slice_max()` Can help you select the row with highest count. So you need 
   - `theme_minimal()`
 
 Reference: [ggwordcloud](https://cran.r-project.org/web/packages/ggwordcloud/vignettes/ggwordcloud.html)
+
+```{r}
+data %>% group_by(Sex, Name) %>%
+  summarise(Count = sum(Count)) %>%
+  arrange(desc(Count)) %>%
+  head(50) %>%
+  ggplot(aes(label = Name, size = Count, color = Sex)) +
+  geom_text_wordcloud() +
+  theme_minimal()
+```
+
+
 
 
 ## Include the person you coop with:
