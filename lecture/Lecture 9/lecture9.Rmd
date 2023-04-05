@@ -305,15 +305,13 @@ Here we discuss the measures of central tendency, which are used to provide a si
 
 - **Mean**: "Average", sum the numbers and divide by the count (`mean()`)
   
-  $\bar{x} = \frac{x_1 + x_2 + ... + x_n}{n}$, where $x$ is the variable of interest, the subscripts index the $n$ observations, and $\bar{x}$ denotes the sample mean. 
+  $\bar{x} = \frac{x_1 + x_2 + ... + x_n}{n} = \frac{1}{n} \sum_{i=1}^n x_i$, where $x$ is the variable of interest, the subscripts index the $n$ observations, and $\bar{x}$ denotes the sample mean. 
   
   The population mean is often denoted by $\mu$.
   
 - **Median**: "Middle value", arrange in ascending order (`median()`)
   
 - **Mode**: Most frequent value (`mode()` does not do what you might think)
-
-> We won't test you how to calculate them without using R.
 
 - Note: you will sometimes need the `na.rm = TRUE` option where the data include `NA` (missing) values.
 
