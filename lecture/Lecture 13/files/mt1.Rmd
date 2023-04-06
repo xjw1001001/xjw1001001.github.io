@@ -1,0 +1,198 @@
+---
+title: "STA 032 Midterm 1"
+author: "CHANGE YOUR NAME HERE"
+date: "Due April 29 midnight"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and midterm1 (e.g., `xjw18_midterm1.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. When asked, answer must be supported by written statements as well as any code used. 
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file.
+
++ **No collaboration is allowed**. plagiarism will be reported.
+
++ This is an open book exam. You can use any material from the course lecture or your own homework.
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+library(ggthemes)
+```
+
+## Problem 1: conbination (15 points)
+
+Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7
+vegetables, 4 fruits and 3 proteins
+
+1. How many ways can she pick all vegetables?
+
+2. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?
+
+3. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)
+
+## Problem 2: Calculate the "robust" sample statistics. (15 points)
+
+1. What is the definition of outliers in our lecture note? Why the sample mean and sample standard deviation is sensitive to extreme outliers? 
+
+2. Here is the data.
+
+```{r}
+# Don't change anything here
+set.seed(1)
+a2 = rcauchy(100, scale = 1)
+```
+
+You have already answered the outlier definition in part 1, now write R code to report the **how many** outliers in the dataset.
+
+3. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use `mean()` and `sd()` in this problem, but you can use them to check the result is correct.
+
+## Problem 3: COVID-19 data analysis (70+1 points)
+
+We will work with COVID data downloaded from the New York Times. The dataset consists of COVID-19 cases and deaths in each US state of the COVID epidemic.
+
+```{r}
+# Don't change anything here
+# You need internet access to download the data.
+
+# load COVID state-level data from NYT
+cv_states <- as.data.frame(read.csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"))
+# load state population data
+state_pops <- as.data.frame(read.csv("https://raw.githubusercontent.com/COVID19Tracking/associated-data/master/us_census_data/us_census_2018_population_estimates_states.csv"))
+state_pops$abb <- state_pops$state
+state_pops$state <- state_pops$state_name
+state_pops$state_name <- NULL
+# merge the data
+cv_states <- merge(cv_states, state_pops, by="state")
+# change the date into date type
+cv_states$date <- as.Date(cv_states$date, format="%Y-%m-%d")
+# Add variables for new cases, new_cases, and new deaths, new_deaths
+# Compute the 7-day rolling averages using filter() function
+# use groups to do the calculation for each group.
+cv_states <- cv_states %>% group_by(state) %>%
+  arrange(date) %>%
+  mutate(new_cases = cases - lag(cases), 
+         new_deaths = deaths - lag(deaths)) %>%
+  mutate(avg_new_cases = stats::filter(new_cases, rep(1/7,7), sides = 1), 
+         avg_new_deaths = stats::filter(new_deaths, rep(1/7,7), sides = 1)) %>%
+  ungroup() %>% select(-fips, -geo_id)
+```
+
+
+1. Inspect the dimensions and head of the data. (5 points)
+
+And then use R function to check the structure of each variable.
+
+2. Format the data. (10 points)
+
+* Make state into a factor variable
+* Order the data first by state, second by date
+
+* Inspect the summary for each variable. (Hint: `summary`)
+* What is the date range? The range of cases? 
+
+3. Add additional variables (10 points)
+
+Add population-normalized (by 100,000) variables for each variable type:
+
++ per100k = cases per 100,000 population
++ newper100k= new cases per 100,000
++ deathsper100k = deaths per 100,000
++ newdeathsper100k = new deaths per 100,000
+
+Add a “naive CFR” variable representing deaths * 100 / cases on each date for each state.
+
+
+Then use this code to create a `cv_states_20210428` variable to show your result:
+
+```
+cv_states_20210428 = filter(cv_states, date=="2021-04-28")
+head(cv_states_20210428, 6)
+```
+
+
+4. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (20+1 points)
+
+* Start from `cv_states_20210428`
+
+* use `ggplot` function. What should the `aes()` include?
+
+* use `geom_point`. What should the `aes()` include?
+
+* use `geom_text_repel`. What should the `aes()` include?
+
+* rescale the x and y axis by log10. Which function you should use?
+
+* label x axis as "Population density (persons/mile^2)", y axis as "cases per 100,000 population" and "New cases per 100,000 population". Title with "US covid 2021-04-28 total" and "US covid 2021-04-28 new".
+
+* There should be 2 plots in total. 1 code chunk for a plot.
+
+* Extra 1 point: `scale_color_distiller(palette = "PuBu", direction = 1)` To change the color. Possible palettes: BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral, Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd. Possible direction: 1 or -1. Choose a reasonable color set.
+
+
+5. What do you find from the last 2 plots? What can you say about CA state? (5 points)
+
+6. Create a plot of daily cases similar to the one at the top of [this page](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) for the selected states. Detailed instruction below: (20 points)
+
+* Start from `cv_states`. Filter the `state` that contains only New York, California, Texas, Florida.
+
+* use `ggplot` function. What should the `aes()` include? Hint: `avg_new_cases`
+
+* use `geom_area` instead of `geom_line`.
+
+* use `facet_wrap` to create 4 subplots with these 4 states.
+
+* label x axis as "" (empty), y axis as "7 day average cases". Title with "New reported cases"
+
+
+7. Create a map to visualize the `naive_CFR` by `state` on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with `colour = "white"`. Fill the states by the `naive_CFR`. Describe the difference in the pattern of the CFR. (5 points)
+
+
+```{r}
+# Don't change this part
+library(usmap) 
+us_states <- us_map(regions = "states")
+```
+
+
+Instructions:
+
+* Filter the `cv_states` and obtain `cv_states_20210101` and `cv_states_20230101`.
+
+* The `us_states` include the data you need to generate a US map. You need to join the `us_states` with `cv_states_20210101` to obtain `temp_1` and then join the `us_states` with `cv_states_20230101` to obtain `temp_2`. 
+
+> Hint: `inner_join(dataset1, dataset2, by = c("a" = "b"))` To join by different variables on `dataset1` and `dataset2`, use a named vector. For example, `by = c("a" = "b")` will match `dataset1$a` to `dataset2$b`.
+
+* Use `bind_rows(list(`2021` = temp_1, `2023` = temp_2), .id = "Year")` to concat `temp_1` and `temp_2` into `data_P7`. Why we don't use `rbind` here?
+
+* Start from `data_P7` and pipe into a `ggplot()`. What should the `aes` be?
+
+> Hint: `geom_polygon()` understands the following aesthetics (required aesthetics are in bold): **x**, **y**, colour, fill. What should we use to draw the map? What should them mapped to? Which one should not in aes?
+
+* Use `geom_polygon(aes(group = group), colour = "White") + coord_equal() + ...` to generate the map.
+
+* `facet_wrap`
+
+* `scale_fill_distiller(palette = "PuBu", direction = 1)` To change the fill color. Possible palettes: Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd. Possible direction: 1 or -1. Choose a reasonable color set.
+
+* `usmap:::theme_map()+ theme(legend.position="bottom")` to change the theme.
+
+
+
+
+
+
+
