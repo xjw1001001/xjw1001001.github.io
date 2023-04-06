@@ -1522,25 +1522,19 @@ div.tocify {
 <div id="problem-1-conbination-15-points" class="section level2">
 <h2>Problem 1: conbination (15 points)</h2>
 <p>Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7 vegetables, 4 fruits and 3 proteins</p>
-<ol style="list-style-type: decimal">
-<li><p>How many ways can she pick all vegetables?</p></li>
-<li><p>How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?</p></li>
-<li><p>Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)</p></li>
-</ol>
+<p>1. How many ways can she pick all vegetables?</p>
+<p>2. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?</p>
+<p>3. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)</p>
 </div>
 <div id="problem-2-calculate-the-robust-sample-statistics.-15-points" class="section level2">
 <h2>Problem 2: Calculate the “robust” sample statistics. (15 points)</h2>
-<ol style="list-style-type: decimal">
-<li><p>What is the definition of outliers in our lecture note? Why the sample mean and sample standard deviation is sensitive to extreme outliers?</p></li>
-<li><p>Here is the data.</p></li>
-</ol>
+<p>1. What is the definition of outliers in our lecture note? Why the sample mean and sample standard deviation is sensitive to extreme outliers?</p>
+<p>2. Here is the data.</p>
 <pre class="r"><code># Don&#39;t change anything here
 set.seed(1)
 a2 = rcauchy(100, scale = 1)</code></pre>
 <p>You have already answered the outlier definition in part 1, now write R code to report the <strong>how many</strong> outliers in the dataset.</p>
-<ol start="3" style="list-style-type: decimal">
-<li>Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use <code>mean()</code> and <code>sd()</code> in this problem, but you can use them to check the result is correct.</li>
-</ol>
+<p>3. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use <code>mean()</code> and <code>sd()</code> in this problem, but you can use them to check the result is correct.</p>
 </div>
 <div id="problem-3-covid-19-data-analysis-701-points" class="section level2">
 <h2>Problem 3: COVID-19 data analysis (70+1 points)</h2>
@@ -1569,22 +1563,16 @@ cv_states &lt;- cv_states %&gt;% group_by(state) %&gt;%
   mutate(avg_new_cases = stats::filter(new_cases, rep(1/7,7), sides = 1), 
          avg_new_deaths = stats::filter(new_deaths, rep(1/7,7), sides = 1)) %&gt;%
   ungroup() %&gt;% select(-fips, -geo_id)</code></pre>
-<ol style="list-style-type: decimal">
-<li>Inspect the dimensions and head of the data. (5 points)</li>
-</ol>
+<p>1. Inspect the dimensions and head of the data. (5 points)</p>
 <p>And then use R function to check the structure of each variable.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Format the data. (10 points)</li>
-</ol>
+<p>2. Format the data. (10 points)</p>
 <ul>
 <li><p>Make state into a factor variable</p></li>
 <li><p>Order the data first by state, second by date</p></li>
 <li><p>Inspect the summary for each variable. (Hint: <code>summary</code>)</p></li>
 <li><p>What is the date range? The range of cases?</p></li>
 </ul>
-<ol start="3" style="list-style-type: decimal">
-<li>Add additional variables (10 points)</li>
-</ol>
+<p>3. Add additional variables (10 points)</p>
 <p>Add population-normalized (by 100,000) variables for each variable type:</p>
 <ul>
 <li>per100k = cases per 100,000 population</li>
@@ -1596,9 +1584,7 @@ cv_states &lt;- cv_states %&gt;% group_by(state) %&gt;%
 <p>Then use this code to create a <code>cv_states_20210428</code> variable to show your result:</p>
 <pre><code>cv_states_20210428 = filter(cv_states, date==&quot;2021-04-28&quot;)
 head(cv_states_20210428, 6)</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (20+1 points)</li>
-</ol>
+<p>4. Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (20+1 points)</p>
 <ul>
 <li><p>Start from <code>cv_states_20210428</code></p></li>
 <li><p>use <code>ggplot</code> function. What should the <code>aes()</code> include?</p></li>
@@ -1609,10 +1595,8 @@ head(cv_states_20210428, 6)</code></pre>
 <li><p>There should be 2 plots in total. 1 code chunk for a plot.</p></li>
 <li><p>Extra 1 point: <code>scale_color_distiller(palette = &quot;PuBu&quot;, direction = 1)</code> To change the color. Possible palettes: BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral, Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd. Possible direction: 1 or -1. Choose a reasonable color set.</p></li>
 </ul>
-<ol start="5" style="list-style-type: decimal">
-<li><p>What do you find from the last 2 plots? What can you say about CA state? (5 points)</p></li>
-<li><p>Create a plot of daily cases similar to the one at the top of <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html">this page</a> for the selected states. Detailed instruction below: (20 points)</p></li>
-</ol>
+<p>5. What do you find from the last 2 plots? What can you say about CA state? (5 points)</p>
+<p>6. Create a plot of daily cases similar to the one at the top of <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html">this page</a> for the selected states. Detailed instruction below: (20 points)</p>
 <ul>
 <li><p>Start from <code>cv_states</code>. Filter the <code>state</code> that contains only New York, California, Texas, Florida.</p></li>
 <li><p>use <code>ggplot</code> function. What should the <code>aes()</code> include? Hint: <code>avg_new_cases</code></p></li>
@@ -1620,9 +1604,7 @@ head(cv_states_20210428, 6)</code></pre>
 <li><p>use <code>facet_wrap</code> to create 4 subplots with these 4 states.</p></li>
 <li><p>label x axis as “” (empty), y axis as “7 day average cases”. Title with “New reported cases”</p></li>
 </ul>
-<ol start="7" style="list-style-type: decimal">
-<li>Create a map to visualize the <code>naive_CFR</code> by <code>state</code> on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with <code>colour = &quot;white&quot;</code>. Fill the states by the <code>naive_CFR</code>. Describe the difference in the pattern of the CFR. (5 points)</li>
-</ol>
+<p>7. Create a map to visualize the <code>naive_CFR</code> by <code>state</code> on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with <code>colour = &quot;white&quot;</code>. Fill the states by the <code>naive_CFR</code>. Describe the difference in the pattern of the CFR. (5 points)</p>
 <pre class="r"><code># Don&#39;t change this part
 library(usmap) 
 us_states &lt;- us_map(regions = &quot;states&quot;)</code></pre>

@@ -38,17 +38,17 @@ library(ggthemes)
 Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7
 vegetables, 4 fruits and 3 proteins
 
-1. How many ways can she pick all vegetables?
+1\. How many ways can she pick all vegetables?
 
-2. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?
+2\. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?
 
-3. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)
+3\. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)
 
 ## Problem 2: Calculate the "robust" sample statistics. (15 points)
 
-1. What is the definition of outliers in our lecture note? Why the sample mean and sample standard deviation is sensitive to extreme outliers? 
+1\. What is the definition of outliers in our lecture note? Why the sample mean and sample standard deviation is sensitive to extreme outliers? 
 
-2. Here is the data.
+2\. Here is the data.
 
 ```{r}
 # Don't change anything here
@@ -58,7 +58,7 @@ a2 = rcauchy(100, scale = 1)
 
 You have already answered the outlier definition in part 1, now write R code to report the **how many** outliers in the dataset.
 
-3. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use `mean()` and `sd()` in this problem, but you can use them to check the result is correct.
+3\. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use `mean()` and `sd()` in this problem, but you can use them to check the result is correct.
 
 ## Problem 3: COVID-19 data analysis (70+1 points)
 
@@ -92,11 +92,11 @@ cv_states <- cv_states %>% group_by(state) %>%
 ```
 
 
-1. Inspect the dimensions and head of the data. (5 points)
+1\. Inspect the dimensions and head of the data. (5 points)
 
 And then use R function to check the structure of each variable.
 
-2. Format the data. (10 points)
+2\. Format the data. (10 points)
 
 * Make state into a factor variable
 * Order the data first by state, second by date
@@ -104,7 +104,7 @@ And then use R function to check the structure of each variable.
 * Inspect the summary for each variable. (Hint: `summary`)
 * What is the date range? The range of cases? 
 
-3. Add additional variables (10 points)
+3\. Add additional variables (10 points)
 
 Add population-normalized (by 100,000) variables for each variable type:
 
@@ -124,7 +124,7 @@ head(cv_states_20210428, 6)
 ```
 
 
-4. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (20+1 points)
+4\. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (20+1 points)
 
 * Start from `cv_states_20210428`
 
@@ -143,9 +143,9 @@ head(cv_states_20210428, 6)
 * Extra 1 point: `scale_color_distiller(palette = "PuBu", direction = 1)` To change the color. Possible palettes: BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral, Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd. Possible direction: 1 or -1. Choose a reasonable color set.
 
 
-5. What do you find from the last 2 plots? What can you say about CA state? (5 points)
+5\. What do you find from the last 2 plots? What can you say about CA state? (5 points)
 
-6. Create a plot of daily cases similar to the one at the top of [this page](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) for the selected states. Detailed instruction below: (20 points)
+6\. Create a plot of daily cases similar to the one at the top of [this page](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) for the selected states. Detailed instruction below: (20 points)
 
 * Start from `cv_states`. Filter the `state` that contains only New York, California, Texas, Florida.
 
@@ -158,7 +158,7 @@ head(cv_states_20210428, 6)
 * label x axis as "" (empty), y axis as "7 day average cases". Title with "New reported cases"
 
 
-7. Create a map to visualize the `naive_CFR` by `state` on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with `colour = "white"`. Fill the states by the `naive_CFR`. Describe the difference in the pattern of the CFR. (5 points)
+7\. Create a map to visualize the `naive_CFR` by `state` on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with `colour = "white"`. Fill the states by the `naive_CFR`. Describe the difference in the pattern of the CFR. (5 points)
 
 
 ```{r}
