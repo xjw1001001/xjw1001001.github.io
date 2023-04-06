@@ -33,7 +33,7 @@ library(ggrepel)
 library(ggthemes)
 ```
 
-## Problem 1: conbination (20 points)
+## Problem 1: combination (20 points)
 
 Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7
 vegetables, 4 fruits and 3 proteins
