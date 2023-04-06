@@ -60,7 +60,7 @@ You have already answered the outlier definition in part 1, now write R code to 
 
 3\. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use `mean()` and `sd()` in this problem, but you can use them to check the result is correct.
 
-## Problem 3: COVID-19 data analysis (70+1 points)
+## Problem 3: COVID-19 data analysis (70+2 points)
 
 We will work with COVID data downloaded from the New York Times. The dataset consists of COVID-19 cases and deaths in each US state of the COVID epidemic.
 
@@ -124,7 +124,7 @@ head(cv_states_20210428, 6)
 ```
 
 
-4\. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (20+1 points)
+4\. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (20+2 points)
 
 * Start from `cv_states_20210428`
 

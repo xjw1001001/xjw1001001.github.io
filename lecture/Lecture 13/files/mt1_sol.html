@@ -1536,8 +1536,8 @@ a2 = rcauchy(100, scale = 1)</code></pre>
 <p>You have already answered the outlier definition in part 1, now write R code to report the <strong>how many</strong> outliers in the dataset.</p>
 <p>3. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use <code>mean()</code> and <code>sd()</code> in this problem, but you can use them to check the result is correct.</p>
 </div>
-<div id="problem-3-covid-19-data-analysis-70-points" class="section level2">
-<h2>Problem 3: COVID-19 data analysis (70 points)</h2>
+<div id="problem-3-covid-19-data-analysis-702-points" class="section level2">
+<h2>Problem 3: COVID-19 data analysis (70+2 points)</h2>
 <p>We will work with COVID data downloaded from the New York Times. The dataset consists of COVID-19 cases and deaths in each US state of the COVID epidemic.</p>
 <pre class="r"><code># Don&#39;t change anything here
 # You need internet access to download the data.
@@ -1667,7 +1667,7 @@ head(cv_states_20210428, 6)</code></pre>
 #   newper100k &lt;dbl&gt;, deathsper100k &lt;dbl&gt;, newdeathsper100k &lt;dbl&gt;,
 #   naive_CFR &lt;dbl&gt;, and abbreviated variable names 1: population,
 #   2: pop_density, 3: new_cases, 4: new_deaths, 5: avg_new_cases</code></pre>
-<p>4. Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (20+1 points)</p>
+<p>4. Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (20+2 points)</p>
 <ul>
 <li><p>Start from <code>cv_states_20210428</code></p></li>
 <li><p>use <code>ggplot</code> function. What should the <code>aes()</code> include?</p></li>
