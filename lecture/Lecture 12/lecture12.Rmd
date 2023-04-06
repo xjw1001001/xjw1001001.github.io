@@ -556,4 +556,6 @@ We assume all ways have equal probability to be chosen.
       - Additive rule: $P(A \cup B) = P(A) + P(B) - P(A \cap B)$  
   - Probability distributions
   - Counting rules
+
+- Please pay attention to the Theory part today. There will be 15 points in the midterm 1 for today's problem.
   

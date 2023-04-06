@@ -33,7 +33,7 @@ library(ggrepel)
 library(ggthemes)
 ```
 
-## Problem 1: combination (20 points)
+## Problem 1: combination (15 points)
 
 Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7
 vegetables, 4 fruits and 3 proteins
@@ -60,7 +60,7 @@ You have already answered the outlier definition in part 1, now write R code to 
 
 3\. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use `mean()` and `sd()` in this problem, but you can use them to check the result is correct.
 
-## Problem 3: COVID-19 data analysis (60+2 points)
+## Problem 3: COVID-19 data analysis (65+2 points)
 
 We will work with COVID data downloaded from the New York Times. The dataset consists of COVID-19 cases and deaths in each US state of the COVID epidemic.
 
@@ -155,7 +155,7 @@ head(cv_states_20210428, 6)
 ```
 
 
-4\. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (12+2 points)
+4\. Create a scatterplot using `ggplot` representing `pop_density` vs. various variables: per100k and newper100k for each state on 2021-04-28, using `cv_states_20210428`. Label points by `abb` and size points by `population`, color by the naive_CFR. Detailed instruction below: (16+2 points)
 
 * Start from `cv_states_20210428`
 
@@ -203,7 +203,7 @@ cv_states_20210428 %>%
 
 5\. What do you find from the last 2 plots? What can you say about CA state? (5 points)
 
-6\. Create a plot of daily cases similar to the one at the top of [this page](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) for the selected states. Detailed instruction below: (12 points)
+6\. Create a plot of daily cases similar to the one at the top of [this page](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) for the selected states. Detailed instruction below: (14 points)
 
 * Start from `cv_states`. Filter the `state` that contains only New York, California, Texas, Florida.
 
@@ -227,7 +227,7 @@ cv_states %>%
   
 ```
 
-7\. Create a map to visualize the `naive_CFR` by `state` on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with `colour = "white"`. Fill the states by the `naive_CFR`. Describe the difference in the pattern of the CFR. (6 points)
+7\. Create a map to visualize the `naive_CFR` by `state` on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with `colour = "white"`. Fill the states by the `naive_CFR`. Describe the difference in the pattern of the CFR. (5 points)
 
 
 ```{r}

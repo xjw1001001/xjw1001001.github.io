@@ -1519,8 +1519,8 @@ div.tocify {
 <li><p><strong>No collaboration is allowed</strong>. plagiarism will be reported.</p></li>
 <li><p>This is an open book exam. You can use any material from the course lecture or your own homework.</p></li>
 </ul>
-<div id="problem-1-conbination-20-points" class="section level2">
-<h2>Problem 1: conbination (20 points)</h2>
+<div id="problem-1-combination-15-points" class="section level2">
+<h2>Problem 1: combination (15 points)</h2>
 <p>Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7 vegetables, 4 fruits and 3 proteins</p>
 <p>1. How many ways can she pick all vegetables?</p>
 <p>2. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?</p>
@@ -1536,8 +1536,8 @@ a2 = rcauchy(100, scale = 1)</code></pre>
 <p>You have already answered the outlier definition in part 1, now write R code to report the <strong>how many</strong> outliers in the dataset.</p>
 <p>3. Write the code to calculate the sample mean and sample deviation for after removing the outliers. You are not allowed to use <code>mean()</code> and <code>sd()</code> in this problem, but you can use them to check the result is correct.</p>
 </div>
-<div id="problem-3-covid-19-data-analysis-602-points" class="section level2">
-<h2>Problem 3: COVID-19 data analysis (60+2 points)</h2>
+<div id="problem-3-covid-19-data-analysis-652-points" class="section level2">
+<h2>Problem 3: COVID-19 data analysis (65+2 points)</h2>
 <p>We will work with COVID data downloaded from the New York Times. The dataset consists of COVID-19 cases and deaths in each US state of the COVID epidemic.</p>
 <pre class="r"><code># Don&#39;t change anything here
 # You need internet access to download the data.
@@ -1584,7 +1584,7 @@ cv_states &lt;- cv_states %&gt;% group_by(state) %&gt;%
 <p>Then use this code to create a <code>cv_states_20210428</code> variable to show your result:</p>
 <pre><code>cv_states_20210428 = filter(cv_states, date==&quot;2021-04-28&quot;)
 head(cv_states_20210428, 6)</code></pre>
-<p>4. Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (12+2 points)</p>
+<p>4. Create a scatterplot using <code>ggplot</code> representing <code>pop_density</code> vs. various variables: per100k and newper100k for each state on 2021-04-28, using <code>cv_states_20210428</code>. Label points by <code>abb</code> and size points by <code>population</code>, color by the naive_CFR. Detailed instruction below: (16+2 points)</p>
 <ul>
 <li><p>Start from <code>cv_states_20210428</code></p></li>
 <li><p>use <code>ggplot</code> function. What should the <code>aes()</code> include?</p></li>
@@ -1596,7 +1596,7 @@ head(cv_states_20210428, 6)</code></pre>
 <li><p>Extra 1 point: <code>scale_color_distiller(palette = &quot;PuBu&quot;, direction = 1)</code> To change the color. Possible palettes: BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral, Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd. Possible direction: 1 or -1. Choose a reasonable color set.</p></li>
 </ul>
 <p>5. What do you find from the last 2 plots? What can you say about CA state? (5 points)</p>
-<p>6. Create a plot of daily cases similar to the one at the top of <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html">this page</a> for the selected states. Detailed instruction below: (12 points)</p>
+<p>6. Create a plot of daily cases similar to the one at the top of <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html">this page</a> for the selected states. Detailed instruction below: (14 points)</p>
 <ul>
 <li><p>Start from <code>cv_states</code>. Filter the <code>state</code> that contains only New York, California, Texas, Florida.</p></li>
 <li><p>use <code>ggplot</code> function. What should the <code>aes()</code> include? Hint: <code>avg_new_cases</code></p></li>
@@ -1604,7 +1604,7 @@ head(cv_states_20210428, 6)</code></pre>
 <li><p>use <code>facet_wrap</code> to create 4 subplots with these 4 states.</p></li>
 <li><p>label x axis as “” (empty), y axis as “7 day average cases”. Title with “New reported cases”</p></li>
 </ul>
-<p>7. Create a map to visualize the <code>naive_CFR</code> by <code>state</code> on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with <code>colour = &quot;white&quot;</code>. Fill the states by the <code>naive_CFR</code>. Describe the difference in the pattern of the CFR. (6 points)</p>
+<p>7. Create a map to visualize the <code>naive_CFR</code> by <code>state</code> on Jan 1, 2021 and Jan 1, 2023. Color the boundary white with <code>colour = &quot;white&quot;</code>. Fill the states by the <code>naive_CFR</code>. Describe the difference in the pattern of the CFR. (5 points)</p>
 <pre class="r"><code># Don&#39;t change this part
 library(usmap) 
 us_states &lt;- us_map(regions = &quot;states&quot;)</code></pre>
