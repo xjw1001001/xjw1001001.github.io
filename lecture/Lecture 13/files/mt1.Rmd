@@ -38,11 +38,11 @@ library(ggthemes)
 Suppose a person is at Pluto’s to grab a salad. She gets a salad with 4 toppings. She can choose the toppings from 7
 vegetables, 4 fruits and 3 proteins
 
-1\. How many ways can she pick all vegetables?
+1\. How many ways can she pick 4 vegetables toppings?
 
 2\. How many ways can she pick exactly 1 protein, 2 fruits and 1 vegetable?
 
-3\. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick?)
+3\. Among all possible choices, how much proportion will have equal number of vegetables and fruits? (Hint: How many protein can she pick? 0 veggies and 0 fruits are also considered equal)
 
 ## Problem 2: Calculate the "robust" sample statistics. (20 points)
 
