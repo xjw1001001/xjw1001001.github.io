@@ -112,7 +112,7 @@ Source: https://medium.com/jun94-devpblog/prob-stats-1-random-variable-483c45242
 
 - Random variables are usually denoted by capital letters, most commonly $X$, $Y$, $Z$
 
-- A realization or draw of the random variable is denoted by a lowercase letter, $x$, $y$, $z$
+- A **realization** or draw of the random variable is denoted by a lowercase letter, $x$, $y$, $z$
 
 - Other examples of random variables:
 
@@ -124,6 +124,12 @@ Source: https://medium.com/jun94-devpblog/prob-stats-1-random-variable-483c45242
   
   - Each outcome has an associated probability $P(X = x_i)$ where $i = 1, ..., k$ ( $k$ outcomes are denoted by lower-case, $x_1, ..., x_k$)
   - Sometimes also written as $p_1, ..., p_k$ 
+
+---
+
+## 
+
+https://towardsdatascience.com/understanding-random-variables-and-probability-distributions-1ed1daf2e66
 
 ---
 
