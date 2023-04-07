@@ -127,9 +127,47 @@ Source: https://medium.com/jun94-devpblog/prob-stats-1-random-variable-483c45242
 
 ---
 
-## 
+Another example:
 
-https://towardsdatascience.com/understanding-random-variables-and-probability-distributions-1ed1daf2e66
+Let’s assume, we have a sample space containing 4 students `{A, B, C, D}`. If we now randomly pick student `A` and measure the height in centimeters, we can think of the random variable (`H`) as the function with the input of student and the output of height as a real number.
+
+```{r echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/11.webp")
+```
+
+Depending on the outcome — which student is randomly picked — our random variable (`H`) can take on different states or different values in terms of height in centimeters.
+
+---
+
+## Probability Distribution 
+
+The description of how likely a random variable takes one of its possible states can be given by a probability distribution. 
+
+Thus, the probability distribution is a mathematical function that gives the probabilities of different outcomes for a random variable.
+
+* More generally it can be described as the function
+
+$$P: A \rightarrow \mathbb{R}$$
+
+Which maps an input space $A$ — related to the sample space — to a real number, namely the probability.
+
+For the above function to characterize a probability distribution, it must follow all of the Kolmogorov axioms:
+
+1. Non-negativity
+2. No probability exceeds 1
+3. Additivity of any countable disjoint (mutually exclusive) events
+
+---
+
+## Discrete RV probability distribution
+
+Discrete RV: it can only take on a finite number of values within an interval, and the value has the natural gaps
+
+The **probability mass function (PMF)** describes the probability distribution over a **discrete** random variable. 
+
+> In other terms, it is a function that returns the probability of a random variable being exactly equal to a specific value.
+
+
 
 ---
 
