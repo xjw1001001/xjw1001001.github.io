@@ -135,15 +135,15 @@ There are three optional textbooks. They are all available online and are free.
   - Open book take home exam
   - It's **highly recommended** to finish the homework 1,2,3 before midterm 1.
   
-### Week 5: 
-- Mon May 1: 
-  - Notes: 
+### Week 5: Probability and distributions
+- Mon May 1: Introduction to Probability
+  - Notes: [Lecture 13](https://xjw1001001.github.io/lecture/Lecture 13/lecture13.html)
     
-- Wed May 3: 
-  - Notes: 
+- Wed May 3: Random Variables and Distributions
+  - Notes: [Lecture 14](https://xjw1001001.github.io/lecture/Lecture 14/lecture14.html)
 
 - Fri May 5: 
-  - Notes: 
+  - Notes: [Lecture 15](https://xjw1001001.github.io/lecture/Lecture 15/lecture15.html)
   
 ### Week 6: 
 - Mon May 8: 
