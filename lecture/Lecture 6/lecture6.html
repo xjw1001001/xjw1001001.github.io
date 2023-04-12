@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Jingwei Xiong" />
     <meta name="date" content="2023-04-14" />
-    <script src="lecture6_files/header-attrs-2.20/header-attrs.js"></script>
+    <script src="lecture6_files/header-attrs-2.17/header-attrs.js"></script>
     <link href="lecture6_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="lecture6_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="lecture6_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
@@ -112,7 +112,7 @@ class: center, middle, inverse, title-slide
 
 
 ```r
-hotels &lt;- readr::read_csv("data/hotels.csv")
+hotels &lt;- readr::read_csv("https://raw.githubusercontent.com/xjw1001001/xjw1001001.github.io/main/lecture/Lecture%205/data/hotels.csv")
 ```
 
 .footnote[
@@ -132,38 +132,38 @@ dplyr::glimpse(hotels)
 ```
 Rows: 119,390
 Columns: 32
-$ hotel                          [3m[38;5;246m&lt;chr&gt;[39m[23m "Resort Hotel", "Resort…
-$ is_canceled                    [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ lead_time                      [3m[38;5;246m&lt;dbl&gt;[39m[23m 342, 737, 7, 13, 14, 14…
-$ arrival_date_year              [3m[38;5;246m&lt;dbl&gt;[39m[23m 2015, 2015, 2015, 2015,…
-$ arrival_date_month             [3m[38;5;246m&lt;chr&gt;[39m[23m "July", "July", "July",…
-$ arrival_date_week_number       [3m[38;5;246m&lt;dbl&gt;[39m[23m 27, 27, 27, 27, 27, 27,…
-$ arrival_date_day_of_month      [3m[38;5;246m&lt;dbl&gt;[39m[23m 1, 1, 1, 1, 1, 1, 1, 1,…
-$ stays_in_weekend_nights        [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ stays_in_week_nights           [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 1, 1, 2, 2, 2, 2,…
-$ adults                         [3m[38;5;246m&lt;dbl&gt;[39m[23m 2, 2, 1, 1, 2, 2, 2, 2,…
-$ children                       [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ babies                         [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ meal                           [3m[38;5;246m&lt;chr&gt;[39m[23m "BB", "BB", "BB", "BB",…
-$ country                        [3m[38;5;246m&lt;chr&gt;[39m[23m "PRT", "PRT", "GBR", "G…
-$ market_segment                 [3m[38;5;246m&lt;chr&gt;[39m[23m "Direct", "Direct", "Di…
-$ distribution_channel           [3m[38;5;246m&lt;chr&gt;[39m[23m "Direct", "Direct", "Di…
-$ is_repeated_guest              [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ previous_cancellations         [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ previous_bookings_not_canceled [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ reserved_room_type             [3m[38;5;246m&lt;chr&gt;[39m[23m "C", "C", "A", "A", "A"…
-$ assigned_room_type             [3m[38;5;246m&lt;chr&gt;[39m[23m "C", "C", "C", "A", "A"…
-$ booking_changes                [3m[38;5;246m&lt;dbl&gt;[39m[23m 3, 4, 0, 0, 0, 0, 0, 0,…
-$ deposit_type                   [3m[38;5;246m&lt;chr&gt;[39m[23m "No Deposit", "No Depos…
-$ agent                          [3m[38;5;246m&lt;chr&gt;[39m[23m "NULL", "NULL", "NULL",…
-$ company                        [3m[38;5;246m&lt;chr&gt;[39m[23m "NULL", "NULL", "NULL",…
-$ days_in_waiting_list           [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ customer_type                  [3m[38;5;246m&lt;chr&gt;[39m[23m "Transient", "Transient…
-$ adr                            [3m[38;5;246m&lt;dbl&gt;[39m[23m 0.00, 0.00, 75.00, 75.0…
-$ required_car_parking_spaces    [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 0, 0, 0, 0,…
-$ total_of_special_requests      [3m[38;5;246m&lt;dbl&gt;[39m[23m 0, 0, 0, 0, 1, 1, 0, 1,…
-$ reservation_status             [3m[38;5;246m&lt;chr&gt;[39m[23m "Check-Out", "Check-Out…
-$ reservation_status_date        [3m[38;5;246m&lt;date&gt;[39m[23m 2015-07-01, 2015-07-01…
+$ hotel                          &lt;chr&gt; "Resort Hotel", "Resort Hotel", "Resort~
+$ is_canceled                    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, ~
+$ lead_time                      &lt;dbl&gt; 342, 737, 7, 13, 14, 14, 0, 9, 85, 75, ~
+$ arrival_date_year              &lt;dbl&gt; 2015, 2015, 2015, 2015, 2015, 2015, 201~
+$ arrival_date_month             &lt;chr&gt; "July", "July", "July", "July", "July",~
+$ arrival_date_week_number       &lt;dbl&gt; 27, 27, 27, 27, 27, 27, 27, 27, 27, 27,~
+$ arrival_date_day_of_month      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
+$ stays_in_weekend_nights        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ stays_in_week_nights           &lt;dbl&gt; 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, ~
+$ adults                         &lt;dbl&gt; 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, ~
+$ children                       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ babies                         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ meal                           &lt;chr&gt; "BB", "BB", "BB", "BB", "BB", "BB", "BB~
+$ country                        &lt;chr&gt; "PRT", "PRT", "GBR", "GBR", "GBR", "GBR~
+$ market_segment                 &lt;chr&gt; "Direct", "Direct", "Direct", "Corporat~
+$ distribution_channel           &lt;chr&gt; "Direct", "Direct", "Direct", "Corporat~
+$ is_repeated_guest              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ previous_cancellations         &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ previous_bookings_not_canceled &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ reserved_room_type             &lt;chr&gt; "C", "C", "A", "A", "A", "A", "C", "C",~
+$ assigned_room_type             &lt;chr&gt; "C", "C", "C", "A", "A", "A", "C", "C",~
+$ booking_changes                &lt;dbl&gt; 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ deposit_type                   &lt;chr&gt; "No Deposit", "No Deposit", "No Deposit~
+$ agent                          &lt;chr&gt; "NULL", "NULL", "NULL", "304", "240", "~
+$ company                        &lt;chr&gt; "NULL", "NULL", "NULL", "NULL", "NULL",~
+$ days_in_waiting_list           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ customer_type                  &lt;chr&gt; "Transient", "Transient", "Transient", ~
+$ adr                            &lt;dbl&gt; 0.00, 0.00, 75.00, 75.00, 98.00, 98.00,~
+$ required_car_parking_spaces    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+$ total_of_special_requests      &lt;dbl&gt; 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 3, ~
+$ reservation_status             &lt;chr&gt; "Check-Out", "Check-Out", "Check-Out", ~
+$ reservation_status_date        &lt;date&gt; 2015-07-01, 2015-07-01, 2015-07-02, 20~
 ```
 ]
 
@@ -179,7 +179,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 1
+# A tibble: 8 x 1
   market_segment
   &lt;chr&gt;         
 1 Direct        
@@ -203,7 +203,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 1
+# A tibble: 8 x 1
   market_segment
   &lt;chr&gt;         
 1 Aviation      
@@ -228,7 +228,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 14 × 2
+# A tibble: 14 x 2
    hotel        market_segment
    &lt;chr&gt;        &lt;chr&gt;         
  1 City Hotel   Aviation      
@@ -261,7 +261,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 119,390 × 3
+# A tibble: 119,390 x 3
    children babies little_ones
       &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
  1       10      0          10
@@ -274,7 +274,7 @@ hotels %&gt;%
  8        2      1           3
  9        2      1           3
 10        3      0           3
-# … with 119,380 more rows
+# i 119,380 more rows
 ```
 
 &lt;small&gt;What are these functions doing? How do to the same in base R?&lt;/small&gt;
@@ -360,7 +360,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 2
+# A tibble: 8 x 2
   market_segment     n
   &lt;chr&gt;          &lt;int&gt;
 1 Aviation         237
@@ -384,7 +384,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 2
+# A tibble: 8 x 2
   market_segment     n
   &lt;chr&gt;          &lt;int&gt;
 1 Online TA      56477
@@ -414,7 +414,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 2
+# A tibble: 8 x 2
   market_segment     n
   &lt;chr&gt;          &lt;int&gt;
 1 Undefined          2
@@ -438,7 +438,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 8 × 2
+# A tibble: 8 x 2
   market_segment     n
   &lt;chr&gt;          &lt;int&gt;
 1 Online TA      56477
@@ -463,7 +463,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 14 × 3
+# A tibble: 14 x 3
    hotel        market_segment     n
    &lt;chr&gt;        &lt;chr&gt;          &lt;int&gt;
  1 City Hotel   Aviation         237
@@ -496,7 +496,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 14 × 3
+# A tibble: 14 x 3
    hotel        market_segment     n
    &lt;chr&gt;        &lt;chr&gt;          &lt;int&gt;
  1 City Hotel   Aviation         237
@@ -524,7 +524,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 14 × 3
+# A tibble: 14 x 3
    market_segment hotel            n
    &lt;chr&gt;          &lt;chr&gt;        &lt;int&gt;
  1 Aviation       City Hotel     237
@@ -557,7 +557,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 1 × 1
+# A tibble: 1 x 1
   mean_adr
      &lt;dbl&gt;
 1     102.
@@ -592,7 +592,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 2 × 2
+# A tibble: 2 x 2
   hotel        mean_adr
   &lt;chr&gt;           &lt;dbl&gt;
 1 City Hotel      105. 
@@ -628,7 +628,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 1 × 5
+# A tibble: 1 x 5
        n min_adr mean_adr median_adr max_adr
    &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;
 1 119390   -6.38     102.       94.6    5400
@@ -648,7 +648,7 @@ hotels %&gt;%
 ```
 
 ```
-# A tibble: 1 × 1
+# A tibble: 1 x 1
   mean_adr
      &lt;dbl&gt;
 1     102.
@@ -704,7 +704,7 @@ hotels %&gt;% select(hotel:lead_time) %&gt;%
 ```
 
 ```
-# A tibble: 6 × 3
+# A tibble: 6 x 3
   hotel_name   is_canceled lead_time
   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;
 1 Resort Hotel           0       342
@@ -729,6 +729,7 @@ Dplyr has a powerful group of join operations, which join together a pair of dat
 
 * full_join: Keeps all rows in both datasets. Rows without matching keys will have NA values for those variables from the other dataset.
 
+* Syntax: To join by different variables on x and y, use a named vector. For example, by = c("a" = "b") will match x\$a to y\$b.
 ---
 
 ### `join` family
@@ -744,7 +745,7 @@ head(band_instruments2)
 ```
 
 ```
-# A tibble: 3 × 2
+# A tibble: 3 x 2
   artist plays 
   &lt;chr&gt;  &lt;chr&gt; 
 1 John   guitar
@@ -758,7 +759,7 @@ head(band_members)
 ```
 
 ```
-# A tibble: 3 × 2
+# A tibble: 3 x 2
   name  band   
   &lt;chr&gt; &lt;chr&gt;  
 1 Mick  Stones 
@@ -771,11 +772,11 @@ head(band_members)
 
 ```r
 # Inner join
-band_members %&gt;% inner_join(band_instruments2, by = join_by(name == artist))
+band_members %&gt;% inner_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ```
-# A tibble: 2 × 3
+# A tibble: 2 x 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 John  Beatles guitar
@@ -787,11 +788,11 @@ band_members %&gt;% inner_join(band_instruments2, by = join_by(name == artist))
 
 ```r
 # Left join
-band_members %&gt;% left_join(band_instruments2, by = join_by(name == artist))
+band_members %&gt;% left_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ```
-# A tibble: 3 × 3
+# A tibble: 3 x 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 Mick  Stones  &lt;NA&gt;  
@@ -804,11 +805,11 @@ band_members %&gt;% left_join(band_instruments2, by = join_by(name == artist))
 
 ```r
 # Right join
-band_members %&gt;% right_join(band_instruments2, by = join_by(name == artist))
+band_members %&gt;% right_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ```
-# A tibble: 3 × 3
+# A tibble: 3 x 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 John  Beatles guitar
@@ -821,11 +822,11 @@ band_members %&gt;% right_join(band_instruments2, by = join_by(name == artist))
 
 ```r
 # Full join
-band_members %&gt;% full_join(band_instruments2, by = join_by(name == artist))
+band_members %&gt;% full_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ```
-# A tibble: 4 × 3
+# A tibble: 4 x 3
   name  band    plays 
   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; 
 1 Mick  Stones  &lt;NA&gt;  

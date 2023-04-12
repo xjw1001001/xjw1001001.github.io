@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
-library(dplyr)
+library(tidyverse)
 library(ggplot2)
 library(unvotes)
 ```
@@ -106,7 +106,7 @@ library(unvotes)
 - Goal for original data collection: Development of prediction models to classify a hotel booking's likelihood to be cancelled ([Antonia et al., 2019](https://www.sciencedirect.com/science/article/pii/S2352340918315191#bib5))
 
 ```{r message=FALSE}
-hotels <- readr::read_csv("data/hotels.csv")
+hotels <- readr::read_csv("https://raw.githubusercontent.com/xjw1001001/xjw1001001.github.io/main/lecture/Lecture%205/data/hotels.csv")
 ```
 
 .footnote[
@@ -403,6 +403,7 @@ Dplyr has a powerful group of join operations, which join together a pair of dat
 
 * full_join: Keeps all rows in both datasets. Rows without matching keys will have NA values for those variables from the other dataset.
 
+* Syntax: To join by different variables on x and y, use a named vector. For example, by = c("a" = "b") will match x\$a to y\$b.
 ---
 
 ### `join` family
@@ -423,28 +424,28 @@ head(band_members)
 ```{r}
 
 # Inner join
-band_members %>% inner_join(band_instruments2, by = join_by(name == artist))
+band_members %>% inner_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ]
 .panel[.panel-name[Left join]
 ```{r}
 # Left join
-band_members %>% left_join(band_instruments2, by = join_by(name == artist))
+band_members %>% left_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ]
 .panel[.panel-name[Right join]
 ```{r}
 # Right join
-band_members %>% right_join(band_instruments2, by = join_by(name == artist))
+band_members %>% right_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ]
 .panel[.panel-name[Full join]
 ```{r}
 # Full join
-band_members %>% full_join(band_instruments2, by = join_by(name == artist))
+band_members %>% full_join(band_instruments2, by = c("name" = "artist"))
 ```
 
 ]
