@@ -167,12 +167,24 @@ The **probability mass function (PMF)** describes the probability distribution o
 
 > In other terms, it is a function that returns the probability of a random variable being exactly equal to a specific value.
 
+---
 
+- Example: Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another.
 
+- Formally: Let $X=$ number of books sold per student 
+
+- The three possible outcomes are $x_1$ = 0 books, $x_2$ = 1 book (1 textbook for each student), $x_3$ = 2 books (1 textbook and 1 study guide for each student)
+
+i | 1 | 2 | 3
+--|--|--|--
+$x_i$ | 0 | 1 | 2
+$P(X = x_i)$ | .2 | .55 | .25
 ---
 
 ## Expectation 
-Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. How many books should the bookstore expect to sell per student?
+Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. 
+
+- How many books should the bookstore expect to sell per student?
 
 - Intuitively: $.2*0 + .55*1 + .25*2 = 1.05$ 
 

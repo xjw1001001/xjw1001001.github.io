@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Jingwei Xiong" />
     <meta name="date" content="2023-05-03" />
-    <script src="lecture14_files/header-attrs-2.17/header-attrs.js"></script>
+    <script src="lecture14_files/header-attrs-2.11/header-attrs.js"></script>
     <link href="lecture14_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="lecture14_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="lecture14_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
@@ -136,14 +136,52 @@ Depending on the outcome — which student is randomly picked — our random var
 
 ---
 
-## 
+## Probability Distribution 
 
-https://towardsdatascience.com/understanding-random-variables-and-probability-distributions-1ed1daf2e66
+The description of how likely a random variable takes one of its possible states can be given by a probability distribution. 
+
+Thus, the probability distribution is a mathematical function that gives the probabilities of different outcomes for a random variable.
+
+* More generally it can be described as the function
+
+`$$P: A \rightarrow \mathbb{R}$$`
+
+Which maps an input space `\(A\)` — related to the sample space — to a real number, namely the probability.
+
+For the above function to characterize a probability distribution, it must follow all of the Kolmogorov axioms:
+
+1. Non-negativity
+2. No probability exceeds 1
+3. Additivity of any countable disjoint (mutually exclusive) events
 
 ---
 
+## Discrete RV probability distribution
+
+Discrete RV: it can only take on a finite number of values within an interval, and the value has the natural gaps
+
+The **probability mass function (PMF)** describes the probability distribution over a **discrete** random variable. 
+
+&gt; In other terms, it is a function that returns the probability of a random variable being exactly equal to a specific value.
+
+---
+
+- Example: Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another.
+
+- Formally: Let `\(X=\)` number of books sold per student 
+
+- The three possible outcomes are `\(x_1\)` = 0 books, `\(x_2\)` = 1 book (1 textbook for each student), `\(x_3\)` = 2 books (1 textbook and 1 study guide for each student)
+
+i | 1 | 2 | 3
+--|--|--|--
+`\(x_i\)` | 0 | 1 | 2
+`\(P(X = x_i)\)` | .2 | .55 | .25
+---
+
 ## Expectation 
-Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. How many books should the bookstore expect to sell per student?
+Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. 
+
+- How many books should the bookstore expect to sell per student?
 
 - Intuitively: `\(.2*0 + .55*1 + .25*2 = 1.05\)` 
 
