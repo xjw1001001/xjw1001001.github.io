@@ -138,55 +138,61 @@ There are three optional textbooks. They are all available online and are free.
 ### Week 5: Probability and distributions
 - Mon May 1: Introduction to Probability
   - Notes: [Lecture 13](https://xjw1001001.github.io/lecture/Lecture 13/lecture13.html)
-    
+  - **Homework 4**: (Due May 12 midnight, cover lecture 12-15) [Html](https://xjw1001001.github.io/homework/homework4/HW4.html) [Rmd](https://xjw1001001.github.io/homework/homework4/HW4.Rmd)
+  
 - Wed May 3: Random Variables and Distributions
   - Notes: [Lecture 14](https://xjw1001001.github.io/lecture/Lecture 14/lecture14.html)
-
-- Fri May 5: 
+  - **Homework 3: (Due May 3 midnight)**
+  
+- Fri May 5: Binomial distribution, simulation, R function
   - Notes: [Lecture 15](https://xjw1001001.github.io/lecture/Lecture 15/lecture15.html)
   
-### Week 6: 
-- Mon May 8: 
-  - Notes: 
-    
+### Week 6: More on distributions
+- Mon May 8: Poisson and Normal (Gaussian) Distribution
+  - Notes: [Lecture 16](https://xjw1001001.github.io/lecture/Lecture 16/lecture16.html)
+  - **Homework 5**: (Due May 21 midnight, cover lecture 16-19) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
+
 - Wed May 10: 
-  - Notes: 
+  - Notes: [Lecture 17](https://xjw1001001.github.io/lecture/Lecture 17/lecture17.html)
 
 - Fri May 12: 
-  - Notes: 
+  - Notes: [Lecture 18](https://xjw1001001.github.io/lecture/Lecture 18/lecture18.html)
+  - **Homework 4: (Due May 12 midnight)**
   
 ### Week 7: 
 - Mon May 15: 
-  - Notes: 
-    
+  - Notes: [Lecture 19](https://xjw1001001.github.io/lecture/Lecture 19/lecture19.html)
+ 
 - Wed May 17: 
-  - Notes: 
+  - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
+  - **Homework 6**: (Due May 28 midnight, cover lecture 20-23) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
+
 
 - Fri May 19: 
-  - Notes: 
+  - Notes: [Lecture 21](https://xjw1001001.github.io/lecture/Lecture 21/lecture21.html)
   
 ### Week 8: 
 - Mon May 22: 
-  - Notes: 
+  - Notes: [Lecture 22](https://xjw1001001.github.io/lecture/Lecture 22/lecture22.html)
     
 - Wed May 24: 
-  - Notes: 
+  - Notes: [Lecture 23](https://xjw1001001.github.io/lecture/Lecture 23/lecture23.html)
 
-- Fri May 26: 
-  - Notes: 
+- Fri May 26: Midterm 2 (In person)
   
 ### Week 9: 
 - Mon May 29: Memorial Day, no class
     
 - Wed May 31: 
-  - Notes: 
+  - Notes: [Lecture 24](https://xjw1001001.github.io/lecture/Lecture 24/lecture24.html)
 
 - Fri Jun 2: 
-  - Notes: 
+  - Notes: [Lecture 25](https://xjw1001001.github.io/lecture/Lecture 25/lecture25.html)
 
 ### Week 10: 
 - Mon Jun 5: 
-    
+  - Notes: [Lecture 26](https://xjw1001001.github.io/lecture/Lecture 26/lecture26.html)  
+  
 - Wed Jun 7: 
   - Notes: 
 
