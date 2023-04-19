@@ -1,0 +1,123 @@
+---
+title: "Binomial distribution and R simulation"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 15"
+author: "Jingwei Xiong"
+date: May 5, 2023
+output:
+  xaringan::moon_reader:
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "extra.css"]
+    # css: ["../xaringan-themer.css", "../slides.css"]
+    # lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+```{r, echo = FALSE, eval = FALSE}
+library(renderthis)
+to_pdf(from = "lecture15.html",complex_slides = TRUE)
+```
+
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+xaringanExtra::use_panelset()
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "",eval = TRUE,fig.retina = 2, message=F, warning = F, fig.height = 4.5
+)
+```
+
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(unvotes)
+library(tidyverse)
+library(openintro)
+```
+
+
+```{css, echo = FALSE}
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+```
+
+
+
+---
+
+## Case study: Simulate the chicken farm
+
+In a chicken farm, suppose for each day, each chicken has a probability $p_1=0.2$ to spawn an egg. Independently to the spawn egg, each chicken has a probability $q=0.1$ to become chicken product (die). And for each day, each egg has a probability $p_2 = 0.5$ to hatch a chicken. How can we simulate the chicken and egg numbers for the chicken farm?
+
+Assumptions:
+
+- In the beginning of each day, we record the number of chicken $n_c$ and eggs $n_e$.
+
+- In that day, the number of eggs spwan will follow a binomial distribution: $e \sim Binomial(n_c, p=p_1)$
+
+- In that day, the number of chicken died will follow a binomial distribution: $c_1 \sim Binomial(n_c, p=q)$
+
+- In that day, the number of chicken hatched will follow a binomial distribution: $c_2 \sim Binomial(n_e, p=p_2)$
+
+So at the end of that day (beginning of next day), we will have $n_c - c_1 + c_2$ chicken, $n_e + e - c_2$ eggs
+
+---
+
+## Simulate the binomial distribution
+
+
+---
+
+
+```{r}
+# Set initial values
+n_c <- 50 # number of chickens
+n_e <- 20 # number of eggs
+
+# Set probabilities
+p1 <- 0.2 # probability of egg spawn
+q <- 0.1 # probability of chicken death
+p2 <- 0.5 # probability of egg hatching
+
+# Set number of days to simulate
+n_days <- 365
+
+# Create vectors to store results
+chicken_counts <- numeric(n_days)
+egg_counts <- numeric(n_days)
+
+# Simulate each day
+for (i in 1:n_days) {
+  # Calculate number of eggs spawned and number of chicken deaths
+  eggs_spawned <- rbinom(1, n_c, p1)
+  chicken_deaths <- rbinom(1, n_c, q)
+  
+  # Calculate number of chicken hatched from eggs
+  chicken_hatched <- rbinom(1, n_e, p2)
+  
+  # Calculate new chicken and egg counts
+  n_c <- n_c - chicken_deaths + chicken_hatched
+  n_e <- n_e + eggs_spawned - chicken_hatched
+  
+  # Store results
+  chicken_counts[i] <- n_c
+  egg_counts[i] <- n_e
+}
+
+# Plot results
+plot(1:n_days, chicken_counts, type = "l", xlab = "Day", ylab = "Number of chickens")
+lines(1:n_days, egg_counts, col = "red")
+legend("topright", legend = c("Chickens", "Eggs"), col = c("black", "red"), lty = 1)
+```
+
+
+
+
+
+
