@@ -1,5 +1,5 @@
 ---
-title: "Random Variables and Distributions"
+title: "Random Variables and Distributions, Bernoulli distribution"
 subtitle: "<br><br> STA 032: Gateway to data science Lecture 14"
 author: "Jingwei Xiong"
 date: May 3, 2023
@@ -151,28 +151,61 @@ $$P: A \rightarrow \mathbb{R}$$
 
 Which maps an input space $A$ — related to the sample space — to a real number, namely the probability.
 
-For the above function to characterize a probability distribution, it must follow all of the Kolmogorov axioms:
+For the above function to characterize a probability distribution, it must follow all of the axioms:
 
-1. Non-negativity
-2. No probability exceeds 1
-3. Additivity of any countable disjoint (mutually exclusive) events
+1. All probabilities must between 0 and 1. $0\leq p(x) \leq 1$
+2. All probabilities must summed up to be 1. $\sum p(x) = 1$
 
 ---
 
-## Discrete RV probability distribution
+## Discrete RV distribution
 
 Discrete RV: it can only take on a finite number of values within an interval, and the value has the natural gaps
 
 The **probability mass function (PMF)** describes the probability distribution over a **discrete** random variable. 
 
-> In other terms, it is a function that returns the probability of a random variable being exactly equal to a specific value.
+> In other terms, it is a function that returns the probability of a random variable being exactly equal to a specific value. $P(X=i)=P(i)$
 
+The **cumulative distribution function (CDF)** describes the probability that a random variable is less than or equal than a given value.
 
+> $F(x) = P(X \leq x) = \sum_{X \leq x}P(X=x)$
 
 ---
 
+## probability mass function (PMF) for Discrete RV
+
+- Example: Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another.
+
+- Formally: Let $X=$ number of books sold per student 
+
+- The three possible outcomes are $x_1$ = 0 books, $x_2$ = 1 book (1 textbook for each student), $x_3$ = 2 books (1 textbook and 1 study guide for each student)
+
+i | 1 | 2 | 3
+--|--|--|--
+$x_i$ | 0 | 1 | 2
+$P(X = x_i)$ | .2 | .55 | .25
+
+---
+
+## CDF for discrete RV
+
+- Example: Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another.
+
+- Formally: Let $X=$ number of books sold per student 
+
+- The three possible outcomes are $x_1$ = 0 books, $x_2$ = 1 book (1 textbook for each student), $x_3$ = 2 books (1 textbook and 1 study guide for each student)
+
+i | 1 | 2 | 3
+--|--|--|--
+$x_i$ | 0 | 1 | 2
+$P(X = x_i)$ | .2 | .55 | .25
+$F(X \leq x_i)$ | .2 | .75 | 1
+---
+
 ## Expectation 
-Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. How many books should the bookstore expect to sell per student?
+Two books are assigned for a statistics class: a textbook and its corresponding study guide. The university bookstore determined 20% of enrolled students do not buy either book, 55% buy the textbook only, and 25% buy both books, and these percentages are relatively constant from one quarter to another. 
+
+- How many books should the bookstore expect to sell per student?
 
 - Intuitively: $.2*0 + .55*1 + .25*2 = 1.05$ 
 
@@ -449,46 +482,6 @@ knitr::include_graphics("img/density.png")
 - Instead, we think about probabilities in ranges. 
 
 - $P(a \leq X \leq b)$ is the area under the density function between $a$ and $b$.
-
----
-## Course content 
-
-1. Fundamentals of R
-  - Overview of data types and structures
-  - Data manipulation and data visualization tools  
-
-2. Descriptive statistics for numerical and categorical data
-
-3. Probability
-  - Rules of probability computation; conditional probability
-  - **Basic probability models: Binomial, Normal and Poisson**
-
-4. Statistical inference
-  - Sampling distributions of sample mean and sample proportion 
-  - Hypothesis testing and confidence intervals for population mean and population proportion
-
----
-## Common probability distributions
-
-- Discrete 
-
-  - **Bernoulli**
-  
-  - **Binomial**
-
-  - **Poisson**
-  
-  - Geometric
-
-- Continuous
-
-  - **Normal or Gaussian**
-  
-  - **Student's $t$**
-  
-  - Uniform
-  
-  - Exponential
 
 ---
 ## Why do we care about probability distributions?
