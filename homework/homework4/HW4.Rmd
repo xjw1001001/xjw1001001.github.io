@@ -1,0 +1,251 @@
+---
+title: "STA 032 Homework 4"
+author: "CHANGE YOUR NAME HERE"
+date: "DUE: May 12 2023, 12PM"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and homework number (e.g., `xjw18_hw4.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. When asked, answer must be supported by written statements as well as any code used. 
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ Students may choose to collaborate with each other on the homework, but must clearly indicate with whom they collaborated. Every student must upload their own submission.
+
++ Start to work on it as early as possible. Finishing this homework can help prepare midterm 1.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file.
+
+# Instructions for book problems:
+
+You can use R markdown and mathematical typing to solve the book problems.
+
+Or you can write the problems by hand, taking pictures and then convert them into a PDF file.
+
+You can then Google `concatenate pdf files online` to merge the PDF files you have for R problems and book problems into 1 PDF file for gradescope submission.
+
+You may also handwrite your answer, take pictures, and then include an image in a code chunk using `knitr::include_graphics("myImg.png")`.) 
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+```
+
+
+# Level 1 Parts
+
+1\. Two marbles are drawn at random and without replacement from a box containing two blue marbles and three
+red marbles.
+
+(a) List the sample points. (Find a sample space for
+this experiment.)
+
+(b) Assign probabilities to the sample points.
+
+(c) Determine the probability of observing each of the
+following events:
+
+A: {Two blue marbles are drawn}
+
+B: {A red and a blue marble are drawn}
+
+C: {Two red marbles are drawn}
+
+2\. Laura and Philip each fire one shot at a target. Laura
+has probability 0.5 of hitting the target, and Philip has
+probability 0.3. The shots are independent.
+
+(a) Find the probability that the target is hit.
+
+(b) Find the probability that the target is hit by exactly
+one shot.
+
+(c) Given that the target was hit by exactly one shot,
+find the probability that Laura hit the target.
+
+3\. An automobile insurance company divides customers into
+three categories, good risks, medium risks, and poor
+risks. Assume that 70% of the customers are good risks,
+20% are medium risks, and 10% are poor risks. Assume
+that during the course of a year, a good risk customer has
+probability 0.005 of filing an accident claim, a medium
+risk customer has probability 0.01, and a poor risk customer has probability 0.025. A customer is chosen at
+random.
+
+(a) What is the probability that the customer is a good
+risk and has filed a claim?
+
+(b) What is the probability that the customer has filed
+a claim?
+
+(c) Given that the customer has filed a claim, what is
+the probability that the customer is a good risk?
+
+4\. Answer the following questions as True or False and explain explain your answers.
+
+- The intersection of two events A and B can be larger
+than the union of the same two events A and B
+
+- The probability of a single event A must be smaller
+than or equal to the union of two events A and B.
+
+- The condition probability of A given B must be
+smaller than the intersection of the same two events
+A and B
+
+- For two events A and B where $P(A) > 0$ and $P(B) >0$, $P(A \cap B^C ) = 1 - P(A\cap B)$.
+
+- For two events A and B are independent, where $P(A) > 0$ and $P(B) > 0$, then $P(A \cup B) = P(A)+P(B)(1-P(A))$
+
+- For a discrete random variable $X$, where $a$ is a
+constant, $P(X>a)=P(X \geq a+1$ if $X$ can only take on integer values.
+
+- For a discrete random variable $X$, where $a$ is a
+constant, $F(a) = 1- P(X>a)$
+
+- If a random variable Y only takes on values
+${0, 0.1, 0.2, 0.3, 0.4}$, it is a discrete random variable.
+
+- Outcome of each roll of a die follows Bernoulli distribution.
+
+- If we have 5 independent identical Bernoulli trials,
+and Y =# of successes in the 5 trials, Y can take
+on only values ${1, 2, 3, 4, 5}$.
+
+- Let X be a negative binomial with n and k, then X
+can take on values from 0.
+
+5\. Computer chips often contain surface imperfections. For a certain type of computer chip, the probability mass
+function of the number of defects X is presented in the
+following table.
+
+| x    | 0   | 1   | 2    | 3    | 4    |
+|:------:|:-----:|:-----:|:------:|:------:|:------:|
+| p(x) | 0.4 | 0.3 | 0.15 | 0.10 | 0.05 |
+
+- Find $P(X\leq 2)$
+
+- Find $P(X > 2)$
+
+- Find $\mu_X$, the mean of $X$.
+
+- Find $\sigma_X$, the standard deviation of $X$.
+
+6\. If $X$ and $Y$ are independent random variables with means $\mu_X = 9.5$, $\mu_Y = 6.8$, and standard deviations $\sigma_X = 0.4, \sigma_Y = 0.1$. Find the means and standard deviations of the following. Show your work.
+
+- $Z_1 = 3X$
+
+- $Z_2 = Y - X$
+
+- $Z_3 = X + 4Y$
+
+7\. Data collected by the Substance Abuse and Mental
+Health Services Administration (SAMSHA) suggests
+that 69.7% of 18-20 year-old consumed alcoholic beverages in any given year.
+
+(a) Suppose a random sample of ten 18-20 year-old is
+taken. Is the use of the binomial distribution appropriate for calculating the probability that exactly six
+consumed alcoholic beverages? Explain.
+
+(b) Calculate the probability that exactly 6 out of 10
+randomly sampled 18-20 year-old consumed an alcoholic drink.
+
+(c) What is the probability that exactly four out of ten
+18-20 year-old have not consumed an alcoholic beverage?
+
+(d) What is the probability that at most 2 out of 5 randomly sampled 18-20 year-old have consumed alcoholic beverages?
+
+(e) What is the probability that at least 1 out of 5 randomly sampled 18-20 year-old have consumed alcoholic beverages?
+
+8\. Calculate the following probabilities and indicate which probability distribution model is appropriate in each case. You roll a fair die 5 times. What is the probability of rolling
+
+(a) the first 6 on the fifth roll?
+
+(b) exactly three 6s?
+
+(c) the third 6 on the fifth roll?
+
+# Extra problems (Not grading, don't turn in)
+
+1\. Consider a population in which 80\% of those who are college-educated are employed, and 60\% of those who are not college-educated are employed. In this population, 55\% of individuals are not college-educated. 
+
+a. What is the probability of being employed? 
+
+b. If I pick five people at random from this population, what is the probability that none of those chosen is employed? (Hint: what random variable can we define? What distribution does this random variable follow?) Calculate the required probability by hand (you may use R as a calculator), then in R using a *single* function.
+
+2\. A student has trouble waking up for class. They have two different old alarm clocks. The first goes off 80% of the time, and the second goes off 50% of the time. Calculate the following probabilities:
+
+a. Neither alarm clock goes off
+
+b. One alarm clock goes off
+
+c. Both alarm clocks go off
+
+d. The first alarm clock goes off, given that the second goes off.
+
+3\. The following table represents the joint distribution of $X$ and $Y$:
+
+| X \\ Y |  1  |  2  |
+|:-----:|:---:|:---:|
+|   1   | 0.2 | 0.1 |
+|   2   | 0.0 | 0.2 |
+|   3   | 0.3 | 0.2 |
+
+a. Find the marginal distribution of X and the marginal distribution of Y.
+
+b. Find the conditional distribution (conditional PMF) of $Y|X=1$ , $Y|X=2$ and $Y|X=3$.
+
+c. Are $X$ and $Y$ independent? Why or why not?
+
+4\. On any given day, there is a 10% chance of rain. A person works in a casino with no windows. When it rains, customers wear rain boots 80% of the time. When it doesn’t rain, customers wear rain boots 5% of the time. If the casino worker sees a customer in rain boots, what is the chance of rain?
+
+5\. People with the disease D have a 90% probability of testing positive on the D-test. If they do not have disease D, they have a 99% probability that they will test negative. We know that 5% of all people test positive.
+
+a. What is the probability of having disease D?
+
+b. A person just tested positive on the D-test. What is the probability that they are actually healthy?
+
+6\. A random experiment involves rolling a four-sided dice twice. Let X represent the sum of the numbers on the dice’s face.
+
+a. Write the probability mass function of the random variable $X$.
+
+b. Find $P(X=2)$
+
+c. Find $P(X≤4)$.
+
+d. Find $P(X=2|X≤4)$.
+
+e. Find $E(X)$.
+
+f. Find $Var(X)$.
+
+g. If $Y = 2X+1$, what is $E(Y)$?, what is $Var(Y)$?
+
+## Include the person you coop with:
+
+Names:
+
+## Appendix
+
+```{r eval = TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+

@@ -146,7 +146,7 @@ There are three optional textbooks. They are all available online and are free.
   
 - Fri May 5: Binomial distribution, simulation, R function
   - Notes: [Lecture 15](https://xjw1001001.github.io/lecture/Lecture 15/lecture15.html)
-  
+
 ### Week 6: More on distributions
 - Mon May 8: Poisson and Normal (Gaussian) Distribution
   - Notes: [Lecture 16](https://xjw1001001.github.io/lecture/Lecture 16/lecture16.html)
