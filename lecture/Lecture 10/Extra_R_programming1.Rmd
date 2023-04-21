@@ -47,8 +47,6 @@ library(openintro)
 
 # Contents:
 
-* Extra data visualization cases
-
 * Conditional Programming: if
 
 * iteration: for
@@ -56,11 +54,6 @@ library(openintro)
 * Write the R function
 
 * Some examples [Link to the examples](#example)
-
----
-
-## Extra data visualization case 1
-
 
 
 ---

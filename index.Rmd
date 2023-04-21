@@ -117,6 +117,7 @@ There are three optional textbooks. They are all available online and are free.
 
 - Mon April 24: Describing Numerical and Categorical Data
   - Notes: [Lecture 10](https://xjw1001001.github.io/lecture/Lecture 10/lecture10.html)
+  - Extra R programming 1: [Extra R programming 1](https://xjw1001001.github.io/lecture/Lecture 10/Extra_R_programming1.html)
   - Reading: 
     - R for Data Science Chapter 7
     - [Chapter 9 Visualizing data distributions](http://rafalab.dfci.harvard.edu/dsbook/dataviz-distributions.html)
