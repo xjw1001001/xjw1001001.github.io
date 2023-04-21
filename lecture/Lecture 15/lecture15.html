@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Jingwei Xiong" />
     <meta name="date" content="2023-05-05" />
-    <script src="lecture15_files/header-attrs-2.17/header-attrs.js"></script>
+    <script src="lecture15_files/header-attrs-2.11/header-attrs.js"></script>
     <link href="lecture15_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="lecture15_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <link href="lecture15_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
@@ -290,6 +290,136 @@ The probability distribution of `\(X\)`, the number of recent e-cig smokers out 
  ]
 
 ---
+## More examples of calculating binomial probabilities 
+
+- We might be interested in the probability that there is at least 1 student, out of 500, that has recent e-cigarette use. 
+
+- This translates to `\(P(X \geq 1)\)`, where `\(X\)` is the random variable representing the number of students, out of 500, with recent e-cigarette use. Here, `\(n = 500\)` and `\(p = .2\)`
+
+- Other probabilities that may be of interest include the probability that more than 2 students, out of 500, have recent e-cigarette use. 
+
+Binomial distribution: `\(P(X = x)=\begin{pmatrix} n \\ x \end{pmatrix}p^x(1-p)^{n-x}\)`
+
+- Quick trick: `\(P(X \geq 1) = 1 - P(X=0)\)` (you either have no students with recent e-cigarette use, or one or more students with recent e-cigarette use)
+
+- Similarly, `\(P(X &gt; 2)=1-P(X=0)-P(X=1)-P(X=2)\)` 
+
+
+---
+## More examples of calculating binomial probabilities 
+
+Binomial distribution: `\(P(X = x)=\begin{pmatrix} n \\ x \end{pmatrix}p^x(1-p)^{n-x}\)`
+
+We thus have
+
+.small[
+$$
+`\begin{aligned}
+P(X \geq 1) &amp; =1-P(X = 0) \\
+&amp;=1-\begin{pmatrix}500 \\ 0 \end{pmatrix} 0.2^0 (0.8)^{500-0} \\
+&amp;=1-0.8^{500} \\
+&amp;= 1\\
+ P(X&gt;2) &amp; = 1-P(X=0)-P(X=1)-P(X=2) \\ 
+ &amp; = 1 - 0.8^{500} - \begin{pmatrix} 500 \\ 1 \end{pmatrix}0.2^1(0.8)^{500-1} - \begin{pmatrix} 500 \\ 2 \end{pmatrix}0.2^2(0.8)^{500-2} \\
+ &amp; = 1 - 0.8^{500} - 500(0.2)(0.8)^{500-1} - \frac{500!}{2!(500-2)!}0.2^2(0.8)^{500-2} \\
+ &amp; = 1 - 0.8^{500} - 500(0.2)(0.8)^{500-1} - \frac{500(500-1)}{2}0.2^2(0.8)^{500-2} \\
+ &amp; = 1
+\end{aligned}`
+$$
+]
+
+---
+## In R
+
+- Given the large number of students (500), it is almost certain that at least 1 or 2 would have recent e-cigarette use. 
+
+- We might be interested instead in `\(P(X \geq 100)\)`, the probability that at least four-fifths of the students have recent e-cigarette use
+
+- As we can see, this quickly becomes intractable. Luckily, we can do this in R
+
+
+```r
+sum(dbinom(x = 100:500, size = 500, prob = .2))
+```
+
+```
+[1] 0.5178363
+```
+
+- We can also use the `pbinom()` function, which gives us `\(P(X \leq x)\)` directly
+
+```r
+1 - pbinom(q = 99, size = 500, prob = .2)
+```
+
+```
+[1] 0.5178363
+```
+
+---
+## Sampling from a binomial distribution in R
+
+- Recall draws from the Bernoulli distribution:
+  
+  - For any value of `\(0 \leq p \leq 1\)` (including .5), we can use the `rbinom()` function
+
+  - `rbinom()` has the arguments `n, size, prob`, where `n` is the number of draws, and `prob` is the probability of success.
+  
+  - `size` is the "number of trials (zero or more)" -- for the Bernoulli distribution, we use `size = 1`. 
+  
+---
+## Sampling from a binomial distribution in R
+
+- For the binomial distribution, `size` is the number of Bernoulli trials; in the e-cigarette example, `size = 3`
+
+- **NOTE**: we use `\(n\)` to denote the number of Bernoulli trials; in R this is the `size` argument
+
+Description | R
+----|--
+Number of draws/samples from Binomial | `n`
+Number of Bernoulli trials, size `\(n\)` | `size`
+Probability of success, `\(p\)` | `prob`
+
+- It should now make sense that for draws from the Bernoulli distribution, we use the argument `size = 1`.
+
+---
+## Sampling from a binomial distribution in R
+
+Example: 100 draws from the binomial distribution; each draw is made of 3 Bernoulli trials (size 3); probability of success = .2
+
+
+```r
+set.seed(0) # so results are reproducible 
+inputP &lt;- .2
+binomDraws &lt;- rbinom(n = 100, size = 3, prob = inputP)
+binomDraws
+```
+
+```
+  [1] 2 0 0 1 2 0 2 2 1 1 0 0 0 1 0 1 0 1 2 0 1 2 0 1 0 0 0 0 0 1 0 0 1 0 0 1 1
+ [38] 1 0 1 0 1 1 1 1 1 1 0 0 1 1 0 1 0 0 0 0 0 1 1 0 2 0 0 0 1 0 0 1 0 1 0 1 0
+ [75] 0 0 1 1 0 1 2 0 1 0 0 1 0 1 0 0 0 0 0 1 1 1 1 0 0 1
+```
+
+
+---
+## Sample mean  
+
+- Recall: for a binomial random variable with number of trials `\(n\)` and probability of success `\(p\)`, `\(E(X) = np\)` and `\(Var(X) = n(p)(1-p)\)`
+
+- In our example, `\(p = .2\)`, `\(n = 3\)`, so `\(E(X) = .6\)` and `\(Var(X) = 3*.2*.8 = .48\)`
+
+- We can calculate the sample mean from our sample of 100:
+
+```r
+mean(binomDraws)
+```
+
+```
+[1] 0.56
+```
+
+---
 
 # R Functions for Probability Distributions
 
@@ -430,7 +560,7 @@ ggplot(df, aes(x = day)) +
   scale_color_manual(name = "", values = c("Chickens" = "black", "Eggs" = "red"))
 ```
 
-&lt;img src="lecture15_files/figure-html/unnamed-chunk-10-1.png" width="504" /&gt;
+&lt;img src="lecture15_files/figure-html/unnamed-chunk-14-1.png" width="504" /&gt;
 
 ---
 
@@ -708,7 +838,7 @@ chicken_farm(initial_chicken = 100, initial_egg = 0,
   scale_color_manual(name = "", values = c("Chickens" = "black", "Eggs" = "red"))
 ```
 
-&lt;img src="lecture15_files/figure-html/unnamed-chunk-24-1.png" width="504" /&gt;
+&lt;img src="lecture15_files/figure-html/unnamed-chunk-28-1.png" width="504" /&gt;
 
 ---
 
@@ -724,7 +854,7 @@ chicken_farm(initial_chicken = 100, initial_egg = 0,
   scale_color_manual(name = "", values = c("Chickens" = "black", "Eggs" = "red"))
 ```
 
-&lt;img src="lecture15_files/figure-html/unnamed-chunk-25-1.png" width="504" /&gt;
+&lt;img src="lecture15_files/figure-html/unnamed-chunk-29-1.png" width="504" /&gt;
 
 ---
 
@@ -740,7 +870,7 @@ chicken_farm(initial_chicken = 100, initial_egg = 0,
   scale_color_manual(name = "", values = c("Chickens" = "black", "Eggs" = "red"))
 ```
 
-&lt;img src="lecture15_files/figure-html/unnamed-chunk-26-1.png" width="504" /&gt;
+&lt;img src="lecture15_files/figure-html/unnamed-chunk-30-1.png" width="504" /&gt;
 
 ---
 ## Summary

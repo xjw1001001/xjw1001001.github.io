@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Law of large numbers, Poisson distribution, Normal distribution"
 subtitle: "<br><br> STA 032: Gateway to data science Lecture 16"
 author: "Jingwei Xiong"
 date: May 8, 2023
@@ -46,3 +46,8 @@ library(openintro)
 .tiny .remark-code { font-size: 60%; }
 .small .remark-code { font-size: 80%; }
 ```
+
+
+
+
+
