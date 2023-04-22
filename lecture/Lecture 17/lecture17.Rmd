@@ -48,7 +48,6 @@ library(openintro)
 ```
 
 
----
 ## Recall: Continuous random variables
 
 - We saw continuous random variables earlier and how they differ from discrete random variables
@@ -750,6 +749,7 @@ and $b$ are constants
 - Hence if $X \sim N(\mu_x, \sigma_x^2)$ and $Y \sim N(\mu_y, \sigma_y^2)$ are independent, $W = X + Y \sim N(\mu_x + \mu_y, \sigma_x^2 + \sigma_y^2)$
 
 - Extends to more than two random variables in the linear combination. Note also that $b$ can be negative, e.g., $E(X - Y) = E(X) - E(Y)$ and $Var(X - Y) = Var(X) + Var(Y)$.
+
 
 ---
 ## Summary: Distributions in R
