@@ -149,22 +149,22 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 15](https://xjw1001001.github.io/lecture/Lecture 15/lecture15.html)
 
 ### Week 6: More on distributions
-- Mon May 8: Poisson and Normal (Gaussian) Distribution
+- Mon May 8: Law of large numbers, Poisson distribution, Monte Carlo simulation
   - Notes: [Lecture 16](https://xjw1001001.github.io/lecture/Lecture 16/lecture16.html)
   - **Homework 5**: (Due May 21 midnight, cover lecture 16-19) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
-- Wed May 10: 
+- Wed May 10: Continuous RV, Normal (Gaussian) Distribution
   - Notes: [Lecture 17](https://xjw1001001.github.io/lecture/Lecture 17/lecture17.html)
 
-- Fri May 12: 
+- Fri May 12: Exponential distribution, 
   - Notes: [Lecture 18](https://xjw1001001.github.io/lecture/Lecture 18/lecture18.html)
   - **Homework 4: (Due May 12 midnight)**
   
 ### Week 7: 
-- Mon May 15: 
+- Mon May 15: Distributions for sample mean and sample sd
   - Notes: [Lecture 19](https://xjw1001001.github.io/lecture/Lecture 19/lecture19.html)
  
-- Wed May 17: 
+- Wed May 17: Confidence intervals for sample mean and sample proportion
   - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
   - **Homework 6**: (Due May 28 midnight, cover lecture 20-23) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
