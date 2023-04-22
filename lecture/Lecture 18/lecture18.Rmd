@@ -48,7 +48,6 @@ library(openintro)
 ```
 
 
-
 ## Recall: What is statistical inference?
 - **Descriptive statistics** are numbers that are used to summarize and describe data. Descriptive statistics do not necessarily generalize beyond the data, because of sampling variability
 

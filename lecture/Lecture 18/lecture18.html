@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Distributions for sample mean and sample sd</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-05-12" />
+    <script src="lecture18_files/header-attrs-2.17/header-attrs.js"></script>
+    <link href="lecture18_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture18_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture18_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture18_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture18_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture18_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture18_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture18_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Distributions for sample mean and sample sd
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 18
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### May 12, 2023
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+
+## Recall: What is statistical inference?
+- **Descriptive statistics** are numbers that are used to summarize and describe data. Descriptive statistics do not necessarily generalize beyond the data, because of sampling variability
+
+- **Inferential statistics** or **statistical inference** gives us an idea about how sample means (for example) from different samples are likely to vary from each other and from the population mean 
+
+- **Statistical inference** allows us to draw conclusions about the larger population. It is the process of using sample data to make conclusions about the underlying population the sample came from.
+
+- If the sample is **representative**, then we can use the tools of probability and statistical inference to make generalizable conclusions to the broader population of interest.
+
+.pull-left[
+&lt;img src="img/soup.png" width="50%" /&gt;
+]
+
+.pull-right[
+Similar to tasting a spoonful of soup while cooking to make an inference about the entire pot.
+]
+
+---
+## Recall: Example of statistical inference in action 
+
+When a sample statistic is used to estimate a population parameter, it will be accompanied by a margin of error
+
+&lt;img src="img/approval.png" width="85%" /&gt;
+
+.tiny[
+Source: https://www.rasmussenreports.com/public_content/politics/biden_administration/prez_track_sep23
+]
+
+---
+## Recall: Many Topics in Statistical Inference
+
+- Fundamentals: probability, distributions, random variables, ...
+
+- **Sampling**
+
+- Hypothesis testing
+
+- Point estimates and confidence intervals
+
+- Modeling: Linear regression, analysis of variance, nonparametric models, machine learning, ... 
+
+---
+## Sampling Distribution of the Sample Mean 
+
+Recall our shoe size example, where wearers of men's shoe sizes follow a `\(N(11, 1.5^2)\)` distribution.
+
+Say we are interested in the sample mean of shoe sizes. We have a sample of 1000 observations.
+
+
+```r
+set.seed(0)
+sampled1000_1 &lt;- rnorm(1000, 11, 1.5)
+head(sampled1000_1, 20)
+```
+
+```
+ [1] 12.894431 10.510650 12.994699 12.908644 11.621962  8.690075  9.607149
+ [8] 10.557919 10.991349 14.606980 12.145390  9.801486  9.278514 10.565808
+[15] 10.551177 10.382734 11.378335  9.662118 11.653525  9.143692
+```
+
+```r
+mean(sampled1000_1) 
+```
+
+```
+[1] 10.97626
+```
+
+---
+## Sampling Distribution of the Sample Mean 
+Now we repeat the experiment, i.e., get a different sample of 1000 observations. 
+
+
+```r
+set.seed(10)
+sampled1000_2 &lt;- rnorm(1000, 11, 1.5)
+head(sampled1000_2, 20)
+```
+
+```
+ [1] 11.028119 10.723621  8.943004 10.101248 11.441818 11.584691  9.187886
+ [8] 10.454486  8.559991 10.615282 12.652669 12.133672 10.642650 12.481167
+[15] 12.112085 11.134021  9.567584 10.707274 12.388282 11.724468
+```
+
+```r
+mean(sampled1000_2) 
+```
+
+```
+[1] 11.01706
+```
+
+```r
+all.equal(mean(sampled1000_1), mean(sampled1000_2))
+```
+
+```
+[1] "Mean relative difference: 0.003717704"
+```
+---
+## Sampling Distribution of the Sample Mean 
+
+If we repeat the experiment an infinite number of times, what distribution of sample means would we get? This is known as the **sampling distribution**.
+
+1. Take a sample of size `\(n\)` and calculate its mean `\(\overline{x}_1\)`
+2. Take a second sample of the same size and calculate its mean `\(\overline{x}_2\)`
+3. Repeat this many times to get a dataset of sample means `\(\overline{x}_1, \overline{x}_2, \ldots\)`
+
+What is the distribution of the *statistics* `\(\overline{x}_1, \overline{x}_2, \overline{x}_3, \ldots\)`?
+
+The sample mean `\(\overline{X}\)`, is defined as `\(\overline{X} = \frac{\sum_{i = 1}^n X_i}{n}\)`. Each realization above is a draw from `\(\overline{X}\)`, denoted with a small letter `\(\overline{x}\)`.
+
+Here we consider `\(X_1, ..., X_n\)` that are **independent and identically distributed**. (E.g., `\(X_1, ... X_n \sim N(11, 1.5^2)\)` for the shoe size distribution.)
+
+---
+## Sampling Distribution of the Sample Mean 
+
+1. Take a sample of size `\(n\)` and calculate its mean `\(\overline{x}_1\)`
+2. Take a second sample of the same size and calculate its mean `\(\overline{x}_2\)`
+3. Repeat this many times to get a dataset of sample means `\(\overline{x}_1, \overline{x}_2, \ldots\)`
+
+We cannot repeat an infinite number of times, but we do this 10,000 times in R.
+
+.small[
+
+```r
+set.seed(0)
+repeat10000 &lt;- t(replicate(n = 10000, rnorm(1000, 11, 1.5)))
+str(repeat10000)
+```
+
+```
+ num [1:10000, 1:1000] 12.9 10.6 11.7 10.2 12.2 ...
+```
+
+```r
+head(rowMeans(repeat10000), 20)
+```
+
+```
+ [1] 10.97626 10.96282 11.10221 11.00373 11.00616 11.02959 10.99695 11.06309
+ [9] 10.92670 11.08920 10.97525 10.95720 10.95437 11.07828 11.02202 11.05240
+[17] 11.00455 10.95824 10.96431 10.96413
+```
+
+```r
+means10000 &lt;- rowMeans(repeat10000)
+```
+]
+
+---
+## Sampling Distribution of the Sample Mean 
+
+
+
+```r
+data.frame(shoesMean = means10000) %&gt;%
+  ggplot(aes(x = shoesMean)) +
+  geom_density() +
+  labs(x = "Mean of sample of size 1000",
+       y = "Density",
+       title = "Sampling distribution from N(11, 1.5^2)")
+```
+
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-8-1.png" width="504" /&gt;
+
+---
+## Sampling Distribution of the Sample Mean 
+
+.pull-left[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-9-1.png" width="100%" /&gt;
+]
+.pull-right[
+How would we describe this distribution?
+
+- Center
+
+- Spread
+
+- Shape
+]
+---
+## Sampling Distribution of the Sample Mean 
+
+.pull-left[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-10-1.png" width="100%" /&gt;
+]
+.small[
+.pull-right[
+How would we describe this distribution?
+
+- Center
+  - The distribution is centered at 11, which is the same as the population parameter
+
+- Spread
+  - The variability looks to be much smaller than the original distribution (the original distribution has standard deviation 1.5)
+
+- Shape
+  - The distribution is symmetric and bell-shaped, and it resembles a normal distribution.
+]
+]
+
+---
+## Effect of changing sample size
+
+- Earlier we used a sample size of 1000. What if we used a sample size of 50? 
+
+
+```r
+set.seed(0)
+repeat10000_n50 &lt;- t(replicate(n = 10000, rnorm(50, 11, 1.5)))
+str(repeat10000_n50)
+```
+
+```
+ num [1:10000, 1:50] 12.89 11.4 12.17 13.21 9.43 ...
+```
+
+```r
+head(rowMeans(repeat10000_n50), 20)
+```
+
+```
+ [1] 11.03590 11.03211 10.68366 11.17968 11.06924 11.13242 11.03710 10.97258
+ [9] 10.96971 10.88460 10.93739 10.80427 11.03709 10.90858 10.84133 11.32991
+[17] 11.04654 10.74770 10.98847 10.88685
+```
+
+```r
+means10000_n50 &lt;- rowMeans(repeat10000_n50)
+```
+
+---
+## Effect of changing sample size
+
+.tiny[
+.pull-left[
+
+```r
+data.frame(shoesMean = means10000, sampleSize = 1000) %&gt;%
+  bind_rows(
+    data.frame(means10000_n50, sampleSize = 50) %&gt;%
+      rename(shoesMean = means10000_n50)
+  )  %&gt;%
+  ggplot(aes(x = shoesMean,
+             fill = as.factor(sampleSize))) +
+  geom_density() +
+  labs(x = "Mean shoe size",
+       y = "Density",
+       title = "Sampling distribution from N(11, 1.5^2)",
+       fill = "Sample size")  +
+  scale_fill_viridis_d()
+ # guides(fill = "none")
+```
+]
+]
+
+.pull-right[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-13-1.png" width="100%" /&gt;
+]
+
+- What do you notice about the spread? 
+
+--
+  - A larger sample size produces more precise estimates 
+  - We will formalize this intuition using the Central Limit Theorem 
+  
+---
+## Note on sampling distributions
+
+- From Open Intro Statistics: "Sampling distributions are never observed, but we keep them in mind."
+
+- In real-world applications, we never actually observe the sampling distribution
+
+- Even in simulations, we cannot run experiments an infinite number of times to generate the sampling distribution 
+
+- Yet it is useful to think of a sample statistic as coming from such a hypothetical distribution
+
+- Understanding the sampling distribution will help us characterize and make sense of the sample statistics that we do observe.
+
+
+---
+## Sampling distributions, confidence intervals and hypothesis testing
+
+Knowing the sampling distribution can help us
+
+- Estimate a population parameter as point estimate `\(\pm\)` margin of error, where the margin of error is comprised of a measure of how confident we want to be and the sample statistic's variability. (Coming soon: confidence intervals)
+
+- Test whether a population parameter is equal to some value, by evaluating how likely it is that we have obtained the observed sample statistic, if the population parameter is indeed that value. (Coming soon: hypothesis testing)
+
+---
+## Recall: Sampling Distribution of the Sample Mean 
+
+We sample 1000 times from a `\(N(11, 1.5^2)\)` distribution. Now we repeat the experiment, i.e., get a different sample of 1000 observations. If we repeat the experiment an infinite number of times, what distribution of sample means would we get? This is known as the **sampling distribution**.
+
+1. Take a sample of size `\(n\)` and calculate its mean `\(\overline{x}_1\)`
+2. Take a second sample of the same size and calculate its mean `\(\overline{x}_2\)`
+3. Repeat this many times to get a dataset of sample means `\(\overline{x}_1, \overline{x}_2, \ldots\)`
+
+What is the distribution of the *statistics* `\(\overline{x}_1, \overline{x}_2, \overline{x}_3, \ldots\)`?
+
+We cannot repeat an infinite number of times, but we do this 10,000 times in R.
+
+---
+
+## Recall: Sampling Distributions in R
+
+```r
+set.seed(0)
+repeat10000 &lt;- t(replicate(n = 10000, rnorm(1000, 11, 1.5)))
+means10000 &lt;- rowMeans(repeat10000)
+
+set.seed(0)
+repeat10000_n50 &lt;- t(replicate(n = 10000, rnorm(50, 11, 1.5)))
+means10000_n50 &lt;- rowMeans(repeat10000_n50)
+```
+
+---
+## Recall: Sampling Distribution of the Sample Mean 
+
+.pull-left[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-15-1.png" width="100%" /&gt;
+]
+.small[
+.pull-right[
+How would we describe this distribution?
+
+- Center
+  - The distribution is centered at 11, which is the same as the population parameter
+
+- Spread
+  - The variability looks to be much smaller than the original distribution (the original distribution has standard deviation 1.5)
+  - A larger sample size produces more precise estimates 
+  
+- Shape
+  - The distribution is symmetric and bell-shaped, and it resembles a normal distribution.
+]
+]
+
+---
+## Central Limit Theorem
+
+- The **Central Limit Theorem** says that for any distribution with a well-defined mean and variance, the distribution of **sample means** for a sample of size `\(n\)` is approximately normal. 
+
+- Formally: for a population with mean `\(\mu\)` and standard deviation `\(\sigma\)`, taking independent samples `\(X_1, ..., X_n\)`, the following three important properties of the distribution of the sample mean `\(\overline{X} = \frac{\sum_{i = 1}^n X_i}{n}\)` hold:
+
+  - The mean of the sampling distribution is identical to the population mean `\(\mu\)`, i.e., `\(E(\overline{X}) = \mu\)`
+
+  - The standard deviation of the sampling distribution is `\(\frac{\sigma}{\sqrt{n}}\)`, i.e., `\(Var(\overline{X}) = \frac{\sigma^2}{n}\)`
+
+  - For `\(n\)` large enough (in the limit as `\(n \rightarrow \infty\)`), the shape of the sampling distribution is approximately normal (Gaussian), i.e., `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)` 
+
+- This result has strong implications in many areas of statistics, including in construction of confidence intervals and in hypothesis testing.
+
+---
+## Intuition
+
+- The average of many measurements of the same unknown quantity tends to give a better estimate than a single measurement
+
+  - If we want to know the population mean test score of the class, getting information from a sample of 10 students is better than asking a single student
+  
+- Recall the law of large numbers: as the sample size grows, the sample mean gets closer to the expected value, or population mean
+
+
+
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-17-1.png" width="504" /&gt;
+
+---
+## Intuition
+.pull-left[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-18-1.png" width="100%" /&gt;
+
+- Note that here we are using Bernoulli(.3), so `\(\mu = p = .3\)` and `\(\sigma^2 = p(1-p) = .3(.7)\)`
+]
+
+.pull-right[
+- In this illustration, you can think of each point plotted as a single draw from `\(\overline{X} \sim N(\mu, \frac{\sigma^2}{n})\)`, as we vary `\(n\)`, the sample size, plotted on the horizontal axis.
+
+- The Central Limit Theorem tells us the distribution of `\(\overline{X}\)`, at each value of `\(n\)`.
+
+- For large values of `\(n\)`, we see that `\(Var(\overline{X}) = \frac{\sigma^2}{n}\)` gets very small, so any draw from this distribution will be very close to `\(E(\overline{X}) = \mu\)`.
+
+]
+
+---
+## Intuition
+
+- We can see the same narrowing distribution (smaller variance) with our shoes example:
+
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-19-1.png" width="70%" /&gt;
+
+
+- Nice applet where you can adjust the sample size and other parameters and see the impact on the sampling distribution: http://demonstrations.wolfram.com/SamplingDistributionOfTheSampleMean/
+
+
+---
+## Central Limit Theorem
+
+For a population with mean `\(\mu\)` and standard deviation `\(\sigma\)`, taking independent samples `\(X_1, ..., X_n\)`, the following three important properties of the distribution of the sample mean `\(\overline{X}  = \frac{\sum_{i = 1}^n X_i}{n}\)` hold:
+
+  - The mean of the sampling distribution is identical to the population mean `\(\mu\)`, i.e., `\(E(\overline{X}) = \mu\)`
+
+  - The standard deviation of the sampling distribution is `\(\frac{\sigma}{\sqrt{n}}\)`, i.e., `\(Var(\overline{X}) = \frac{\sigma^2}{n}\)`
+
+  - For `\(n\)` large enough (in the limit as `\(n \rightarrow \infty\)`), the shape of the sampling distribution is approximately normal (Gaussian), i.e., `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)` 
+
+
+Notice that this does not restrict the distribution of the underlying `\(X_1, ..., X_n\)` in any way. These can be normal, binomial, Poisson, ... 
+
+---
+## Central Limit Theorem with different underlying distributions
+
+- All we need to know is `\(E(X_i)\)` or `\(\mu\)`, and `\(Var(X_i)\)` or `\(\sigma^2\)`
+
+- For normally distributed random variables with mean `\(\mu\)` and variance `\(\sigma^2\)`, `\(\overline{X} \sim N(\mu, \frac{\sigma^2}{n})\)` (actually, we don't need CLT for this. Why?)
+
+- For Bernoulli distributed random variables with probability of success `\(p\)`, `\(Var(X_i)= p(1-p)\)`, `\(\overline{X} = \hat{P} \approx N(p, \frac{p(1-p)}{n})\)` 
+
+- For Poisson( `\(\lambda\)` ) distributed random variables with `\(E(X_i) = \lambda\)` and `\(Var(X_i) = \lambda\)`, `\(\overline{X} \approx N(\lambda, \frac{\lambda}{n})\)` 
+---
+
+## How Large is Large Enough for n?
+
+- A commonly used rule of thumb is `\(n &gt; 50\)`
+
+- For Bernoulli data, one rule of thumb is that `\(n\)` should be large enough that `\(n p&gt;5\)` and `\(n(1- p)&gt;5\)`. Sometimes you also see `\(n p&gt;10\)` and `\(n(1- p)&gt; 10\)`. These are just rules of thumb and approximations!
+
+  - So if p is around a half, you need a smaller sample size than if p is close to the boundaries of 0 or 1.
+  
+  - We will see this again when we talk about the normal approximation for the binomial
+
+
+---
+
+## Example: Normal data
+
+In the shoe size example, we have `\(X_1, ..., X_n \sim N(11, 1.5^2)\)`. Say we collected 1000 samples, so the sample size `\(n = 1000\)`. What distribution does the sampling distribution of the sample mean follow? What is `\(P(\overline{X} &lt; 10.9)\)`? Calculate this in two ways: using the original distribution, and using the standard normal distribution. 
+
+--
+
+By the Central Limit Theorem, `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)`, in this case `\(N(11, \frac{1.5^2}{1000})\)`. 
+
+Standardizing, we have `\(P(\overline{X} &lt; 10.9) = P(\frac{\overline{X} - 11}{1.5/\sqrt{1000}} &lt; \frac{10.9 - 11}{1.5/\sqrt{1000}}) = P(Z &lt; \frac{-.1}{1.5/\sqrt{1000}})\)`
+
+
+```r
+pnorm(10.9, mean = 11, sd = sqrt(1.5^2/1000))
+```
+
+```
+[1] 0.01750749
+```
+
+```r
+pnorm((10.9 - 11)/(1.5/sqrt(1000)) ) # standardized version
+```
+
+```
+[1] 0.01750749
+```
+
+---
+
+## Example: Bernoulli data
+
+Assume that 67% of the population in India has had a prior COVID infection. Define the variable `\(X_i\)` to take value 1 if the `\(i\)`th randomly sampled Indian resident has been infected, and let it be 0 otherwise. Assume the samples are independent. 
+
+What distribution does `\(X_i\)` follow? What are the parameters? What is the mean? What is the variance? 
+
+--
+- The random variable `\(X_i\)` follows a Bernoulli distribution. A Bernoulli random variable has mean `\(p\)` and variance `\(p(1- p)\)`. Here `\(p=0.67\)`.
+
+- If we take a random sample, the sample mean `\(\overline{x}=\hat{p}\)` is an *estimate* of this probability (it's just the fraction of 1's)
+
+- If we take repeated samples of Indian residents and compute the proportion with prior infection in each, what values will we see?  Will we get 0.67 each time?
+
+---
+
+## Simulation: Prior Infections
+
+Again, we perform 10000 experiments where each time we sample from a Bernoulli distribution with `prob = 0.67` and different values of `n`.
+
+
+```r
+set.seed(0)
+n10 &lt;- t(replicate(n = 10000, rbinom(10, size = 1, prob = .67)))
+n10 &lt;- rowMeans(n10)
+
+set.seed(0)
+n50 &lt;- t(replicate(n = 10000, rbinom(50, size = 1, prob = .67)))
+n50 &lt;- rowMeans(n50)
+
+set.seed(0)
+n100 &lt;- t(replicate(n = 10000, rbinom(100, size = 1, prob = .67)))
+n100 &lt;- rowMeans(n100)
+
+set.seed(0)
+n500 &lt;- t(replicate(n = 10000, rbinom(500, size = 1, prob = .67)))
+n500 &lt;- rowMeans(n500)
+```
+
+---
+## Simulation: Prior Infections
+
+.small[
+.pull-left[
+
+```r
+data.frame(propCovid = n10, sampleSize = 10) %&gt;%
+  bind_rows(
+    data.frame(n50, sampleSize = 50) %&gt;%
+      rename(propCovid = n50)
+  ) %&gt;%
+  bind_rows(
+    data.frame(n100, sampleSize = 100) %&gt;%
+      rename(propCovid = n100)
+  )%&gt;%
+  bind_rows(
+    data.frame(n500, sampleSize = 500) %&gt;%
+      rename(propCovid = n500)
+  ) %&gt;%
+  ggplot(aes(x = propCovid,
+             fill = as.factor(sampleSize))) +
+  geom_density(alpha = .5) +
+  labs(x = "Proportion of people with prior infection",
+       y = "Density",
+       title = "Sampling distribution from Bernoulli(.67)",
+       fill = "Sample size")  +
+  scale_fill_viridis_d()
+```
+]
+]
+
+.pull-right[
+&lt;img src="lecture18_files/figure-html/unnamed-chunk-23-1.png" width="100%" /&gt;
+]
+
+
+---
+## Sampling distribution of the sample proportion
+
+- The sample proportion is the same as the sample mean, when the distribution is Bernoulli
+
+- The sample proportion is `\(\hat{P} = \frac{1}{n}\sum_{i = 1}^n X_i\)`, where `\(X_i \sim\)` Bernoulli(p).
+
+- Earlier example: 
+
+Assume that 67% of the population in India has had a prior COVID infection. Define the variable `\(X_i\)` to take value 1 if the `\(i\)`th randomly sampled Indian resident has been infected, and let it be 0 otherwise. Assume the samples are independent. 
+
+- The random variable `\(X\)` is Bernoulli. A Bernoulli random variable has mean `\(p\)` and variance `\(p(1- p)\)`. Here `\(p=0.67\)`.
+
+- The sample proportion that had a prior infection is just the fraction of 1's
+
+- The sample mean is defined as `\(\overline{X} = \frac{\sum_{i = 1}^n{X_i}}{n}\)`. When `\(X_i\)` is Bernoulli, it can only take the values 0 and 1, and the sample mean is the same as the sample proportion. `\(\overline{X} = \hat{P}\)`.
+
+
+---
+## Sampling distribution of the sample proportion
+
+- Recall: the Central Limit Theorem does not restrict the distribution of the underlying `\(X_1, ..., X_n\)` in any way. They can be normal, binomial, Poisson, ... 
+
+- `\(\overline{X}  \approx N(\mu, \frac{\sigma^2}{n})\)` 
+
+- We get the sampling distribution of the sample proportion for free!
+
+- When `\(X_i \sim\)` Bernoulli(p), `\(\mu = p\)` and `\(\sigma^2 = p(1-p)\)`.
+
+- By the Central Limit Theorem,
+`\(\overline{X} = \hat{P} \approx N(p, \frac{p(1-p)}{n})\)` 
+
+
+---
+## Example: cats
+We ask a random sample of 435 people if they like cats. Assume that the probability that a randomly selected person likes cats is 75%. Let `\(X_i\)` be the Bernoulli variable representing whether or not the `\(i\)`th person likes cats. What is the sampling distribution of the sample proportion? What is the probability that the sample proportion is smaller than .7? 
+
+--
+
+By the Central Limit Theorem, `\(\overline{X} = \hat{P} = \frac{\sum_{i = 1}^n{X_i}}{n} \approx N(p, \frac{p(1-p)}{n})\)`.
+
+In this case, `\(\overline{X} = \hat{P} = \frac{\sum_{i = 1}^{435}{X_i}}{435} \approx N(.75, \frac{.75(1-.75)}{435})\)`.
+
+
+```r
+pnorm(.7, mean = .75, sd = sqrt(.75*(1-.75)/435))
+```
+
+```
+[1] 0.008013087
+```
+
+---
+## Summary
+  
+- Central Limit Theorem: `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)` 
+
+- Sampling distribution of the sample mean
+
+- Sampling distribution of the sample proportion: `\(\overline{X} = \hat{P} \approx N(p, \frac{p(1-p)}{n})\)` 
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
