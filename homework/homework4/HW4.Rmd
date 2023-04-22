@@ -120,8 +120,6 @@ ${0, 0.1, 0.2, 0.3, 0.4}$, it is a discrete random variable.
 and Y =# of successes in the 5 trials, Y can take
 on only values ${1, 2, 3, 4, 5}$.
 
-- Let X be a negative binomial with n and k, then X
-can take on values from 0.
 
 5\. Computer chips often contain surface imperfections. For a certain type of computer chip, the probability mass
 function of the number of defects X is presented in the
