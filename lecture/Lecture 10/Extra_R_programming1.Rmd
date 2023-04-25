@@ -681,5 +681,12 @@ calculator = function(x, y, op) {
 }
 ```
 
+---
+
+https://remiller1450.github.io/s230s19/Intro_maps.html
+
+
+https://cran.r-project.org/web/packages/usmap/vignettes/mapping.html
+
 
 
