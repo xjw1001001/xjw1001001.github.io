@@ -4,16 +4,16 @@
     <title>Confidence intervals</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jingwei Xiong" />
-    <meta name="date" content="2023-05-15" />
-    <script src="lecture19_files/header-attrs-2.17/header-attrs.js"></script>
-    <link href="lecture19_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="lecture19_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-    <link href="lecture19_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
-    <script src="lecture19_files/tile-view-0.2.6/tile-view.js"></script>
-    <link href="lecture19_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
-    <link href="lecture19_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
-    <link href="lecture19_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
-    <script src="lecture19_files/panelset-0.2.6/panelset.js"></script>
+    <meta name="date" content="2023-05-17" />
+    <script src="lecture20_files/header-attrs-2.17/header-attrs.js"></script>
+    <link href="lecture20_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture20_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture20_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture20_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture20_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture20_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture20_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture20_files/panelset-0.2.6/panelset.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -23,13 +23,13 @@ class: center, middle, inverse, title-slide
 # Confidence intervals
 ]
 .subtitle[
-## <br><br> STA 032: Gateway to data science Lecture 19
+## <br><br> STA 032: Gateway to data science Lecture 20
 ]
 .author[
 ### Jingwei Xiong
 ]
 .date[
-### May 15, 2023
+### May 17, 2023
 ]
 
 ---
@@ -50,177 +50,497 @@ class: center, middle, inverse, title-slide
 .small .remark-code { font-size: 80%; }
 &lt;/style&gt;
 
+
 ---
 ## Recap
-  
-- Central Limit Theorem: `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)` 
-
-- Sampling distribution of the sample mean
-
-- Sampling distribution of the sample proportion: `\(\overline{X} = \hat{P} \approx N(p, \frac{p(1-p)}{n})\)` 
-
----
-## Today
-- Normal approximation to binomial
-
 - Confidence intervals: 
 
   - Introduction and interpretation 
   
-  - Construction using Central Limit Theorem 
+  - Construction using Central Limit Theorem: `\(\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)\)`
 
 ---
-## Normal approximation to the Binomial distribution
-- We saw in an earlier lecture that as the number of trials increased, the binomial distribution becomes symmetric and bell-shaped. 
+## Today
 
-- A commonly used rule of thumb is that for `\(Y \sim\)` Binomial(n, p), when `\(np &gt; 5\)` and `\(n(1-p) &gt; 5\)`, `\(Y \approx N(np, np(1-p))\)`. This approximation comes from the Central Limit Theorem.
+- More on confidence intervals: 
 
-- By the Central Limit Theorem, `\(\overline{X} = \hat{P} = \frac{\sum_{i = 1}^n{X_i}}{n} \approx N(p, \frac{p(1-p)}{n})\)` where `\(X_i \sim\)` Bernoulli(p).
+  - Changing n and alpha
 
-- Now, `\(Y = \sum_{i = 1}^n{X_i} = n \overline{X}\)`
+  - Simulation example 
 
-- By the rules for expectation and variance, `\(E(n\overline{X}) = nE(\overline{X}) = np\)` and `\(Var(n\overline{X}) = n^2 Var(\overline{X}) = np(1-p)\)`
+  - `\(\sigma^2\)` unknown 
+
+  - Confidence interval for population proportion 
 
 ---
-## Example: cats
-We ask a random sample of 435 people if they like cats. Assume that the probability that a randomly selected person likes cats is 75%. Find the probability that at least 325 people like cats. 
+## Confidence Interval for Population Mean
+- **Set up**: `\(X_i\)` are independent and identically distributed with population mean `\(\mu\)` and variance, `\(\sigma^2\)`. We are interested in a `\(100(1-\alpha)\)`% confidence interval for the unknown population parameter `\(\mu\)`. We use the sample mean, `\(\overline{X}\)`, constructed from a sample of size `\(n\)`, as an estimator for the population mean. Assume `\(n\)` is large.
 
-Let `\(Y\)` be the number of people, out of 435, that like cats. Then `\(Y \sim\)` Binomial(435, .75). We want `\(P(Y \geq 325)\)`. In R:
+We showed that 
+`\(P(\overline{X}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \leq \mu \leq \overline{X}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}})  = 1 - \alpha\)`
+
+And hence after collecting data and computing the sample mean, `\(\bar{x}\)`, an `\(\alpha\)`-level confidence interval for `\(\mu\)` is
+
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
+
+This relied on the Central Limit Theorem: when `\(n\)` large, `\(Z = \frac{\overline{X} - \mu}{\sigma / \sqrt{n}} \approx N(0, 1)\)`, in other words `\(\overline{X} \approx N(\mu, \frac{\sigma^2}{n})\)` 
+
+---
+## Example
+Let `\(X_1, X_2, ..., X_{200}\)` be independent `\(N(\mu, 4)\)` random variables. We collect the sample of size 200, and the resulting sample mean, `\(\overline{x}\)`, is `\(\overline{x} = 24\)`. What is a 95% confidence interval for `\(\mu\)`?
+
+Since `\(n = 200\)` is large, by CLT, a 95% confidence interval for `\(\mu\)` is given by 
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
+
+Substitute `\(\overline{x} = 24\)`, `\(z_{\frac{\alpha}{2}} = 1.96\)`, `\(\sigma = 2\)`, `\(n = 200\)`, giving `\(\left(24-1.96*2/ \sqrt{200}, 24 + 1.96*2/ \sqrt{200} \right)\)` or (23.72, 24.28)
+
+We are 95% confident that `\(\mu\)` falls within the interval (23.72, 24.28).
+
+---
+
+## Confidence Interval Width: changing n
+
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
+
+For a given `\(z_{\frac{\alpha}{2}}\)`, confidence intervals that are narrower indicate greater certainty in estimated values. We can get narrower intervals by increasing `\(n\)`, the sample size.
+
+---
+
+## Earlier example
+We had `\(n = 200\)`, `\(\overline{x} = 24\)`, `\(\sigma = 2\)`, and our 95% confidence interval for `\(\mu\)` was (23.72, 24.28).
+
+What about when `\(n = 2000\)`?
+
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
+
+Substitute `\(\overline{x} = 24\)`, `\(z_{\frac{\alpha}{2}} = 1.96\)`, `\(\sigma = 2\)`, `\(n = 2000\)`, giving `\(\left(24-1.96*2/ \sqrt{2000}, 24 + 1.96*2/ \sqrt{2000} \right)\)` or (23.91, 24.09)
+
+---
+
+## Confidence Interval Width: changing alpha
+
+While 95% confidence intervals are the most common, it is simple to generate other intervals, for example 99% intervals, by replacing the critical value. E.g., for a 99% interval, we need the z-score that cuts off the upper 0.005 of the distribution, which is 2.58.
 
 
 ```r
-sum(dbinom(325:435, 435, .75))
+qnorm(.995)
 ```
 
 ```
-[1] 0.5802823
+[1] 2.575829
+```
+
+In our earlier example, we had `\(n = 200\)`, `\(\overline{x} = 24\)`, `\(\sigma = 2\)`, and our 95% confidence interval for `\(\mu\)` was (23.72, 24.28). When `\(\alpha = .01\)`, a 99% confidence interval is `\(\left(24-2.58*2/ \sqrt{200}, 24 + 2.58*2/ \sqrt{200} \right)\)` or (23.64, 24.36).
+
+---
+
+## Confidence Interval Width: changing alpha
+
+In a recent study of 50 randomly selected statistics students, they
+were asked the number of hours per week they spend studying for
+their statistics classes. The results were used to estimate the mean
+time for all statistics students with 90%, 95% and 99% confidence
+intervals. These were (not necessarily in the same order):
+`$$(7.5, 8.5) ~~~ (7.6, 8.4) ~~~(7.7, 8.3).$$`
+
+Which interval is which?
+
+
+---
+## Simulation example
+Let `\(X\)` be normally distributed with mean `\(\mu = 3\)` and variance `\(\sigma^2 = 25\)`, i.e., `\(X \sim N(3, 5^2)\)`
+
+
+
+```r
+myDraws &lt;- rnorm(1000, mean = 3, sd = 5)
+xBar &lt;- mean(myDraws)
+n &lt;- length(myDraws)
+halfWidth &lt;- qnorm(.975)*5/sqrt(n)
+(lower &lt;- xBar - halfWidth)
+```
+
+```
+[1] 2.430562
 ```
 
 ```r
-1 - pbinom(324, 435, .75) # pbinom alternative
+(upper &lt;- xBar + halfWidth)
 ```
 
 ```
-[1] 0.5802823
+[1] 3.050357
 ```
+
+Hence a 95% confidence interval for `\(\mu\)` is (2.4305619, 3.0503569).
 
 ---
-## Example: cats
-We ask a random sample of 435 people if they like cats. Assume that the probability that a randomly selected person likes cats is 75%. Using a normal approximation, find the probability that at least 325 people like cats. 
-
-Using the Central Limit Theorem, we have `\(\overline{X} = \hat{P} = \frac{\sum_{i = 1}^n{X_i}}{n} \approx N(p, \frac{p(1-p)}{n})\)`, so `\(Y = \sum_{i = 1}^n{X_i} = n \overline{X} \approx N(np, np(1-p))\)`. 
-
-In this case, `\(Y \approx N(435*.75, 435*.75*.25)\)`. We want `\(P(Y \geq 325)\)`, so in R: 
+## Simulation example: 5000 confidence intervals
 
 
 ```r
-1 - pnorm(324, 435*.75, sd = sqrt(435*.75*.25))
+set.seed(0)
+CIsDF &lt;- data.frame(lower = rep(NA, 5000), upper = rep(NA, 5000))
+for (i in 1:nrow(CIsDF)) {
+  myDraws &lt;- rnorm(1000, mean = 3, sd = 5)
+  xBar &lt;- mean(myDraws)
+  n &lt;- length(myDraws)
+  halfWidth &lt;- qnorm(.975)*5/sqrt(n)
+  CIsDF[i, "lower"] &lt;- xBar - halfWidth
+  CIsDF[i, "upper"] &lt;- xBar + halfWidth
+}
+```
+
+
+---
+## Simulation example: 5000 confidence intervals
+
+How many of the 5000 CIs do we expect include the true population mean, `\(\mu = 3\)`?
+
+--
+- Recall interpretation of confidence intervals: If we were to **repeat this procedure** a large number of times, sampling and constructing confidence intervals in the same way, **95% of constructed intervals would contain the true population parameter**.
+
+- If we repeat the experiment 5,000 times, i.e., draw samples and construct 5,000 confidence intervals, we would expect 4,750 of these to contain the true population parameter 
+
+.small[
+.pull-left[
+
+```r
+CIsDF %&gt;%
+  mutate(index = 1:nrow(CIsDF),
+         estimate = (lower + upper)/2) %&gt;%
+  slice(1:20) %&gt;%
+  ggplot(aes(estimate, index)) +
+  geom_pointrange(aes(xmin = lower, xmax = upper)) + 
+  geom_vline(xintercept = 3, colour = "grey60", linetype = 2) + 
+  labs(title = "First 20 CIs for population mean",
+    x = "Estimate",
+    y = "Index")
+```
+]
+]
+
+.pull-right[
+&lt;img src="lecture20_files/figure-html/unnamed-chunk-7-1.png" width="100%" /&gt;
+]
+
+---
+## Simulation example: 5000 confidence intervals
+
+
+```r
+sum(CIsDF$lower &lt;= 3 &amp; CIsDF$upper &gt;= 3)
 ```
 
 ```
-[1] 0.5983724
+[1] 4769
 ```
 
-Note that this is only an approximation!
+```r
+sum(CIsDF$lower &lt;= 3 &amp; CIsDF$upper &gt;= 3) / nrow(CIsDF)
+```
+
+```
+[1] 0.9538
+```
+
+---
+## Simulation example: 5000 confidence intervals, 90% level of confidence
+
+
+```r
+set.seed(0)
+CIsDF &lt;- data.frame(lower = rep(NA, 5000), upper = rep(NA, 5000))
+for (i in 1:nrow(CIsDF)) {
+  myDraws &lt;- rnorm(1000, mean = 3, sd = 5)
+  xBar &lt;- mean(myDraws)
+  n &lt;- length(myDraws)
+  halfWidth &lt;- qnorm(.95)*5/sqrt(n)
+  CIsDF[i, "lower"] &lt;- xBar - halfWidth
+  CIsDF[i, "upper"] &lt;- xBar + halfWidth
+}
+sum(CIsDF$lower &lt;= 3 &amp; CIsDF$upper &gt;= 3)
+```
+
+```
+[1] 4542
+```
+
+```r
+sum(CIsDF$lower &lt;= 3 &amp; CIsDF$upper &gt;= 3) / nrow(CIsDF)
+```
+
+```
+[1] 0.9084
+```
+
+---
+## What happens if the population variance is unknown?
+
+- The confidence interval involves `\(\sigma^2\)`; most of the time, this is unknown 
+
+- Recall that we can **use the sample variance**, `\(s^2=\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})^2\)`, to estimate `\(\sigma^2\)`
+
+- Before collecting the data: `\(S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\overline{X})^2\)`
+
+- If we estimate `\(\sigma^2\)` using `\(S^2\)`, then we can't use the Central Limit Theorem in the same way
+
+- Two ways we can make progress:
+  1. When `\(n\)` is large
+  2. When `\(n\)` is small 
+
+---
+## First case (n large)
+
+- If `\(n\)` is large, CLT still holds (for the `\(\sigma^2\)` version), and using another theorem (out of scope for this class), we can prove that 
+`\(\frac{\overline{X} - \mu}{S / \sqrt{n}} \approx N(0, 1)\)` 
+
+- Notice that the only difference is that we have replaced `\(\sigma\)` by `\(S\)`.
+
+- An `\(\alpha\)`-level confidence interval for `\(\mu\)` is `\(\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
+
+- Just like before, it doesn't matter what the distribution of `\(X_i\)` is
+
+---
+## Previous example: `\(\sigma\)` known
+Let `\(X_1, X_2, ..., X_{200}\)` be independent `\(N(\mu, 4)\)` random variables. We collect the sample of size 200, and the resulting sample mean, `\(\overline{x}\)`, is `\(\overline{x} = 24\)`. What is a 95% confidence interval for `\(\mu\)`?
+
+Since `\(n = 200\)` is large, by CLT, a 95% confidence interval for `\(\mu\)` is given by 
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
+
+Substitute `\(\overline{x} = 24\)`, `\(z_{\frac{\alpha}{2}} = 1.96\)`, `\(\sigma = 2\)`, `\(n = 200\)`, giving `\(\left(24-1.96*2/ \sqrt{200}, 24 + 1.96*2/ \sqrt{200} \right)\)` or (23.72, 24.28)
+
+We are 95% confident that `\(\mu\)` falls within the interval (23.72, 24.28).
+
+---
+## Previous example: `\(\sigma\)` unknown
+Let `\(X_1, X_2, ..., X_{200}\)` be independent `\(N(\mu, \sigma^2)\)` random variables. We collect the sample of size 200, and the resulting sample mean, `\(\overline{x}\)`, is `\(\overline{x} = 24\)`. `\(\sigma^2\)` is unknown, but using our sample, we calculate the sample variance, `\(s^2\)` to be 4.1. What is a 95% confidence interval for `\(\mu\)`?
+
+Since `\(n = 200\)` is large, a 95% confidence interval for `\(\mu\)` is given by 
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)$$`
+
+Substitute `\(\overline{x} = 24\)`, `\(z_{\frac{\alpha}{2}} = 1.96\)`, `\(s = \sqrt{4.1}\)`, `\(n = 200\)`, giving `\(\left(24-1.96*\sqrt{4.1}/ \sqrt{200}, 24 + 1.96*\sqrt{4.1}/ \sqrt{200} \right)\)` or (23.72, 24.28)
+
+We are 95% confident that `\(\mu\)` falls within the interval (23.72, 24.28).
 
 ---
 
-## Recall: Sampling distributions
+## Second case (n small)
 
-Knowing the sampling distribution can help us
+- If `\(n\)` is small, we cannot use CLT, so  
+`\(\frac{\overline{X} - \mu}{S / \sqrt{n}}\)` is not approximately `\(N(0, 1)\)`
 
-- **Estimate a population parameter as point estimate `\(\pm\)` margin of error, where the margin of error is comprised of a measure of how confident we want to be and the sample statistic's variability. (Coming soon: confidence intervals)**
+- Instead, `\(\frac{\overline{X} - \mu}{S / \sqrt{n}} \sim t_{n-1}\)` when `\(X_i\)` are independent and `\(\sim N(\mu, \sigma^2)\)`
 
-- Test whether a population parameter is equal to some value, by evaluating how likely it is that we have obtained the observed sample statistic, if the population parameter is indeed that value. (Coming soon: hypothesis testing)
+- In other words, the underlying distribution of `\(X_i\)` is now restricted to normal
 
----
-## Course content 
+- An `\(\alpha\)`-level confidence interval for `\(\mu\)` is `\(\left(\overline{x}-t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
 
-1. Fundamentals of R
-  - Overview of data types and structures
-  - Data manipulation and data visualization tools  
+- The notation `\(t_{n-1,\frac{\alpha}{2}}\)` means the quantile corresponding to a probability of `\(\alpha/2\)` in the right tail, for a `\(t_{n-1}\)` distribution. We can use `qt(alpha/2, df = n-1, lower.tail = FALSE)`, e.g., 
 
-2. Descriptive statistics for numerical and categorical data
+.small[
 
-3. Probability
-  - Rules of probability computation; conditional probability
-  - Basic probability models: Binomial, Normal and Poisson 
+```r
+qt(.025, df = 19, lower.tail = FALSE)
+```
 
-4. Statistical inference
-  - Sampling distributions of sample mean and sample proportion
-  - **Hypothesis testing and confidence intervals for population mean and population proportion**
-
+```
+[1] 2.093024
+```
+]
 
 ---
-## Estimation and testing
-
-- **Estimation**: using the sample to estimate a single value or plausible range of values for the unknown parameter
-
-  - Point estimate: A **point estimate** is a single value computed from the sample data to serve as the "best guess", or estimate, for the population parameter. 
-    - "Based on a survey of 300 UC Davis students, we estimate that 50% of students ride bikes on campus."
-  
-  - **Interval estimate**: "Based on a survey of 300 UC Davis students, we are 95% confident that the proportion of students riding bikes on campus is (.45, .55)."
-
-- **Testing**: evaluating whether our observed sample provides evidence against some claim about the population
-
-  - "We reject the hypothesis that 10% of UC Davis students ride bikes on campus"
-
-- We will first talk about estimation
-
-
----
-
-## Point estimates vs. confidence intervals
-
-- A **point estimate** is a single value computed from the sample data to serve as the "best guess", or estimate, for the population parameter. 
-
-  - For example, the sample mean `\(\overline{X}\)` is often used as an estimator for the population mean `\(\mu\)`
-
-  - In R, we can simply use `mean()` to calculate the estimate from a given sample 
-
-- Point estimates vs. confidence intervals: If you want to catch a fish, do you prefer a spear or a net?
+## Student's t distribution
 
 .pull-left[
-&lt;img src="img/spear.png" width="70%" style="display: block; margin: auto;" /&gt;
+- While working for Guinness Brewery in Dublin, William Sealy Gosset published a paper on the `\(t\)` distribution, which became known as Student's `\(t\)` distribution
+
+- He used the new distribution to determine how large a sample of persons to use in taste-testing beer
+
 ]
+
 .pull-right[
-&lt;img src="img/net.png" width="70%" style="display: block; margin: auto;" /&gt;
+- Guinness worried competitors would steal their secret if he published under his own name, so Gosset published under the pseudonym "Student"
+
+&lt;img src="img/guinness.png" width="50%" /&gt;
 ]
 
 ---
+## Student's t distribution
 
-## Point estimates vs. confidence intervals
+- The `\(t\)` distribution looks like the normal distribution, except that it has **fatter tails**
 
-If you want to estimate a population parameter, do you prefer to report a range of values or a single value?
+&lt;img src="img/normalt.png" width="30%" /&gt;
 
-.pull-left[
-&lt;img src="img/spear.png" width="400" style="display: block; margin: auto;" /&gt;
-]
-.pull-right[
-&lt;img src="img/net.png" width="400" style="display: block; margin: auto;" /&gt;
-]
+- The `\(t\)` distribution has a parameter called **degrees of freedom**, abbreviated *df*. For each possible df, there is a different `\(t\)` distribution, with the `\(t\)` distribution looking more like the normal as df gets large.
+
+- As the sample size gets bigger, the `\(t\)` distribution approximates the normal distribution
 
 ---
 
-## Point estimates vs. confidence intervals
+## Student's t distribution
 
-If you want to estimate a population parameter, do you prefer to report a range of values, or a single value?
+- The random variable `\(T = \frac{\overline{X}-\mu}{S/\sqrt{n}}\)` has a Student's t distribution with `\(n-1\)` degrees of freedom, represented using the notation `\(t_{n-1}\)`. 
 
-- If we report a point estimate, we probably won’t hit the exact population parameter.
+  - Recall that here `\(S^2 = \frac{1}{n - 1}\sum_{i = 1}^n (X_i - \overline{X})^2\)`, where `\(\overline{X} = \frac{\sum_{i = 1}^n X_i}{n}\)` is the sample mean
 
-- If we report a range of plausible values we have a better chance of capturing the parameter.
+- In other words, when we replace `\(\sigma\)` by `\(S\)`, the distribution is now `\(t\)` and not standard normal
+
+- An `\(\alpha\)`-level confidence interval for `\(\mu\)` is `\(\left(\overline{x}-t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
 
 ---
-## What is a Confidence Interval?
-When a sample statistic is used to estimate a population parameter, it will be accompanied by some measure of uncertainty, e.g., a margin of error or confidence interval 
 
-A **confidence interval** provides a range of reasonable values that are intended to contain the parameter of interest with a certain **degree of confidence**. It often takes the form (point estimate `\(\pm\)` margin of error)
+## Some intuition 
+- An `\(\alpha\)`-level confidence interval for `\(\mu\)` is `\(\left(\overline{x}-t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
 
-It is written as (point estimate - margin of error, point estimate + margin of error).
+.small[
 
-&lt;img src="img/ci2.png" width="40%" /&gt;
+```r
+qnorm(.975)
+```
 
-It is accompanied by a **level of confidence**, often 95%, and said in words as "We are 95% **confident** that the true population parameter falls within the interval (point estimate - margin of error, point estimate + margin of error)."
+```
+[1] 1.959964
+```
+
+```r
+qt(.975, df = 19)
+```
+
+```
+[1] 2.093024
+```
+]
+
+- The `\(t\)` distribution is used to construct confidence intervals for the mean when we need to account for the **additional variability** due to estimating `\(\sigma\)` in addition to `\(\mu\)`
+
+- The fatter tails lead to wider confidence intervals; makes sense since there is extra uncertainty due to the estimation of `\(\sigma^2\)` 
+
+- Very roughly speaking, the degrees of freedom measure the amount of information available in the data to estimate `\(\sigma^2\)` and thus gives us information about how reliable our estimate `\(s^2\)` is. 
+
+---
+
+## Confidence Intervals with `\(\sigma\)` Unknown
+
+**Case 1: When `\(n\)` is large**
+
+- Doesn't matter what the distribution of `\(X_i\)` is; mean `\(\mu\)` and variance `\(\sigma^2\)`
+- `\(\frac{\overline{X}-\mu}{S/\sqrt{n}} \approx N(0, 1)\)` 
+- We can use the interval `\(\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
+
+**Case 2: When `\(n\)` is small**
+
+- When `\(X_i\)` is normally distributed with mean `\(\mu\)` and variance `\(\sigma^2\)`, `\(T = \frac{\overline{X}-\mu}{S/\sqrt{n}} \sim t_{n-1}\)`
+- We can use the interval `\(\left(\bar{x}-t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \bar{x}+t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)` 
+
+
+
+---
+
+## Example: Lead in Flint, MI
+
+From April 25, 2014 to October 15, 2015, the water supply source for Flint, MI was switched to the Flint River from the Detroit water system. Without corrosion inhibitors, the Flint River water, which is high in chloride, caused lead from aging pipes to leach into the water supply. We have data from Flint collected as part of a citizen-science project involving Virginia Tech researchers.
+
+&lt;img src="img/flintdetroit.jpg" width="1280" /&gt;
+
+---
+
+## Example: Lead in Flint, MI
+
+.small[
+
+```r
+flint &lt;- readxl::read_excel("./data/Flint-Samples.xlsx", sheet = 1) %&gt;%
+  rename("Pb_initial"="Pb Bottle 1 (ppb) - First Draw")
+str(flint)
+```
+
+```
+tibble [271 x 7] (S3: tbl_df/tbl/data.frame)
+ $ SampleID                            : num [1:271] 1 2 4 5 6 7 8 9 12 13 ...
+ $ Zip Code                            : num [1:271] 48504 48507 48504 48507 48505 ...
+ $ Ward                                : num [1:271] 6 9 1 8 3 9 9 5 9 3 ...
+ $ Pb_initial                          : num [1:271] 0.344 8.133 1.111 8.007 1.951 ...
+ $ Pb Bottle 2 (ppb) - 45 secs flushing: num [1:271] 0.226 10.77 0.11 7.446 0.048 ...
+ $ Pb Bottle 3 (ppb) - 2 mins flushing : num [1:271] 0.145 2.761 0.123 3.384 0.035 ...
+ $ Notes                               : chr [1:271] NA NA NA NA ...
+```
+]
+
+- Each row is a sample and the lead level in the sample is in the `Pb_initial` column. The units are parts per billion (ppb)
+
+- We want to construct a confidence interval for the unknown population mean lead level in Flint water
+
+- What is the sample size `\(n\)`? What confidence interval should we use? 
+
+---
+
+## Calculating a Confidence Interval for Flint Lead
+
+- Here there are 271 samples, so `\(n\)` qualifies as large 
+
+- For a 95% confidence interval: 
+`$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)$$`
+.small[
+
+```r
+xBar &lt;- mean(flint$Pb_initial)
+sigma2 &lt;- var(flint$Pb_initial)
+n &lt;- length(flint$Pb_initial)
+halfWidth &lt;- qnorm(.975)*sqrt(sigma2/n)
+(lower &lt;- xBar - halfWidth)
+```
+
+```
+[1] 8.078981
+```
+
+```r
+(upper &lt;- xBar + halfWidth)
+```
+
+```
+[1] 13.213
+```
+]
+Hence a 95% confidence interval for the mean lead level in water in Flint is (8.0789808, 13.2130044)
+
+---
+
+## Using the t-distribution
+
+
+```r
+t.test(flint$Pb_initial)
+```
+
+```
+
+	One Sample t-test
+
+data:  flint$Pb_initial
+t = 8.1284, df = 270, p-value = 1.58e-14
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+  8.067422 13.224563
+sample estimates:
+mean of x 
+ 10.64599 
+```
+
+
+---
+
+## Confidence interval for population proportion 
+
+- Recall that when `\(X\)` is a Bernoulli random variable, the sample mean `\(\overline{X} = \frac{\sum_{i = 1}^n{X_i}}{n}\)` is the same as the sample proportion `\(\hat{P}\)`.
+
+- We have `\(\overline{X} = \hat{P} \approx N(p, \frac{p(1-p)}{n})\)` by the Central Limit Theorem, when `\(n\)` is large
+
+- `\(p\)` is unknown, but we can replace it by `\(\hat{p}\)`, calculated from the sample, in the same way we replaced `\(\sigma\)` by `\(s\)` for the population mean (case 1, when `\(n\)` large), so an `\(\alpha\)`-level confidence interval for `\(p\)` is
+
+`$$\left(\hat{p}-z_{\frac{\alpha}{2}}\frac{\sqrt{\hat{p}(1-\hat{p})}}{\sqrt{n}}, \hat{p}+z_{\frac{\alpha}{2}}\frac{\sqrt{\hat{p}(1-\hat{p})}}{\sqrt{n}} \right)$$`
+
 
 ---
 ## Example: Approval ratings
@@ -231,146 +551,66 @@ It is accompanied by a **level of confidence**, often 95%, and said in words as 
 Source: https://www.rasmussenreports.com/public_content/politics/biden_administration/prez_track_sep23
 ]
 
-What is the population parameter of interest? What is the sample statistic?
-
 --
 
-**Population parameter**: Proportion of likely voters that strongly disapprove of President Biden (red line; alternatively, strongly approve (green line))
+- Margin of error = `\(z_{\frac{\alpha}{2}}\frac{\sqrt{\hat{p}(1-\hat{p})}}{\sqrt{n}}\)`
 
-**Sample statistic**: Proportion based on 1500 likely voters (on a given day)
 
-**95% confidence interval**: (37%, 43%) for strongly disapprove
----
-## Example: Vaccine efficacy
+```r
+qnorm(.975)*sqrt(.5^2/1500)
+```
 
-&lt;img src="img/vaccine.png" width="45%" /&gt;
-
-"The uncertainty around a point estimate can be small or large. Scientists represent this uncertainty by calculating a range of possibilities, which they call a confidence interval."
-
----
-## Elements and interpretation 
-
-.pull-left[
-&lt;img src="img/vaccine.png" width="75%" /&gt;
-
-"We are 95% **confident** that the true population parameter falls within the interval (.85, .95)."
-]
-
-.pull-right[
-**Elements**:
-- Confidence level
-- Point estimate
-- Lower bound
-- Upper bound
-]
-
-**Interpretation**: If we were to **repeat this procedure** a large number of times, sampling and constructing confidence intervals in the same way, **95% of constructed intervals would contain the true population parameter**.
+```
+[1] 0.02530303
+```
 
 ---
-## Interpretation 
-"We are 95% **confident** that the true population parameter falls within the interval (.85, .95)."
 
-**Interpretation**: If we were to **repeat this procedure** a large number of times, sampling and constructing confidence intervals in the same way, **95% of constructed intervals would contain the true population parameter**.
+## Example: Flint 
 
-- If we repeat the experiment 10,000 times, i.e., draw samples and construct 10,000 confidence intervals, we would expect 9,500 of these to contain the true population parameter 
+The EPA action level for lead in public water supplies is 15 ppb. Let's calculate the estimated proportion of samples (homes) in Flint with lead levels over 15 ppb along with a 95% confidence interval for the proportion.
 
-- **Incorrect interpretation**: *Observed interval* has a 95% *probability* of containing the population parameter
 
-- Do not confuse **confidence** with **probability**
+```r
+flint &lt;- flint %&gt;%
+  mutate(Pbover15 = Pb_initial &gt; 15)
 
-- Once we **observe an interval** (collected a sample), there is no more variability. The observed interval either contains the population parameter, or it does not. 
+pHat &lt;- mean(flint$Pbover15)
+var &lt;- pHat*(1 - pHat)/length(flint$Pbover15)
+halfWidth &lt;- qnorm(.975)*sqrt(var)
+(lower &lt;- pHat - halfWidth)
+```
+
+```
+[1] 0.1217465
+```
+
+```r
+(upper &lt;- pHat + halfWidth)
+```
+
+```
+[1] 0.2103569
+```
+
+Hence a 95% confidence interval for the proportion of homes in Flint with lead level above 15 ppb is (0.1217465, 0.2103569).
+
 
 ---
-## Confidence Level: Procedure, not Specific Realization 
 
-- The **confidence level** reflects the measure of confidence in the **procedure** that led to the confidence interval
+## Summary
+- More on confidence intervals: 
 
-- In our fishing example, it is a statement about the properties of the net (e.g., size, quality) and your fishing technique. Once you've made an attempt (cast net into water), you either caught fish or did not. 
-
-- Another analogy: a game of horseshoes
-
-.pull-left[
-
-**Correct**: Based on your throwing technique, 95% of the horseshoes you throw will encircle the stake
-
-**Incorrect**: After you throw a horseshoe, it has a 95% *probability* of encircling the stake. It does not! It either encircles the stake or does not
-]
-
-.pull-right[
-&lt;img src="img/horseshoes.jpg" width="100%" /&gt;
-
-.tiny[
-Source: https://www.istockphoto.com/photo/pitching-horseshoes-gm140471913-3413882
-]
-]
----
-
-## Constructing confidence intervals 
-
-- In order to construct a confidence interval we need to quantify the **variability of our sample statistic**
-
-- Suppose we are interested in the population mean height of students
-
-  - We sample 50 students, ask each student their height, and calculate the sample mean height 
+  - Changing n and alpha
   
-  - Then, we sample repeat the procedure, sampling 50 students and calculating the mean height. Would we expect these two means to be exactly equal, close but not equal, or wildly different?
+  - Simulation example 
 
-- We need to quantify the variability of the sample mean from sample to sample
+  - `\(\sigma^2\)` unknown:
+      - `\(n\)` large: `\(\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
+      - `\(n\)` small and `\(X_i\)` normal: `\(\left(\overline{x}-t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}}, \overline{x}+t_{n-1,\frac{\alpha}{2}}\frac{s}{\sqrt{n}} \right)\)`
+    
+  - Confidence interval for population proportion: `\(\left(\hat{p}-z_{\frac{\alpha}{2}}\frac{\sqrt{\hat{p}(1-\hat{p})}}{\sqrt{n}}, \hat{p}+z_{\frac{\alpha}{2}}\frac{\sqrt{\hat{p}(1-\hat{p})}}{\sqrt{n}} \right)\)`
 
-- One way to do this is to **use the sampling distribution of the sample mean**, which we derived using the **Central Limit Theorem**
-
-- In the following results, assume independent samples and `\(n\)` large enough, so that the Central Limit Theorem holds
-
----
-
-## Confidence intervals using CLT 
-
-- What we want: "If we were to **repeat this procedure** a large number of times, sampling and constructing confidence intervals in the same way, **95% of constructed intervals would contain the true population parameter**." This translates to P(CI contains true parameter) = .95.
-
-- Recall: z-scores corresponding to particular probabilities (critical values) are often written as `\(z_p\)`, where `\(p\)` denotes the probability in the right tail, e.g., `\(z_{.025} \approx 1.96\)`
-
-- **Set up**: `\(X_i\)` are independent and identically distributed with population mean `\(\mu\)` and variance, `\(\sigma^2\)`. We are interested in a confidence interval for the unknown population parameter `\(\mu\)`. We use the sample mean, `\(\overline{X}\)`, constructed from a sample of size `\(n\)`, as an estimator for the population mean. Assume `\(n\)` is large.
-
-
----
-## Confidence intervals using CLT 
-
-- **Set up**: `\(X_i\)` are independent and identically distributed with population mean `\(\mu\)` and variance, `\(\sigma^2\)`. We are interested in a confidence interval for the unknown population parameter `\(\mu\)`. We use the sample mean, `\(\overline{X}\)`, constructed from a sample of size `\(n\)`, as an estimator for the population mean. Assume `\(n\)` is large.
-
-- The final ingredient we will need is `\(\alpha\)`, which is the **significance level** of the confidence interval
-
-  - **Confidence level** = `\(100(1 - \alpha)\)`%, i.e., a **95% confidence interval** will need `\(\alpha = .05\)`
-  
-  - The previous statement on the interpretation of CIs is more generally P(CI contains true parameter) = `\(1 - \alpha\)` (more accurately, we need P(CI contains true parameter) `\(\geq 1 - \alpha\)`)
-
-- `\(z_{\frac{\alpha}{2}}\)` is the z-score corresponding to a probability of `\(\frac{\alpha}{2}\)` in the right tail. We saw earlier that for `\(\alpha = .05\)`, `\(z_{\frac{\alpha}{2}}\)` is 1.96, i.e., `\(P(Z &gt; 1.96) \approx .025\)`.
-
----
-## Confidence intervals using CLT 
-
-- Consider the following interval
-
-`$$\left(\overline{X}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{X}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$`
-
-- We will prove that P(CI contains true parameter) = `\(1 - \alpha\)`, i.e., `\(P(\overline{X}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \leq \mu \leq \overline{X}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}) = 1 - \alpha\)`
-
-- For simplicity, we will use `\(\alpha = .05\)`, and replace `\(z_{\frac{\alpha}{2}}\)` by 1.96 in the proof, but note that this will work for any `\(\alpha\)` between 0 and 1.
-
-
----
-## Proof 
-
-$$
-`\begin{aligned}
-&amp; P\left(\overline{X}-1.96\frac{\sigma}{\sqrt{n}} \leq  \mu \leq \overline{X} + 1.96\frac{\sigma}{\sqrt{n}}\right) \\
-&amp;= P\left(\overline{X}-1.96\frac{\sigma}{\sqrt{n}} \leq  \mu \text{ and } \mu \leq \overline{X} + 1.96\frac{\sigma}{\sqrt{n}} \right) \\
-&amp;= P\left(\overline{X}-\mu \leq   1.96\frac{\sigma}{\sqrt{n}} \text{ and } \overline{X} - \mu \geq  -1.96\frac{\sigma}{\sqrt{n}} \right) \\
-&amp;= P\left( \frac{\overline{X}-\mu}{\frac{\sigma}{\sqrt{n}}} \leq   1.96 \text{ and } \frac{\overline{X} - \mu}{\frac{\sigma}{\sqrt{n}}} \geq  -1.96 \right) \\
-&amp;= P\left( -1.96  \leq \frac{\overline{X}-\mu}{\frac{\sigma}{\sqrt{n}}} \leq   1.96\right) \\
-&amp;\approx P\left( -1.96  \leq Z \leq   1.96\right)  \text{ by the Central Limit Theorem} \\
-&amp;= .95
-\end{aligned}`
-$$
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

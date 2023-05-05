@@ -151,6 +151,7 @@ There are three optional textbooks. They are all available online and are free.
 ### Week 6: More on distributions
 - Mon May 8: Law of large numbers, Poisson distribution, Monte Carlo simulation
   - Notes: [Lecture 16](https://xjw1001001.github.io/lecture/Lecture 16/lecture16.html)
+  - [Extra example on Sampling](https://xjw1001001.github.io/lecture/Extra_material/Discussion-5-sampling,-ggplot2.html)
   - **Homework 5**: (Due May 21 midnight, cover lecture 16-19) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
 - Wed May 10: Continuous RV, Normal (Gaussian) Distribution
@@ -161,11 +162,12 @@ There are three optional textbooks. They are all available online and are free.
   - **Homework 4: (Due May 12 midnight)**
   
 ### Week 7: Statistical inference 1
-- Mon May 15: Case study: More on Sampling, R functions
+- Mon May 15: Confidence Intervals
   - Notes: [Lecture 19](https://xjw1001001.github.io/lecture/Lecture 19/lecture19.html)
  
 - Wed May 17: Confidence Intervals
   - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
+  - [Extra example on CI](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html)
   - **Homework 6**: (Due May 28 midnight, cover lecture 20-23) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
 
