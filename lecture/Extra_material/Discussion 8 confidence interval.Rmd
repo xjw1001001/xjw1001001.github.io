@@ -13,6 +13,12 @@ output:
       countIncrementalSlides: false
 
 ---
+```{r echo = FALSE, eval=FALSE}
+library(renderthis)
+to_pdf(from = "Discussion-8-confidence-interval.html",complex_slides = TRUE)
+```
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
