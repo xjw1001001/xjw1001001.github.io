@@ -1,5 +1,5 @@
 ---
-title: "Distributions for sample mean and sample sd"
+title: "Distributions for sample mean"
 subtitle: "<br><br> STA 032: Gateway to data science Lecture 18"
 author: "Jingwei Xiong"
 date: May 12, 2023
@@ -68,19 +68,7 @@ Similar to tasting a spoonful of soup while cooking to make an inference about t
 ]
 
 ---
-## Recall: Example of statistical inference in action 
 
-When a sample statistic is used to estimate a population parameter, it will be accompanied by a margin of error
-
-```{r echo = FALSE, out.width = "85%"}
-knitr::include_graphics("img/approval.png")
-```
-
-.tiny[
-Source: https://www.rasmussenreports.com/public_content/politics/biden_administration/prez_track_sep23
-]
-
----
 ## Recall: Many Topics in Statistical Inference
 
 - Fundamentals: probability, distributions, random variables, ...
@@ -94,6 +82,7 @@ Source: https://www.rasmussenreports.com/public_content/politics/biden_administr
 - Modeling: Linear regression, analysis of variance, nonparametric models, machine learning, ... 
 
 ---
+
 ## Sampling Distribution of the Sample Mean 
 
 Recall our shoe size example, where wearers of men's shoe sizes follow a $N(11, 1.5^2)$ distribution.
@@ -109,7 +98,7 @@ mean(sampled1000_1)
 
 ---
 ## Sampling Distribution of the Sample Mean 
-Now we repeat the experiment, i.e., get a different sample of 1000 observations. 
+Now we repeat the experiment, i.e., get a different sample of 1000 observations. You will find the sample mean changed a little bit.
 
 ```{r}
 set.seed(10)
@@ -118,7 +107,9 @@ head(sampled1000_2, 20)
 mean(sampled1000_2) 
 all.equal(mean(sampled1000_1), mean(sampled1000_2))
 ```
+
 ---
+
 ## Sampling Distribution of the Sample Mean 
 
 If we repeat the experiment an infinite number of times, what distribution of sample means would we get? This is known as the **sampling distribution**.
@@ -142,11 +133,14 @@ Here we consider $X_1, ..., X_n$ that are **independent and identically distribu
 
 We cannot repeat an infinite number of times, but we do this 10,000 times in R.
 
+
 .small[
 ```{r}
 set.seed(0)
+# Here replicate generate a matrix of 10000 rows, each row we have a 1000 sample
 repeat10000 <- t(replicate(n = 10000, rnorm(1000, 11, 1.5)))
 str(repeat10000)
+# Use rowMeans to obtain the sample mean for each row
 head(rowMeans(repeat10000), 20)
 means10000 <- rowMeans(repeat10000)
 ```
@@ -157,6 +151,7 @@ means10000 <- rowMeans(repeat10000)
 
 
 ```{r}
+# ggplot has to be applied on a dataframe.
 data.frame(shoesMean = means10000) %>%
   ggplot(aes(x = shoesMean)) +
   geom_density() +
@@ -181,11 +176,11 @@ data.frame(shoesMean = means10000) %>%
 .pull-right[
 How would we describe this distribution?
 
-- Center
+- Center:
 
-- Spread
+- Spread:
 
-- Shape
+- Shape:
 ]
 ---
 ## Sampling Distribution of the Sample Mean 
@@ -229,6 +224,20 @@ means10000_n50 <- rowMeans(repeat10000_n50)
 ```
 
 ---
+
+To study this, we first construct the data frame for ggplot2 using bind_rows:
+
+```{r}
+data.frame(shoesMean = means10000, sampleSize = 1000) %>%
+  bind_rows(
+    data.frame(means10000_n50, sampleSize = 50) %>%
+      rename(shoesMean = means10000_n50)
+  )  %>%head(3)
+```
+
+
+
+---
 ## Effect of changing sample size
 
 .tiny[
@@ -240,7 +249,8 @@ data.frame(shoesMean = means10000, sampleSize = 1000) %>%
       rename(shoesMean = means10000_n50)
   )  %>%
   ggplot(aes(x = shoesMean,
-             fill = as.factor(sampleSize))) +
+             fill = as.factor(sampleSize),
+             alpha = 0.7)) +
   geom_density() +
   labs(x = "Mean shoe size",
        y = "Density",
@@ -278,6 +288,42 @@ data.frame(shoesMean = means10000, sampleSize = 1000) %>%
   - We will formalize this intuition using the Central Limit Theorem 
   
 ---
+
+## Recall: Sum of independent normal random variables 
+
+- Important property: Any linear combination of normal random variables is a normal random variable with expectation and variance given by the formulas for expected value and variance of linear combinations (Lecture 15)
+
+- Recall: A linear combination of two random variables, $X$ and $Y$, is of the form $aX+bY$, where $a$
+and $b$ are constants
+
+- Recall: 
+  - $E(aX + bY) = aE(X) + bE(Y)$
+  - For a linear combination of **independent** random variables $Var(aX + bY) = a^2 Var(X) + b^2 Var(Y)$
+
+- Hence if $X \sim N(\mu_x, \sigma_x^2)$ and $Y \sim N(\mu_y, \sigma_y^2)$ are independent, $W = X + Y \sim N(\mu_x + \mu_y, \sigma_x^2 + \sigma_y^2)$
+
+- Extends to more than two random variables in the linear combination. Note also that $b$ can be negative, e.g., $E(X - Y) = E(X) - E(Y)$ and $Var(X - Y) = Var(X) + Var(Y)$.
+
+---
+
+## Distribution of sample mean when the population is a normal distribution:
+
+Because we know the linear combination of normal random variables are still normal RV, so we can determine the distribution of sample mean by calculating its expectation and variation. 
+
+> This is because the expectation $\mu$ and variation $\sigma^2$ are the only 2 parameters of normal distribution.
+
+The sample mean $\overline{X}$, is defined as $\overline{X} = \frac{\sum_{i = 1}^n X_i}{n}$. $X_i \sim N(\mu, \sigma)$
+
+$$E(\overline{X}) = E\left(\frac{\sum_{i = 1}^n X_i}{n}\right)= \frac{E\left(\sum_{i = 1}^n X_i\right)}{n}=\frac{\sum_{i = 1}^n EX_i}{n} = \frac{\sum_{i = 1}^n \mu}{n} = \mu$$
+
+$$Var(\overline{X}) = Var\left(\frac{\sum_{i = 1}^n X_i}{n}\right)= \frac{Var\left(\sum_{i = 1}^n X_i\right)}{n^2}=\frac{\sum_{i = 1}^n Var X_i}{n^2} = \frac{\sum_{i = 1}^n \sigma^2}{n^2} = \frac{\sigma^2}{n}$$
+
+Where $Var\left(\sum_{i = 1}^n X_i\right)=\sum_{i = 1}^n Var X_i$ because they are independent.
+
+> Note this is only true when the population is normally distributed!
+
+---
+
 ## Note on sampling distributions
 
 - From Open Intro Statistics: "Sampling distributions are never observed, but we keep them in mind."
@@ -300,73 +346,14 @@ Knowing the sampling distribution can help us
 
 - Test whether a population parameter is equal to some value, by evaluating how likely it is that we have obtained the observed sample statistic, if the population parameter is indeed that value. (Coming soon: hypothesis testing)
 
----
-## Recall: Sampling Distribution of the Sample Mean 
+> You may ask: why? The previous conclusion only work when we know the population is normally distrbuted. But what if they don't?
 
-We sample 1000 times from a $N(11, 1.5^2)$ distribution. Now we repeat the experiment, i.e., get a different sample of 1000 observations. If we repeat the experiment an infinite number of times, what distribution of sample means would we get? This is known as the **sampling distribution**.
-
-1. Take a sample of size $n$ and calculate its mean $\overline{x}_1$
-2. Take a second sample of the same size and calculate its mean $\overline{x}_2$
-3. Repeat this many times to get a dataset of sample means $\overline{x}_1, \overline{x}_2, \ldots$
-
-What is the distribution of the *statistics* $\overline{x}_1, \overline{x}_2, \overline{x}_3, \ldots$?
-
-We cannot repeat an infinite number of times, but we do this 10,000 times in R.
-
----
-
-## Recall: Sampling Distributions in R
-```{r}
-set.seed(0)
-repeat10000 <- t(replicate(n = 10000, rnorm(1000, 11, 1.5)))
-means10000 <- rowMeans(repeat10000)
-
-set.seed(0)
-repeat10000_n50 <- t(replicate(n = 10000, rnorm(50, 11, 1.5)))
-means10000_n50 <- rowMeans(repeat10000_n50)
-```
-
----
-## Recall: Sampling Distribution of the Sample Mean 
-
-.pull-left[
-```{r echo = FALSE, out.width = "100%"}
-data.frame(shoesMean = means10000, sampleSize = 1000) %>%
-  bind_rows(
-    data.frame(means10000_n50, sampleSize = 50) %>%
-      rename(shoesMean = means10000_n50)
-  )  %>%
-  ggplot(aes(x = shoesMean,
-             fill = as.factor(sampleSize))) +
-  geom_density(alpha = .5) +
-  labs(x = "Mean shoe size",
-       y = "Density",
-       title = "Sampling distribution from N(11, 1.5^2)",
-       fill = "Sample size")  +
-  scale_fill_viridis_d()
- # guides(fill = "none")
-```
-]
-.small[
-.pull-right[
-How would we describe this distribution?
-
-- Center
-  - The distribution is centered at 11, which is the same as the population parameter
-
-- Spread
-  - The variability looks to be much smaller than the original distribution (the original distribution has standard deviation 1.5)
-  - A larger sample size produces more precise estimates 
-  
-- Shape
-  - The distribution is symmetric and bell-shaped, and it resembles a normal distribution.
-]
-]
+- Solution: Central Limit Theorem (CLT)
 
 ---
 ## Central Limit Theorem
 
-- The **Central Limit Theorem** says that for any distribution with a well-defined mean and variance, the distribution of **sample means** for a sample of size $n$ is approximately normal. 
+- The **Central Limit Theorem** says that for **any** distribution with a well-defined mean and variance, the distribution of **sample means** for a sample of size $n$ is approximately normal. 
 
 - Formally: for a population with mean $\mu$ and standard deviation $\sigma$, taking independent samples $X_1, ..., X_n$, the following three important properties of the distribution of the sample mean $\overline{X} = \frac{\sum_{i = 1}^n X_i}{n}$ hold:
 
@@ -379,6 +366,9 @@ How would we describe this distribution?
 - This result has strong implications in many areas of statistics, including in construction of confidence intervals and in hypothesis testing.
 
 ---
+
+
+
 ## Intuition
 
 - The average of many measurements of the same unknown quantity tends to give a better estimate than a single measurement
@@ -390,13 +380,16 @@ How would we describe this distribution?
 ```{r echo = FALSE}
 set.seed(0) # so results are reproducible 
 inputP <- .3
-bernoulliDraws <- rbinom(n = 5000, size = 1, prob = inputP)
+# 5000 bernoulli can use binomial to simulate
+bernoulliDraws <- rbinom(n = 5000, size = 1, prob = inputP) 
 myMeans <- data.frame(sampleSize = 1:5000, myMean = NA)
 meanFun <- function(inputSampSize, outcomes) {
   return(mean(outcomes[1:inputSampSize]))
 }
 myMeans$myMean <- sapply(myMeans$sampleSize, meanFun, bernoulliDraws)
 ```
+
+
 
 ```{r echo = FALSE}
 myMeans %>%
@@ -406,6 +399,37 @@ myMeans %>%
        y = "Sample mean",
        title = "Illustration of law of large numbers with p = .3")
 ```
+
+---
+
+```{r eval = FALSE}
+# code to generate the sample:
+bernoulliDraws <- rbinom(n = 5000, size = 1, prob = inputP) 
+myMeans <- data.frame(sampleSize = 1:5000, myMean = NA)
+meanFun <- function(inputSampSize, outcomes) {
+  return(mean(outcomes[1:inputSampSize]))
+}
+myMeans$myMean <- sapply(myMeans$sampleSize, meanFun, bernoulliDraws)
+#code to generate the plot
+myMeans %>%
+  ggplot(aes(x = sampleSize, y = myMean)) +
+  geom_line() +
+  labs(x = "Sample size",
+       y = "Sample mean",
+       title = "Illustration of law of large numbers with p = .3")
+```
+
+Here this sapply serves the same as the following code:
+
+```{r}
+for(i in myMeans$sampleSize){
+  myMeans$myMean[i] = meanFun(i, bernoulliDraws)
+}
+```
+
+Which means it will use each element of the myMeans$sampleSize in turn as the first argument of meanFun
+
+And bernoulliDraws as the second argument of meanFun. Then construct all of these result as a vector, and then assign to myMeans$myMean
 
 ---
 ## Intuition
@@ -466,10 +490,13 @@ For a population with mean $\mu$ and standard deviation $\sigma$, taking indepen
 
   - The standard deviation of the sampling distribution is $\frac{\sigma}{\sqrt{n}}$, i.e., $Var(\overline{X}) = \frac{\sigma^2}{n}$
 
-  - For $n$ large enough (in the limit as $n \rightarrow \infty$), the shape of the sampling distribution is approximately normal (Gaussian), i.e., $\overline{X} \approx N(\mu, \frac{\sigma^2}{n})$ 
+  - For $n$ large enough (in the limit as $n \rightarrow \infty$), the shape of the sampling distribution is **approximately** normal (Gaussian), i.e., $\overline{X} \approx N(\mu, \frac{\sigma^2}{n})$ 
 
 
-Notice that this does not restrict the distribution of the underlying $X_1, ..., X_n$ in any way. These can be normal, binomial, Poisson, ... 
+
+Notice that this does not **restrict** the distribution of the underlying $X_1, ..., X_n$ in any way. These can be normal, binomial, Poisson, ... 
+
+- (When the population is normal, the sample mean distribution will **alaways be normal**, regardless of the sample size.)
 
 ---
 ## Central Limit Theorem with different underlying distributions

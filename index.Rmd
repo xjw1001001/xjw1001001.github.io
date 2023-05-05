@@ -156,15 +156,15 @@ There are three optional textbooks. They are all available online and are free.
 - Wed May 10: Continuous RV, Normal (Gaussian) Distribution
   - Notes: [Lecture 17](https://xjw1001001.github.io/lecture/Lecture 17/lecture17.html)
 
-- Fri May 12: Distributions for sample mean and sample sd
+- Fri May 12: Distributions for sample mean
   - Notes: [Lecture 18](https://xjw1001001.github.io/lecture/Lecture 18/lecture18.html)
   - **Homework 4: (Due May 12 midnight)**
   
 ### Week 7: Statistical inference 1
-- Mon May 15: Confidence intervals
+- Mon May 15: Case study: More on Sampling, R functions
   - Notes: [Lecture 19](https://xjw1001001.github.io/lecture/Lecture 19/lecture19.html)
  
-- Wed May 17: More on Confidence Intervals
+- Wed May 17: Confidence Intervals
   - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
   - **Homework 6**: (Due May 28 midnight, cover lecture 20-23) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
