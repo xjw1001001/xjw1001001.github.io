@@ -49,10 +49,6 @@ Consider the following research topic: The goal is to determine if there is a st
 
 (d) If we wanted to minimize the probability of a Type I error, what action should we take? (Hint: Think about $\alpha$)
 
-```{r}
-knitr::include_graphics("P1.1.png")
-```
-
 
 ## 1.2 (12 points)
 
@@ -67,14 +63,6 @@ Answer the following questions.
 4. What is the p-value?
 
 
-A null hypothesis is a statement that there is no significant difference or relationship between two variables in a population. It is typically denoted as H0. The alternative hypothesis, denoted as Ha, is the opposite of the null hypothesis, and it states that there is a significant difference or relationship between two variables in a population.
-
-The significance level, denoted as α, is the probability of rejecting the null hypothesis when it is actually true. It is typically set at 0.05 or 0.01 in social science research, meaning that there is a 5% or 1% chance of rejecting the null hypothesis when it is actually true.
-
-The decision rule for rejecting or failing to reject the null hypothesis is based on the p-value. If the p-value is less than or equal to the significance level, then the null hypothesis is rejected in favor of the alternative hypothesis. If the p-value is greater than the significance level, then the null hypothesis is not rejected.
-
-The p-value is the probability of obtaining a test statistic as extreme or more extreme than the observed one, assuming that the null hypothesis is true. It is a measure of the strength of evidence against the null hypothesis. A small p-value (less than the significance level) indicates strong evidence against the null hypothesis, while a large p-value indicates weak evidence against the null hypothesis.
-
 ## 1.3 (10 points)
 
 To evaluate the policy of routine vaccination of infants for whooping cough, adverse reactions were monitored in 340 infants who received their first injection of the vaccine. Reactions were noted in 68 of the infants.
@@ -87,17 +75,10 @@ To evaluate the policy of routine vaccination of infants for whooping cough, adv
 
 (d) If we made many, many 95% confidence intervals, what percentage would we expect to cover the true proportion?
 
-```{r}
-knitr::include_graphics("P1.3.png")
-```
-
 ## 1.4 (8 points)
 
 Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at $5\%$ significance that the population mean is at least 100 dollars against the alternative that it is less than 100 dollars, assume the population of contract is normally distributed. Company policy requires that new members of the sales force must exceed an average of \$100 per contract during the trial employment period. Can we conclude that Jane has met this requirement at the significance level of $95\%$ ?
 
-```{r}
-knitr::include_graphics("P1.4.png")
-```
 
 ## Read the extra examples on CI.
 
@@ -216,13 +197,6 @@ Optional: Try to understand how this function works.
 
 Hint: The output of the `starRail_pull` contains 3 columns: `result`, `star`, `index`. From the banner information, in the most unlucky situation, you will get Seele at the draw 180. So `df=starRail_pull(180)` will at least have 1 Seele in the result column. For 1 simulation, you need to find the index for the first Seele. Some functions you can use: `filter`, `pull`, `min`.
 
-```{r}
-df = starRail_pull(180)
-df |> 
-  filter(result == "Seele") |>
-  pull(index) |>
-  min()
-```
 
 ## Part 1.2: Now wrap the previous code to simulate the draws to obtain the first Seele as a function. This function does not need to take any input. (5 points)
 
@@ -232,16 +206,6 @@ sim_first_Seele_draws = function(){
 }
 ```
 
-```{r}
-sim_first_Seele_draws = function(){
-  df = starRail_pull(180)
-  result = df |> 
-    filter(result == "Seele") |>
-    pull(index) |>
-    min()
-  return(result)
-}
-```
 
 ## Part 1.3: Now simulate n = 50, 500, 2000 results of the draws to obtain first Seele for a new account. Store the result into 3 vectors (don't print it) (5 points)
 
@@ -259,15 +223,6 @@ Hint: `replicate()`, how to use it? You may need to wait for some time while sim
 
 Hint2: `set.seed(123)` in the beginning of the code chunk. You can change the seed into another number. That will fix the sample result.
 
-```{r}
-set.seed(123)
-n = 50
-P13_50 = replicate(n, sim_first_Seele_draws())
-n = 500
-P13_500 = replicate(n, sim_first_Seele_draws())
-n = 2000
-P13_2000 = replicate(n, sim_first_Seele_draws())
-```
 
 ## Part 1.4: Now construct the confidence interval of average draws to get first Seele. Be sure to answer these questions: (3+4+3+12+3 = 25 points)
 
@@ -281,31 +236,6 @@ P13_2000 = replicate(n, sim_first_Seele_draws())
 
 5. Interpret the confidence interval of the n=2000 sample.
 
-**Solution:**
-
-The shape is left skewed. We should use the Z confidence interval with sigma unknown. It may not be a good method because the distribution is greatly left skewed. There are also no sample that bigger than 180.
-
-Interpretation: We are $95\%$ confidence that the average draws to get first Seele is between 120.6236 and 125.6374.
-
-```{r, fig.height=3,fig.width=3}
-hist(P13_2000)
-```
-
-```{r}
-one_sample_mean_CI = function(my_sample, alpha = 0.05){
-  sample_mean = mean(my_sample)
-  sample_n = length(my_sample)
-  sample_sd = sd(my_sample)
-  sample_se = sample_sd/sqrt(sample_n)
-  z.score = qnorm(p=alpha/2, lower.tail=F)
-  margin_error = z.score * sample_se
-  return(c(sample_mean - margin_error, sample_mean + margin_error))
-}
-one_sample_mean_CI(P13_50)
-one_sample_mean_CI(P13_500)
-one_sample_mean_CI(P13_2000)
-```
-
 
 ## Part 2: I got Seele at exactly 180 pulls. How unlucky I am? (10 points)
 
@@ -315,14 +245,6 @@ Hint: `sample1 = P13_2000==180` will make `sample1` a bool vector. TRUE indicate
 
 Hint2: Refer to [Lecture 20 slide 32](https://xjw1001001.github.io/lecture/Lecture%2020/lecture20.html#34). 
 
-```{r}
-sample1 = P13_2000==180
-pHat <- mean(sample1)
-var <- pHat*(1 - pHat)/length(sample1)
-halfWidth <- qnorm(.975)*sqrt(var)
-(lower <- pHat - halfWidth)
-(upper <- pHat + halfWidth)
-```
 
 ## Part 3: I want to get full eidolons for Seele, how much should I pay? (10 points)
 
@@ -331,23 +253,6 @@ In the Gacha system, if you get a duplicate character, then the excess ones will
 When you used up all the free resources, you can pay 99.99$ for approximately 60 draws. Based on the draws, how much will you expect to pay?
 
 Hint: first write the function `sim_7_Seele_draws` to obtain the index of getting 7th Seele. Then generate `n=500` samples, and then use the `one_sample_mean_CI` function on that sample vector.
-
-```{r}
-sim_7_Seele_draws = function(){
-  df = starRail_pull(180*7)
-  result = df |> 
-    filter(result == "Seele") |>
-    pull(index)
-  return(result[7])
-}
-
-set.seed(123)
-n = 500
-P3 = replicate(n, sim_7_Seele_draws())
-one_sample_mean_CI(P3)
-
-one_sample_mean_CI(P3)/60 * 100
-```
 
 
 ## Include the person you coop with:
