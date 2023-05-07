@@ -168,7 +168,7 @@ There are three optional textbooks. They are all available online and are free.
 - Wed May 17: Confidence Intervals
   - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
   - [Extra example on CI](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html)
-  - **Homework 6**: (Due May 28 midnight, cover lecture 19-22) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework6/HW6.Rmd)
+  - **Homework 6**: (Due May 28 midnight, cover lecture 19-22) [Html](https://xjw1001001.github.io/homework/homework6/HW6.html) [Rmd](https://xjw1001001.github.io/homework/homework6/HW6.Rmd)
 
 
 - Fri May 19: Hypothesis Testing
