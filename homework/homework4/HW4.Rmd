@@ -163,7 +163,7 @@ randomly sampled 18-20 year-old consumed an alcoholic drink.
 
 (e) What is the probability that at least 1 out of 5 randomly sampled 18-20 year-old have consumed alcoholic beverages?
 
-8\. Calculate the following probabilities and indicate which probability distribution model is appropriate in each case. You roll a fair die 5 times. What is the probability of rolling
+8\. Calculate the following probabilities in each case. You roll a fair die 5 times. What is the probability of rolling
 
 (a) the first 6 on the fifth roll?
 

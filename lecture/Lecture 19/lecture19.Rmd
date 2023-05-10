@@ -47,6 +47,7 @@ library(openintro)
 .small .remark-code { font-size: 80%; }
 ```
 
+
 ---
 ## Recap
   
@@ -101,7 +102,14 @@ In this case, $Y \approx N(435*.75, 435*.75*.25)$. We want $P(Y \geq 325)$, so i
 1 - pnorm(324, 435*.75, sd = sqrt(435*.75*.25))
 ```
 
-Note that this is only an approximation!
+Note that this is only an approximation! True value:
+
+```{r}
+sum(dbinom(325:435, 435, 0.75))
+```
+
+
+
 
 ---
 
@@ -333,7 +341,7 @@ Source: https://www.istockphoto.com/photo/pitching-horseshoes-gm140471913-341388
 ---
 ## Confidence intervals using CLT 
 
-- **Set up**: $X_i$ are independent and identically distributed with population mean $\mu$ and variance, $\sigma^2$. We are interested in a confidence interval for the unknown population parameter $\mu$. We use the sample mean, $\overline{X}$, constructed from a sample of size $n$, as an estimator for the population mean. Assume $n$ is large.
+- **Set up**: $X_i$ are independent and identically distributed with population mean $\mu$ and variance, $\sigma^2$. We are interested in a confidence interval for the unknown population parameter $\mu$. We use the sample mean, $\overline{X}$, constructed from a sample of size $n$, as an estimator for the population mean. Assume $n$ is large. And we also assume population variance $\sigma^2$ is known.
 
 - The final ingredient we will need is $\alpha$, which is the **significance level** of the confidence interval
 
@@ -344,11 +352,13 @@ Source: https://www.istockphoto.com/photo/pitching-horseshoes-gm140471913-341388
 - $z_{\frac{\alpha}{2}}$ is the z-score corresponding to a probability of $\frac{\alpha}{2}$ in the right tail. We saw earlier that for $\alpha = .05$, $z_{\frac{\alpha}{2}}$ is 1.96, i.e., $P(Z > 1.96) \approx .025$.
 
 ---
-## Confidence intervals using CLT 
+## Confidence intervals using CLT (When population variance is known)
 
 - Consider the following interval
 
 $$\left(\overline{X}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{X}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$
+
+- (This is only true when population variance is known)
 
 - We will prove that P(CI contains true parameter) = $1 - \alpha$, i.e., $P(\overline{X}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \leq \mu \leq \overline{X}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}) = 1 - \alpha$
 
@@ -369,4 +379,30 @@ $$
 &= .95
 \end{aligned}
 $$
+
+---
+
+## Example
+Let $X_1, X_2, ..., X_{200}$ be independent $N(\mu, 4)$ random variables. We collect the sample of size 200, and the resulting sample mean, $\overline{x}$, is $\overline{x} = 24$. What is a 95% confidence interval for $\mu$?
+
+Since $n = 200$ is large, by CLT, a 95% confidence interval for $\mu$ is given by 
+$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$
+
+Substitute $\overline{x} = 24$, $z_{\frac{\alpha}{2}} = 1.96$, $\sigma = 2$, $n = 200$, giving $\left(24-1.96*2/ \sqrt{200}, 24 + 1.96*2/ \sqrt{200} \right)$ or (23.72, 24.28)
+
+We are 95% confident that $\mu$ falls within the interval (23.72, 24.28).
+
+---
+
+## Confidence Interval Width: changing n
+
+$$\left(\overline{x}-z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}}, \overline{x}+z_{\frac{\alpha}{2}}\frac{\sigma}{\sqrt{n}} \right)$$
+
+For a given $z_{\frac{\alpha}{2}}$, confidence intervals that are narrower indicate greater certainty in estimated values. We can get narrower intervals by increasing $n$, the sample size.
+
+
+
+
+
+
 

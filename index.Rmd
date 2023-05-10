@@ -151,22 +151,24 @@ There are three optional textbooks. They are all available online and are free.
 ### Week 6: More on distributions
 - Mon May 8: Law of large numbers, Poisson distribution, Monte Carlo simulation
   - Notes: [Lecture 16](https://xjw1001001.github.io/lecture/Lecture 16/lecture16.html)
-  - **Homework 5**: (Due May 21 midnight, cover lecture 16-19) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
+  - [Extra example on Sampling](https://xjw1001001.github.io/lecture/Extra_material/Discussion-5-sampling,-ggplot2.html)
+  - **Homework 5**: (Due May 21 midnight, cover lecture 15-18) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
 
 - Wed May 10: Continuous RV, Normal (Gaussian) Distribution
   - Notes: [Lecture 17](https://xjw1001001.github.io/lecture/Lecture 17/lecture17.html)
 
-- Fri May 12: Distributions for sample mean and sample sd
+- Fri May 12: Distributions for sample mean
   - Notes: [Lecture 18](https://xjw1001001.github.io/lecture/Lecture 18/lecture18.html)
   - **Homework 4: (Due May 12 midnight)**
   
 ### Week 7: Statistical inference 1
-- Mon May 15: Confidence intervals
+- Mon May 15: Confidence Intervals
   - Notes: [Lecture 19](https://xjw1001001.github.io/lecture/Lecture 19/lecture19.html)
  
-- Wed May 17: More on Confidence Intervals
+- Wed May 17: Confidence Intervals
   - Notes: [Lecture 20](https://xjw1001001.github.io/lecture/Lecture 20/lecture20.html)
-  - **Homework 6**: (Due May 28 midnight, cover lecture 20-23) [Html](https://xjw1001001.github.io/homework/homework5/HW5.html) [Rmd](https://xjw1001001.github.io/homework/homework5/HW5.Rmd)
+  - [Extra example on CI](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html)
+  - **Homework 6**: (Due May 28 midnight, cover lecture 19-22) [Html](https://xjw1001001.github.io/homework/homework6/HW6.html) [Rmd](https://xjw1001001.github.io/homework/homework6/HW6.Rmd)
 
 
 - Fri May 19: Hypothesis Testing
@@ -176,10 +178,10 @@ There are three optional textbooks. They are all available online and are free.
 - Mon May 22: Hypothesis Testing for Population Mean and Proportion
   - Notes: [Lecture 22](https://xjw1001001.github.io/lecture/Lecture 22/lecture22.html)
     
-- Wed May 24: Hypothesis Testing for Population Mean and Proportion
-  - Notes: [Lecture 23](https://xjw1001001.github.io/lecture/Lecture 23/lecture23.html)
+- Wed May 24: Midterm 2 (In person)
 
-- Fri May 26: Midterm 2 (In person)
+- Fri May 26: Regression 1
+  - Notes: [Lecture 23](https://xjw1001001.github.io/lecture/Lecture 23/lecture23.html)
   
 ### Week 9: Application 1
 - Mon May 29: Memorial Day, no class

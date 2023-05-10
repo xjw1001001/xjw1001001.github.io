@@ -1,0 +1,372 @@
+---
+title: "STA 032 Homework 6"
+author: "CHANGE YOUR NAME HERE"
+date: "DUE: May 28 2023, 12PM"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and homework number (e.g., `xjw18_hw6.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. When asked, answer must be supported by written statements as well as any code used. 
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ Students may choose to collaborate with each other on the homework, but must clearly indicate with whom they collaborated. Every student must upload their own submission.
+
++ Start to work on it as early as possible. Finishing this homework can help prepare midterm 1.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file.
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+```
+
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+```
+
+# Problem 1: Book problems (40 points)
+
+## 1.1 (10 points)
+
+Consider the following research topic: The goal is to determine if there is a statistically significant increase in the average weight gain of anorexic patients for a new treatment ($\mu_N$) when compared to a standard treatment ($\mu_S$)
+
+(a) State the null hypothesis and the alternative hypothesis.
+
+(b) Interpret a Type I error in terms of the problem.
+
+(c) Interpret a Type II error in terms of the problem.
+
+(d) If we wanted to minimize the probability of a Type I error, what action should we take? (Hint: Think about $\alpha$)
+
+```{r}
+knitr::include_graphics("P1.1.png")
+```
+
+
+## 1.2 (12 points)
+
+Answer the following questions.
+
+1. What is a null hypothesis? What is the alternative hypothesis?
+
+2. What is the significance level?
+
+3. What is the decision rule for rejecting or failing to reject the null hypothesis based on?
+
+4. What is the p-value?
+
+
+A null hypothesis is a statement that there is no significant difference or relationship between two variables in a population. It is typically denoted as H0. The alternative hypothesis, denoted as Ha, is the opposite of the null hypothesis, and it states that there is a significant difference or relationship between two variables in a population.
+
+The significance level, denoted as α, is the probability of rejecting the null hypothesis when it is actually true. It is typically set at 0.05 or 0.01 in social science research, meaning that there is a 5% or 1% chance of rejecting the null hypothesis when it is actually true.
+
+The decision rule for rejecting or failing to reject the null hypothesis is based on the p-value. If the p-value is less than or equal to the significance level, then the null hypothesis is rejected in favor of the alternative hypothesis. If the p-value is greater than the significance level, then the null hypothesis is not rejected.
+
+The p-value is the probability of obtaining a test statistic as extreme or more extreme than the observed one, assuming that the null hypothesis is true. It is a measure of the strength of evidence against the null hypothesis. A small p-value (less than the significance level) indicates strong evidence against the null hypothesis, while a large p-value indicates weak evidence against the null hypothesis.
+
+## 1.3 (10 points)
+
+To evaluate the policy of routine vaccination of infants for whooping cough, adverse reactions were monitored in 340 infants who received their first injection of the vaccine. Reactions were noted in 68 of the infants.
+
+(a) Find the 95% confidence interval for the true probability of an adverse reaction to the vaccine.
+
+(b) Interpret the confidence interval from (a) in terms of the problem.
+
+(c) Does your interval suggest that under 25% of infants had an adverse reaction?
+
+(d) If we made many, many 95% confidence intervals, what percentage would we expect to cover the true proportion?
+
+```{r}
+knitr::include_graphics("P1.3.png")
+```
+
+## 1.4 (8 points)
+
+Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at $5\%$ significance that the population mean is at least 100 dollars against the alternative that it is less than 100 dollars, assume the population of contract is normally distributed. Company policy requires that new members of the sales force must exceed an average of \$100 per contract during the trial employment period. Can we conclude that Jane has met this requirement at the significance level of $95\%$ ?
+
+```{r}
+knitr::include_graphics("P1.4.png")
+```
+
+## Read the extra examples on CI.
+
+[Link](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html#16)
+
+# Problem 2: Gacha simulator (60 points)
+
+Honkai Star Rail is a turn-based RPG game that is similar to old-school JRPGs. The game features a gacha system where players can obtain new characters and weapons. In this problem we will study the probability in Gacha system. We will use the current Butterfly on Swordtip banner. Information of this banner is provided below:
+
+One 5★ Character and three 4★ Characters will be featured on any given Character Oriented Warp,
+The rate for pulling a 5★ Character from this banner is currently set at 0.6%,
+The rate for pulling a 4★ Character from this banner is currently set at 5.1%,
+Otherwise the result is 3★ light cone.
+
+Once you pull a 5★ Character, you have 50% chance of it being the Rate-up one,
+If you lose the 50/50 then the second 5★ Character you pull will 100% be the Rate-up one,
+You are guaranteed to obtain a 5★ within 90 pulls (that's the pity). So if you're unlucky, it will take you at most 180 pulls to get the rate-up character.
+Once you pull a 4★ Character, you have 50% chance of it being the Rate-up one,
+
+4★ Characters: Arlan, Asta, Dan Heng, Herta, Hook, March 7th, Natasha, Pela, Qingque, Sampo, Serval, Sushang,Tingyun
+
+5★Characters: Bailu, Bronya, Clara, Gepard, Himeko, Seele, Welt, Yanqing
+
+Rate-up: 5★ Seele 4★N atasha, Hook, Pela
+
+## Part 0: Gacha simulator
+
+Here I provide the Gacha simulator in R for you. 
+
+```{r}
+starRail_pull = function(n_pulls = 1000, print = FALSE){
+  # Gacha parameters
+  five_star_rate <- 0.006
+  four_star_rate <- 0.051
+  rate_up_five_star <- 0.5
+  rate_up_four_star <- 0.5
+  
+  # Define characters
+  four_star_characters <- c("Arlan", "Asta", "Dan Heng", "Herta", "Hook", 
+                            "March 7th", "Natasha", "Pela", "Qingque", "Sampo", 
+                            "Serval", "Sushang", "Tingyun")
+  five_star_characters <- c("Bailu", "Bronya", "Clara", "Gepard", "Himeko", "Seele", "Welt", "Yanqing")
+  rate_up_five_star_char <- "Seele"
+  rate_up_four_star_chars <- c("Natasha", "Hook", "Pela")
+  
+  # Initialize counters
+  pity_counter_five_star <- 0 # counts how many pulls no 5 star characters
+  pity_counter_four_star_plus <- 0 # counts how many pulls no 4+ star characters
+  last_five_star_not_up <- FALSE # counts whether the last 5 star character is not the up character
+  pull_results <- vector(length = n_pulls)
+  star_results <- vector(length = n_pulls)
+  
+  for(pull in 1:n_pulls) {
+    # generate a random number to determine the pull result
+    rand <- runif(1)
+    pity_counter_four_star_plus <- 1 + pity_counter_four_star_plus
+    pity_counter_five_star <- 1 + pity_counter_five_star
+    # condition for a 5 star character
+    # either this pull achieves 5 star rate or you haven't got 5 star in last 89 pulls
+    if (rand <= five_star_rate || pity_counter_five_star >= 90) {
+      # Lucky, got 5 star, so reset the counter.
+      pity_counter_five_star <- 0
+      pity_counter_four_star_plus <- 0
+      # condition for a 5 star up character
+      # either this pull achieves 5 star up rate or you the last 5 star is not the up character
+      if (rand <= five_star_rate * rate_up_five_star || last_five_star_not_up == TRUE) {
+        char <- rate_up_five_star_char
+        star <- 5
+      } else {
+        # randomly choose 1 non-up 5 star character
+        char <- sample(five_star_characters[five_star_characters != rate_up_five_star_char], 1)
+        star <- 5
+        # This 5 star is not up character
+        last_five_star_not_up <- TRUE
+      }
+    }
+    # When it's not 5 star character, but it's 4 star character 
+    # (five_star_rate < rand <= (five_star_rate + four_star_rate))
+    else if (rand <= (five_star_rate + four_star_rate) || pity_counter_four_star_plus >= 10) {
+      pity_counter_four_star_plus <- 0
+      # condition for a 4 star up character
+      if (rand <= (five_star_rate + four_star_rate * rate_up_four_star)) {
+        char <- sample(rate_up_four_star_chars, 1)
+        star <- 4
+      } else {
+        char <- sample(four_star_characters[!four_star_characters %in% rate_up_four_star_chars], 1)
+        star <- 4
+      }
+    } else {
+      char <- "3★ light cone"
+      star <- 3
+    }
+    pull_results[pull] <- char
+    star_results[pull] <- star
+  }
+  if(print == TRUE){
+    print(table(pull_results))
+  }
+  return(data.frame(result = pull_results, star = star_results, index = 1:n_pulls))
+}
+# Save pull results to a CSV file
+#write.csv(starRail_pull(80), "gacha_pull_results.csv", row.names = FALSE)
+```
+
+Here is the example to use this function simulate 80 draws.
+
+```{r}
+df = starRail_pull(80)
+head(df)
+print(table(df$star))
+```
+
+Optional: Try to understand how this function works.
+
+## Part 1.1: For a new account, simulate the draws required to obtain 1 Seele. (5 points)
+
+Hint: The output of the `starRail_pull` contains 3 columns: `result`, `star`, `index`. From the banner information, in the most unlucky situation, you will get Seele at the draw 180. So `df=starRail_pull(180)` will at least have 1 Seele in the result column. For 1 simulation, you need to find the index for the first Seele. Some functions you can use: `filter`, `pull`, `min`.
+
+```{r}
+df = starRail_pull(180)
+df |> 
+  filter(result == "Seele") |>
+  pull(index) |>
+  min()
+```
+
+## Part 1.2: Now wrap the previous code to simulate the draws to obtain the first Seele as a function. This function does not need to take any input. (5 points)
+
+```
+sim_first_Seele_draws = function(){
+
+}
+```
+
+```{r}
+sim_first_Seele_draws = function(){
+  df = starRail_pull(180)
+  result = df |> 
+    filter(result == "Seele") |>
+    pull(index) |>
+    min()
+  return(result)
+}
+```
+
+## Part 1.3: Now simulate n = 50, 500, 2000 results of the draws to obtain first Seele for a new account. Store the result into 3 vectors (don't print it) (5 points)
+
+```
+set.seed(123)
+n = 50
+P13_50 = replicate(?, ?)
+n = 500
+P13_500 = replicate(?, ?)
+n = 2000
+P13_2000 = replicate(?, ?)
+```
+
+Hint: `replicate()`, how to use it? You may need to wait for some time while simulating 2000 results. 
+
+Hint2: `set.seed(123)` in the beginning of the code chunk. You can change the seed into another number. That will fix the sample result.
+
+```{r}
+set.seed(123)
+n = 50
+P13_50 = replicate(n, sim_first_Seele_draws())
+n = 500
+P13_500 = replicate(n, sim_first_Seele_draws())
+n = 2000
+P13_2000 = replicate(n, sim_first_Seele_draws())
+```
+
+## Part 1.4: Now construct the confidence interval of average draws to get first Seele. Be sure to answer these questions: (3+4+3+12+3 = 25 points)
+
+1. What's the shape of distribution of the samples? is it bell shape? You can use histogram on the n=2000 sample
+
+2. Which confidence interval should we construct? List the assumptions for this question.
+
+3. Do you think the confidence interval is a good method for this situation? Why or why not?
+
+4. Write the function to calculate the $95\%$ confidence interval. Use that function to show the confidence intervals. You can refer to [Extra example on CI](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html) slide 9, but you may need to change the `t.score` used in that example.
+
+5. Interpret the confidence interval of the n=2000 sample.
+
+**Solution:**
+
+The shape is left skewed. We should use the Z confidence interval with sigma unknown. It may not be a good method because the distribution is greatly left skewed. There are also no sample that bigger than 180.
+
+Interpretation: We are $95\%$ confidence that the average draws to get first Seele is between 120.6236 and 125.6374.
+
+```{r, fig.height=3,fig.width=3}
+hist(P13_2000)
+```
+
+```{r}
+one_sample_mean_CI = function(my_sample, alpha = 0.05){
+  sample_mean = mean(my_sample)
+  sample_n = length(my_sample)
+  sample_sd = sd(my_sample)
+  sample_se = sample_sd/sqrt(sample_n)
+  z.score = qnorm(p=alpha/2, lower.tail=F)
+  margin_error = z.score * sample_se
+  return(c(sample_mean - margin_error, sample_mean + margin_error))
+}
+one_sample_mean_CI(P13_50)
+one_sample_mean_CI(P13_500)
+one_sample_mean_CI(P13_2000)
+```
+
+
+## Part 2: I got Seele at exactly 180 pulls. How unlucky I am? (10 points)
+
+Construct a $95\%$ confidence interval of sample proportion of getting Seele at exactly 180 pulls. Use the n=2000 sample `P13_2000`. From the confidence interval result, are you really that unlucky?
+
+Hint: `sample1 = P13_2000==180` will make `sample1` a bool vector. TRUE indicate getting Seele at exactly 180 pulls.
+
+Hint2: Refer to [Lecture 20 slide 32](https://xjw1001001.github.io/lecture/Lecture%2020/lecture20.html#34). 
+
+```{r}
+sample1 = P13_2000==180
+pHat <- mean(sample1)
+var <- pHat*(1 - pHat)/length(sample1)
+halfWidth <- qnorm(.975)*sqrt(var)
+(lower <- pHat - halfWidth)
+(upper <- pHat + halfWidth)
+```
+
+## Part 3: I want to get full eidolons for Seele, how much should I pay? (10 points)
+
+In the Gacha system, if you get a duplicate character, then the excess ones will be converted into eidolons and can be used to buff the original character. One character can be buffed by eidolons 6 times. So here we are asking about how many draws we need to expect to draw Seele 7 times. Use `n=500` for simulation.
+
+When you used up all the free resources, you can pay 99.99$ for approximately 60 draws. Based on the draws, how much will you expect to pay?
+
+Hint: first write the function `sim_7_Seele_draws` to obtain the index of getting 7th Seele. Then generate `n=500` samples, and then use the `one_sample_mean_CI` function on that sample vector.
+
+```{r}
+sim_7_Seele_draws = function(){
+  df = starRail_pull(180*7)
+  result = df |> 
+    filter(result == "Seele") |>
+    pull(index)
+  return(result[7])
+}
+
+set.seed(123)
+n = 500
+P3 = replicate(n, sim_7_Seele_draws())
+one_sample_mean_CI(P3)
+
+one_sample_mean_CI(P3)/60 * 100
+```
+
+
+## Include the person you coop with:
+
+Names:
+
+## Appendix
+
+```{r eval = TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+

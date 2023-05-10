@@ -1,0 +1,488 @@
+---
+title: "STA 032 Homework 5"
+author: "CHANGE YOUR NAME HERE"
+date: "DUE: May 21 2023, 12PM"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and homework number (e.g., `xjw18_hw5.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. When asked, answer must be supported by written statements as well as any code used. 
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ Students may choose to collaborate with each other on the homework, but must clearly indicate with whom they collaborated. Every student must upload their own submission.
+
++ Start to work on it as early as possible. Finishing this homework can help prepare midterm 1.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file.
+
+# Instructions for book problems:
+
+You can use R markdown and mathematical typing to solve the book problems.
+
+Or you can write the problems by hand, taking pictures and then convert them into a PDF file.
+
+You can then Google `concatenate pdf files online` to merge the PDF files you have for R problems and book problems into 1 PDF file for gradescope submission.
+
+You may also handwrite your answer, take pictures, and then include an image in a code chunk using `knitr::include_graphics("myImg.png")`.) 
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+```
+
+
+# Book problem Parts 
+
+1. The number of defective components produced by a certain process in one day has a Poisson distribution with mean 20. Each defective component has probability 0.60 of being repairable.
+
+(a) Find the probability that exactly 15 defective components are produced.
+
+(b) Given that exactly 15 defective components are produced, find the probability that exactly 10 of them are repairable.
+
+(c) Let N be the number of defective components produced, and let X be the number of them that are repairable. Given the value of N, what is the distribution of X?
+
+(d) Find the probability that exactly 15 defective components are produced, with exactly 10 of them being repairable.
+
+```{r}
+knitr::include_graphics("p1.png")
+```
+
+
+
+2. Assume that IQ is normally distributed, with mean 100 and standard deviation 15.
+
+(a) What is the probability that a randomly selected persons IQ is over 120?
+
+(b) Find the value of Q1, Q2, and Q3 for IQ.
+
+(c) Find the value of the lower = Q1 − 1.5(Q3 − Q1) and upper = Q3 + 1.5(Q3 − Q1) for IQ.
+
+(d) Find the probability of an outlier for IQ for a single person based on your values for (c).
+
+```{r}
+knitr::include_graphics("p2.png")
+```
+
+(e) What is the probability when we randomly select 4 persons, none of their IQ is over 120?
+
+Let N denotes the number of person that IQ is over 120 for these 4 people, then $N \sim Binomial(4,0.0918)$
+
+So the probability is:
+
+```{r}
+dbinom(0, size = 4, p = 0.0918)
+```
+
+3. Drums labeled 30 L are filled with a solution from a large vat. The amount of solution put into each drum is random and normally distributed, with true mean 30.01 L and standard deviation 0.1L.
+
+(a) What is the probability that the total amount of solution contained in 50 drums is more than 1500 L?
+
+(b) If the total amount of solution in the vat is 2401 L, what is the probability that 80 drums can be filled without running out?
+
+(c) How much solution should the vat contain so that the probability is 0.90 that 80 drums can be filled without running out?
+
+(d) Find the 10th percentile for the total amount of solution for 80 drums.
+
+```{r}
+knitr::include_graphics("p3.png")
+```
+
+# Problem 4
+
+4. Assume that a college can admit at most 930 freshmen. Assume that it sends out 1500 acceptances and that each student comes to the college with probability .6, and that the students make decisions independently of one another. 
+
+a. What is the probability that the college ends up exactly the number of students it can accommodate?
+
+```{r}
+dbinom(930, 1500, 0.6)
+```
+
+
+b. What is the probability that the college ends up with with more students than it can accommodate? 
+
+```{r}
+1 - pbinom(930, 1500, 0.6)
+```
+
+c. What is the (theoretical) mean and variance of the distribution that you used in (a) and (b)?
+
+```{r}
+n <- 1500
+p <- 0.6
+
+mean <- n * p
+variance <- n * p * (1 - p)
+
+mean
+variance
+```
+
+
+d. In R, simulate the 1500 decisions that the accepted students make (i.e., create a binary vector of length 1500, indicating whether or not students attended the college) . How many students, out of 1500, attended the college in your simulation? This number represents a single draw from the distribution that you used in (a) and (b). 
+
+(hint: what do `rbinom(n=1000, size=1, prob)` return?)
+
+```{r}
+set.seed(123)
+decisions <- rbinom(1500, 1, 0.6)
+num_attend <- sum(decisions)
+
+num_attend
+```
+
+e. In (d), what distribution did you use for each of the draws? What is (are) the parameter(s), and what is the theoretical mean and variance? 
+
+The distribution used for each of the draws is a binomial distribution with parameters n = 1 (since each student can either attend or not attend the college) and p = 0.6 (the probability that a student attends the college). The theoretical mean and variance of this distribution are:
+
+```{r}
+mean <- n * p
+variance <- n * p * (1 - p)
+
+mean
+variance
+```
+
+
+f. (Continued from (e)) As the sample size grows, what value do you expect the sample mean to converge to, and why? Does your answer in (d) make sense? If we had a sample size of 10000 (instead of 1500), what value would we expect for the number of students, out of 10000, that attend?
+
+As the sample size grows, we expect the sample mean to converge to the theoretical mean of the distribution, which in this case is 900. This is because the Law of Large Numbers tells us that as the sample size increases, the sample mean becomes a more accurate estimate of the population mean.
+
+```{r}
+num_attend <- rbinom(10000, 1, 0.6)
+mean(num_attend)
+```
+
+
+# Problem 5
+
+Suppose you're interested in determining the average beak-to-tail length of red-tailed hawks to help differentiate them from other hawks by sight at a distance. 
+
+Females and males differ slightly in length -- females are generally larger than males. Here we generate the length for a hypothetical population of 3000 females and 2000 males.
+
+```{r}
+# install the package if you haven't
+# install.packages("ggpubr")
+```
+
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(ggpubr)
+set.seed(2023)
+male = data.frame(
+  length = rnorm(n=2000, mean = 57.5, sd = 3),
+  sex = rep("Male", 2000)
+)
+female = data.frame(
+  length = rnorm(n=3000, mean = 50.5, sd = 2.8),
+  sex = rep("Female", 3000)
+)
+population_2 = bind_rows(male,female)
+```
+
+1\. Make a histogram of the length in the `population_2` data frame. Add sample mean to that histogram. Don't make it colored by group, just 1 histogram for all of the hawks. Assign that histogram to `p1`. print the plot by calling `p1`.
+
+Hint: to add vertical line, we can use: `geom_vline(aes(xintercept = ?), size = 2, color = "blue")`
+
+```{r}
+p1 = population_2 |> ggplot(aes(x = length)) + 
+  geom_histogram() + 
+  geom_vline(aes(xintercept = mean(length)), size = 2, color = "blue")
+
+p1
+```
+
+
+2\. The code below generate the stacked histogram, which stored in a variable p2. Now Use `ggarange` to show both plots in 1 plot, and give it suitable titles.
+
+```{r}
+p2 = population_2  |>
+  ggplot( aes(x=length, fill=sex)) +
+  geom_histogram(bin = 25,color="#e9ecef", alpha=0.6, position = 'identity') +
+  scale_fill_manual(values=c("#69b3a2", "#404080")) +
+  labs(fill="")
+```
+
+Hint: `ggarrange(plot1_name, plot2_name, ..., plotn_name, labels = c("name_plot1",...,"name_plotn"),ncol = ?, nrow = ?)`
+
+```{r}
+ggarrange(p1,p2,labels = c("Mean","Gender"), ncol = 2, nrow = 1)
+```
+
+3\. Use `group_by` and `summarise` to compute the sample mean and sample standard deviation of `population_2` by sex, and then use `knitr::kable` to show your result in a table with suitable caption. You need to use pipe operator to do this question.
+
+```{r}
+population_2 |>
+  group_by(sex) |>
+  summarise(mean = mean(length), sd = sd(length)) |>
+  knitr::kable(digit = 4, caption = "summary statistics")
+```
+
+
+4\. Assume that the odds of male and female units being chosen for the sample are different. Consider that there are more opportunities to find dead men than dead women because male mortality is higher. We will assign sampling weights of 5/6 to all male hawks and weights of 1/6 to all female hawks to represent the situation where specimens are five times more likely to be male. **Add a new column to the population_2 dataset named weight indicating that setting.**
+
+(Hint: Think about the following code, and write similar things in `mutate` for the `sex`)
+
+```{r}
+string_vector = c("a","a","b")
+(string_vector == "a") * 5/6 + (string_vector == "b") * 1/6
+```
+
+```{r}
+population_2 = population_2 |>
+  mutate(weight = ((sex == "Male")*1/6 + (sex == "Female") * 5/6) )
+```
+
+
+5\. Now we draw 300 samples **without replacement** with the given weight from part 4. (Hint: `dataset_to_sample |> sample_n(size = ?, replace = ?, weight = ?)` The code will sample the dataset_to_sample by row for the given arguments.) 
+
+```{r}
+sample = population_2 |> sample_n(size = 300, replace = FALSE, weight  = weight)
+```
+
+
+6\. Use the `for` loop and `sample_n` to repetitively simulate drawing 300 samples **without replacement** 1000 times and record the mean **length** and **count of female** for each simulation. Store the result in the `result_mean` and `result_female_count` vectors and make a dataframe. 
+
+Here is the provided template:
+
+```
+n = ?
+# make 2 vectors to store the results
+result_mean = ? 
+result_female_count = ?
+
+for(i in ?){
+  sample1 = ? |> sample_n(size = ?, replace = ?, weight  = ?)
+  ? = mean(sample1$?)
+  ? = sum((sample1$? == ? ))
+}
+result_df = data.frame(
+  mean = ?,
+  count = ?
+)
+```
+
+
+```{r}
+n = 1000
+
+result_mean = rep(0, n)
+result_female_count = rep(0, n)
+
+for(i in 1:n){
+  sample1 = population_2 |> sample_n(size = 300, replace = FALSE, weight  = weight)
+  result_mean[i] = mean(sample1$length)
+  result_female_count[i] = sum((sample1$sex =="Female"))
+}
+result_df = data.frame(
+  mean = result_mean,
+  count = result_female_count
+)
+```
+
+
+7\. For the distribution of female count and sample mean, draw 2 histograms reflecting their distribution, adding the vertical line indicating the population mean and female count if sample without weight (300 * (3000)/(2000+3000)). Use `ggarange` to put it in one single plot. Use suitable title, axis label, themes, etc.
+
+Here is the provided template:
+
+```
+# histogram for female count
+p1 = result_df |> ggplot(?) + 
+  geom_?() +
+  geom_?(aes(? = ?), # The female count if sample without weight is 300 * (3000)/(2000+3000)
+             size = 2, color = "blue")
+             
+# histogram for sample mean     
+p2 = result_df |> ggplot(?) + 
+  geom_?() +
+  geom_?(aes(? = ?)), # how to obtain the population mean here?
+             size = 2, color = "blue")
+
+ggarrange(?)
+```
+
+
+```{r}
+p1 = result_df |> ggplot(aes(x = count)) + 
+  geom_histogram() +
+  geom_vline(aes(xintercept = 300 * (3000)/(2000+3000)),
+             size = 2, color = "blue")
+p2 = result_df |> ggplot(aes(x = mean)) + 
+  geom_histogram() +
+  geom_vline(aes(xintercept = mean(population_2$length)),
+             size = 2, color = "blue")
+
+ggarrange(p1, p2, labels = c("Female count","Mean length"),
+         ncol = 2, nrow = 1)
+```
+
+# Problem 6
+
+1. write your own functions to compute the variance and skewness of a numeric vector. Variance is defined as
+
+$$\mathrm{Var}(x) = \frac{1}{n - 1} \sum_{i=1}^n (x_i - \bar{x}) ^2 \text{,}$$
+
+Where $\bar{x} = (\sum_i^n x_i) / n$ is the sample mean. Skewness is defined as
+
+$$\mathrm{Skew}(x) = \frac{\frac{1}{n-2}\left(\sum_{i=1}^n(x_i - \bar x)^3\right)}{\mathrm{Var}(x)^{3/2}} \text{.}$$
+
+```{r}
+my_var <- function(x) {
+  n <- length(x)
+  xbar <- sum(x) / n
+  sum((x - xbar) ^ 2) / (n - 1)
+}
+
+my_skew <- function(x) {
+  n <- length(x)
+  xbar <- sum(x) / n
+  num <- sum((x - xbar) ^ 3) / (n - 2)
+  den <- my_var(x) ^ (3 / 2)
+  num / den
+}
+```
+
+2. Implement a fizzbuzz function. It takes a single number as input. If the number is divisible by three, it returns “fizz”. If it’s divisible by five it returns “buzz”. If it’s divisible by three and five, it returns “fizzbuzz”. Otherwise, it returns the number. Make sure you first write working code before you create the function.
+
+```{r}
+fizzbuzz <- function(n) {
+  if (n %% 15 == 0) {
+    "fizzbuzz"
+  } else if (n %% 3 == 0) {
+    "fizz"
+  } else if (n %% 5 == 0) {
+    "buzz"
+  } else {
+    n
+  }
+}
+```
+
+3. What does this switch() call do? What happens if x is “e”?
+
+```{r eval = FALSE}
+switch(x, 
+  a = ,
+  b = "ab",
+  c = ,
+  d = "cd"
+)
+```
+
+# Problem 7 Monte Carlo integration (Level 2, 5 points total in this homework) 
+
+A common use of the Monte Carlo method is to perform numerical integration on a function that may be difficult to integrate analytically. The key is to think about the problem geometrically and connect this with probability. Now if we randomly throw dots (ideally points) into the box, the ratio of the number of dots under the curve to the total area of the box will converge to the integral.
+
+Here we want to integrate the function:
+
+$$f(x) = ( (sin(10x^2))^2 \times sin(x))\times x+0.1, x \in [0,1]$$
+
+We need to first generate dots uniformly distributed. We use `runif(n, min=0, max=1)` to generate 1000 points' x coordinate and y coordinate between 0 and 1. So with this we will generate 1000 uniformly randomly distributed points on the square of $X\in [0,1], Y\in [0,1]$
+
+```{r}
+n = 1000
+x1 = runif(n, min =0 , max =1 )
+y1 = runif(n, min =0 , max =1 )
+df = data.frame(x1 = x1,y1= y1)
+f <- function(x) ((sin(10*x^2))^2*sin(x))*x+0.1
+```
+
+**Part 1: Use ggplot to generate the plot of the points and the function.**
+
+Hint: geom_function is used to draw the given function on the plot as another layer. It takes no aes mapping.
+
+```
+ggplot(?, ?) +
+  geom_?(size = 2, alpha = 0.8) +
+  geom_function(fun = ?, colour = "red", size = 2) +
+  labs(x = "x", y = "y", title = "Random Points and Function Curve")
+```
+
+```{r}
+ggplot(df, aes(x1, y1)) +
+  geom_point(size = 2, alpha = 0.8) +
+  geom_function(fun = f, colour = "red", size = 2) +
+  labs(x = "x", y = "y", title = "Random Points and Function Curve")
+```
+
+Now we use 2 colors to separate the points above and below the curve:
+
+**Part 2: Use data manipulation skill to do this task. And then plot it again.**
+
+Hint:
+
+```
+df1 = df |> 
+  mutate(f_x = ?) |>
+  mutate(upper_than_fx = ?) 
+  
+df1 |>
+  ggplot(aes(?, ?, ? = ?)) +
+  geom_?(size = 2, alpha = 0.8) +
+  geom_function(fun = ?, colour = "red", size = 2) +
+  labs(x = "x", y = "y", title = "Random Points and Function Curve") +
+  theme(legend.position = "none")
+```
+
+
+```{r}
+df1 = df |> 
+  mutate(f_x = f(x1)) |>
+  mutate(upper_than_fx = y1 > f_x)
+
+df1 |>
+  ggplot(aes(x1, y1, color = upper_than_fx)) +
+  geom_point(size = 2, alpha = 0.8) +
+  geom_function(fun = f, colour = "red", size = 2) +
+  labs(x = "x", y = "y", title = "Random Points and Function Curve") +
+  theme(legend.position = "none")
+```
+
+Now we can count the dots below the curve. Area below the curve = [area of the square (1)]* dots below the curve / total dots.
+
+**Part 3: Now count how many dots are below the curve, and calculate the area below the curve using df1.**
+
+```{r}
+1 - mean(df1$upper_than_fx)
+```
+
+Is it more accurate, if we throw more dots? The true integration can be expressed as:
+
+```{r}
+integrate(f, lower = 0, upper = 1)
+```
+
+
+**Part 4: Now change n into 50000, and compute the area again. How is the result compared to the true integration?**
+
+
+## Include the person you coop with:
+
+Names:
+
+## Appendix
+
+```{r eval = TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+
