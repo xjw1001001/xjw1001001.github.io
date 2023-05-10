@@ -1,0 +1,101 @@
+---
+title: "Midterm 2 Practice"
+output: pdf_document
+date: '2023-05-10'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Additional T/F problems
+
+1. The mean and the median are always the same for any dataset. (False)
+
+2. A p-value of 0.05 means there is a 5% chance that the null hypothesis is true. (False)
+
+3. A histogram is a type of bar chart. (False)
+
+4. A scatterplot can be used to examine the relationship between two quantitative variables. (True)
+
+5. A z-score is a measure of how many standard deviations a data point is from the mean. (True)
+
+6. A Type I error occurs when we reject a null hypothesis that is actually true. (True)
+
+8. The margin of error decreases as the sample size increases. (True)
+
+9. The null hypothesis is always the hypothesis we want to prove. (False)
+
+10. A confidence interval tells us the range of values within which the true population parameter is likely to fall. (True)
+
+11. A random sample is a sample in which every member of the population has an equal chance of being selected. (True)
+
+12. The correlation coefficient can range from -1 to 1. (True)
+
+13. A boxplot can be used to display the five-number summary of a dataset. (True)
+
+14. The coefficient of determination (R-squared) tells us the proportion of the variability in the response variable that can be explained by the explanatory variable. (True)
+
+15. A Type II error occurs when we fail to reject a null hypothesis that is actually false. (True)
+
+16. The standard deviation is always greater than or equal to the variance. (False)
+
+17. The null hypothesis is a statement of no effect or no difference. (True)
+
+18. A histogram is a graph of a probability distribution. (False)
+
+19. A confidence level of 95% means we are 95% certain that the population parameter falls within the confidence interval. (True)
+
+20. A skewed distribution has the same mean and median. (False)
+
+22. A sample statistic is always equal to the population parameter. (False)
+
+24. A Type I error is also known as a false positive. (True)
+
+25. The central limit theorem tells us that the sampling distribution of the mean approaches a normal distribution as the sample size increases. (True)
+
+26. The standard deviation is a measure of spread that is resistant to outliers. (False)
+
+28. A confidence interval widens as the sample size increases. (False)
+
+29. A Type II error is also known as a false negative. (True)
+
+30. The interquartile range (IQR) is a measure of spread that is resistant to outliers. (True)
+
+31. A p-value is the probability of observing a test statistic as extreme or more extreme than the observed test statistic, assuming the null hypothesis is true. (True)
+
+32. A scatterplot can be used to identify outliers. (True)
+
+33. A standard normal distribution has a mean of 0 and a standard deviation of 1. (True)
+
+34. A confidence interval can be used to test a hypothesis. (True)
+
+35. A Type I error is also known as a level of significance. (False)
+
+36. The correlation coefficient measures the strength of the linear relationshipbetween two variables, but it does not tell us anything about causation. (True)
+
+37. A hypothesis test is a procedure for testing a claim or hypothesis about a population parameter. (True)
+
+38. The standard error is a measure of how much the sample mean varies from sample to sample. (True)
+
+40. The central limit theorem tells us that the sampling distribution of the mean is always normal, regardless of the sample size. (False)
+
+41. A Type II error is also known as a power of the test. (False)
+
+42. The t-distribution is used to test hypotheses about population means when the population standard deviation is unknown. (True)
+
+43. A probability distribution is a function that describes the likelihood of different outcomes in a random process. (True)
+
+44. The null hypothesis is always the hypothesis we believe to be true. (False)
+
+46. A Type I error is also known as a reject error. (True)
+
+48. A hypothesis test can only tell us if there is a statistically significant difference, but not the magnitude of the difference. (True)
+
+49. A sample mean is a statistic that estimates the population mean. (True)
+
+50. The t-distribution approaches the standard normal distribution as the sample size increases. (True)
+
+## Code sorting problems
+
+
