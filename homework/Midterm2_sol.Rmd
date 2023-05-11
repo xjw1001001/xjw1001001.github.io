@@ -76,7 +76,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \begin{table}[htbp]
 \centering
-\resizebox{\columnwidth}{!}{%
+\resizebox{\columnwidth}{!}{
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
 1-12   &  &  &  &  &  &  &  &  &  &  &  &  \\ \hline
