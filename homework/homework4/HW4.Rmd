@@ -106,7 +106,7 @@ A and B
 - For two events A and B are independent, where $P(A) > 0$ and $P(B) > 0$, then $P(A \cup B) = P(A)+P(B)(1-P(A))$
 
 - For a discrete random variable $X$, where $a$ is a
-constant, $P(X>a)=P(X \geq a+1$ if $X$ can only take on integer values.
+integer, $P(X>a)=P(X \geq a+1)$ if $X$ can only take on integer values.
 
 - For a discrete random variable $X$, where $a$ is a
 constant, $F(a) = 1- P(X>a)$
