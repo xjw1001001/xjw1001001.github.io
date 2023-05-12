@@ -11,8 +11,13 @@ date: '2023-05-10'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Instruction: Please read the problems carefully. Write down your choice next to each problem, and then copy it to the final page chart.
 
-## Part 1: T/F Problems
+# Write your Student name and ID below:
+
+\newpage
+
+## Part 1: T/F Problems (3 * 12 = 36)
 
 1. A p-value of 0.05 means there is a 5% chance that the null hypothesis is true. 
 
@@ -26,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (True)
 
-4. A z-score is a measure of how many standard deviations a data point is from the mean.
+4. For a sample $x_1,x_2,...,x_n$ draw from an unknown distribution $X$, $\frac{1}{n}\sum_{i=1}^n x_i$, $\text{min}(x)$, $x_1$ are all sample statistics.
 
 (True)
 
@@ -62,11 +67,191 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (True)
 
-## Part 2: Multiple Choice Problems
+## Part 2: Multiple Choice Problems (4 * 12 = 48)
 
+13. Two dice are rolled. What is the probability of getting a sum of 7 or 11?
 
-## Part 3: Code sorting problem
+A. 1/6
 
+B. 1/3
+
+C. 1/4
+
+D. 1/12
+
+(Answer: C)
+
+14. For the following 4 statements, which one is **incorrect**?
+
+A. The Bayes formula states that $P(A \mid B) =\frac{P(B \mid A)P(A)}{P(B \mid A)P(A) + P(B \mid A^c)P(A^c)}$
+
+B. For two events A and B are independent, where $P(A) > 0$ and $P(B) > 0$, then $P(A \cup B) = P(A)+P(B)(1-P(A))$
+
+C. For two events A and B where $P(A) > 0$ and $P(B) >0$, $P(A \cap B^C ) = P(A) - P(A\cap B)$.
+
+D. For any random variable $X$, the variance of $X$ is larger than the variance of $Y$ where $Y = aX$ and $a < 0$.
+
+(Answer: D)
+
+15. A weather forecaster predicts whether or not it will rain each day. Out of the rainy days, they correctly predict the weather 80% of the time. Out of the non-rainy days, they correctly predict the weather 90% of the time. Assume it rains 10% of the time. Every day is independent. What is the probability of a correct prediction?
+
+A. 0.87
+
+B. 0.88
+
+C. 0.89
+
+D. 0.90
+
+(Answer: C)
+
+16. For the following 4 statements, which one is **incorrect**?
+
+A. The Central Limit Theorem states that if you take a random sample from a population and your sample size is at least 30, then the distribution of your population is normally distributed.
+
+B. For a normal random variable, the z-score of a value x that is below the mean will always be negative.
+
+C. You flip a coin until you get 4 heads. The distribution of the number of tail is **not** a binomial distribution.
+
+D. We can use Poisson distribution to model the highway speed tickets per month on I-80 in Yolo County.
+
+(Answer: A)
+
+17. Suppose the voltage of batteries follow a Normal Distribution. Batteries of type A have a mean voltage of 6.0 and a standard deviation of 0.3. Type B have a mean voltage of 12 and a standard deviation of 0.4. Assume battery voltage is independent. What's the probability that the combined voltage exceeds 17.7?
+
+A. `pnorm(17.7,18,0.5) = 0.2743`
+
+B. `1 - pnorm(17.7,18,0.5) = 0.7257`
+
+C. `pnorm(17.7,18,0.25) = 0.1151`
+
+D. `1 - pnorm(17.7,18,0.25) = 0.8849`
+
+(Answer: B)
+
+18. According to the Law of Large Numbers, as the sample size increases:
+
+A. The probability of an event occurring approaches zero.
+
+B. The variability of the sample decreases.
+
+C. The sample mean approaches the population mean.
+
+D. The sample becomes less representative of the population.
+
+(Answer: C)
+
+19. A 95% confidence interval is constructed for a population mean. Which of the following statements correctly interprets this interval?
+
+A. There is a 95% probability that the true population mean falls within the interval.
+
+B. The sample mean has a 95% chance of being within the interval.
+
+C. When we repeatedly construct 100 confidence intervals (including sample from the population), on average 95 intervals will contain the true population mean.
+
+D. The confidence interval contains 95% of the sample data.
+
+(Answer: C)
+
+20. Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at 5%
+ significance that the population mean is at least 100 dollars against the alternative that it is less than 100 dollars, assume the population of contract is normally distributed. What is the correct code and conclusion?
+
+A. `pt((108 - 100) / (12 / sqrt(16)), df = 16) > 0.05`, so we fail to reject the null hypothesis.
+
+B. `1 - pt((108 - 100) / (12 / sqrt(16)), df = 16) < 0.05`, so we reject the null hypothesis.
+
+C. `pt((108 - 100) / (12 / sqrt(16)), df = 15) > 0.05`, so we fail to reject the null hypothesis.
+
+D. `1 - pt((108 - 100) / (12 / sqrt(16)), df = 15) < 0.05`, so we reject the null hypothesis.
+
+(Answer: D)
+
+21. Monte Carlo simulation is a technique used to:
+
+A. Estimate probabilities through repeated random sampling.
+
+B. Study the relationship between two random variables.
+
+C. Predict future events with high accuracy.
+
+D. Perform statistical analysis on large datasets.
+
+(Answer: A)
+
+22. Which of the following statements is **incorrect**?
+
+A. For hypothesis test problems, we assume population parameter unknown and sample statistics known.
+
+B. When the sample size is big, by the central limit theorem we can use the Z score even though the population distribution is right skewed.
+
+C. In a hypothesis test, fail to reject the null hypothesis means that the alternative hypothesis is proven to be false.
+
+D. Type II error occurs when the null hypothesis is rejected, but it is actually true.
+
+(Answer: C)
+
+23. Which function we should use when we want to generate a map in midterm 1?
+
+A. geom_bar()
+
+B. geom_polygon()
+
+C. geom_line()
+
+D. geom_point()
+
+(Answer: B)
+
+24. Which type of the problem is not part of midterm 1?
+
+A. Use binomial distribution to simulate a chicken farm.
+
+B. Use `tidyverse` package functions to manipulate datasets.
+
+C. Calculate the "robust" sample statistics by excluding the outliers
+
+D. Problem using Combination about salad toppings at Pluto’s
+
+(Answer: A)
+
+## Part 3: Code sorting problem (16)
+
+1. Sort the code that analysis covid data in midterm 1.
+
+A. 
+```
+cv_states_20210428 %>%
+  ggplot(aes(x = pop_density, y = per100k,
+             label = abb)) +   
+  geom_point(aes(size = population, color = naive_CFR))
+```
+
+B. 
+
+```
+cv_states = as.data.frame(read.csv(
+"https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")) 
+# Assume the data is already processed
+```
+
+C. 
+
+```
+cv_states = cv_states %>% mutate(per100k = cases / 100000) %>%  
+mutate(naive_CFR = (deaths*100/cases) )
+```
+
+D. 
+```
+library(tidyverse); library(ggplot2)
+```
+
+E.
+```
+cv_states_20210428 = filter(cv_states, date=="2021-04-28")
+```
+
+(DBCEA)
 
 
 \newpage
@@ -85,9 +270,15 @@ knitr::opts_chunk$set(echo = TRUE)
 }
 \end{table}
 
+**Solution** 
+
+FFTTF; FFFTF; TT
+
+CDCAB; CCDAC; BA
+
 **Solution for code sorting**
 
-
+(DBCEA)
 
 
 
