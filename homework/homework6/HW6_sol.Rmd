@@ -93,7 +93,7 @@ knitr::include_graphics("P1.3.png")
 
 ## 1.4 (8 points)
 
-Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at $5\%$ significance that the population mean is at least 100 dollars against the alternative that it is less than 100 dollars, assume the population of contract is normally distributed. Company policy requires that new members of the sales force must exceed an average of \$100 per contract during the trial employment period. Can we conclude that Jane has met this requirement at the significance level of $95\%$ ?
+Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at $5\%$ significance that the population mean is at least 100 dollars against the null that it is less than 100 dollars, assume the population of contract is normally distributed. Company policy requires that new members of the sales force must exceed an average of \$100 per contract during the trial employment period. Can we conclude that Jane has met this requirement at the significance level of $95\%$ ?
 
 ```{r}
 knitr::include_graphics("P1.4.png")

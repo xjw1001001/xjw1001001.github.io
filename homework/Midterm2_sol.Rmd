@@ -63,13 +63,13 @@ Instruction: Please read the problems carefully. Write down your choice next to 
 
 (True)
 
-12. For Binomial distribution $Y\sim Binomial(n, p)$, there is only 1 parameter.
+12. When we make inference about the binomial distribution $Y\sim Binomial(n, p)$, there is only 1 unknown parameter.
 
 (True)
 
 ## Part 2: Multiple Choice Problems (4 * 12 = 48)
 
-13. Two dice are rolled. What is the probability of getting a sum of 7 or 11?
+13. Two dice are rolled. What is the probability of getting a sum of 7 or 10?
 
 A. 1/6
 
@@ -153,8 +153,7 @@ D. The confidence interval contains 95% of the sample data.
 
 (Answer: C)
 
-20. Jane has just begun her new job as on the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars. Test at 5%
- significance that the population mean is at least 100 dollars against the alternative that it is less than 100 dollars, assume the population of contract is normally distributed. What is the correct code and conclusion?
+20. Jane has just begun her new job as part of the sales force of a very competitive company. In a sample of 16 sales calls it was found that she closed the contract for an average value of 108 dollars with a standard deviation of 12 dollars.  Company policy requires that new members of the sales force must exceed an average of $100 per contract during the trial employment period. Test at 5% significance that whether Jane satisfies the company policy, assuming the population of the contract is normally distributed. What is the correct code and conclusion?
 
 A. `pt((108 - 100) / (12 / sqrt(16)), df = 16) > 0.05`, so we fail to reject the null hypothesis.
 
