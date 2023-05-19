@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear regression 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-05-08" />
+    <script src="lecture24_files/header-attrs-2.17/header-attrs.js"></script>
+    <link href="lecture24_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture24_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture24_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture24_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture24_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture24_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture24_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture24_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Linear regression 2
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 24
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### May 8, 2023
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+## Recap
+
+Last lecture we covered how the linear regression was invented.
+
+Today we will go over the mathematics form of regression and it's derivation.
+
+---
+
+## Basics of Regression
+
+* We observe a **response** or **dependent variable** (Y): Son's height
+
+* With each Y, we also observe **regressors** or **predictors** `\(\{X_1,...,X_n\}\)` when we have `\(n\)` variables. *In this case, n=1, only Father's height*
+
+* Goal: determine the mathematical relationship between response variables and regressors:
+
+`$$Y = h(X_1,...X_n)$$`
+
+&gt; Which is to find the blue line!
+
+* Function can be non-linear. When function is linear, the form will be:
+
+`$$Y = h(X_1,...X_n) = \beta_0+\beta_1X_1 + ... + \beta_n X_n$$`
+
+---
+
+## Response and Predictor Variables in Regression Analysis
+
+* In regression analysis, we distinguish between two types of variables: the response variable and the predictor variable(s).
+
+* The response variable, also known as the dependent variable, is the variable we want to predict or explain.
+
+* The predictor variable(s), also known as independent variables or regressors, are the variables used to predict or explain the response variable.
+
+---
+
+* Function can be non-linear. When function is linear, the form will be:
+
+`$$Y = h(X_1,...X_n) = \beta_0+\beta_1X_1 + ... + \beta_n X_n$$`
+
+&lt;img src="img/3.png" width="1064" /&gt;
+
+&gt; Question: If the association between response and predictor is positive then the slope is:
+
+A. Positive. B Negative. C. Cannot determine
+
+---
+
+## Different forms of regression example:
+
+
+&lt;img src="img/4.png" width="80%" /&gt;
+
+We will only cover the theory of Simple linear regression.
+
+---
+
+## Simple linear regression
+
+Our goal is to find the best line that describes a linear relationship for 1 response and 1 predictor.
+
+Find `\((\beta_0,\beta_1)\)` such that:
+
+`$$Y = \beta_0 +\beta_1 X + \epsilon$$`
+
+&lt;img src="img/5.png" width="80%" /&gt;
+
+---
+
+&lt;img src="img/6.png" width="100%" /&gt;
+
+---
+
+
+## Estimate regression parameters
+
+Intuitively, last lecture we use the correlation to model the linear relationship between response and predictor. But why is this case?
+
+* To estimate `\((\beta_0,\beta_1)\)`, we find values that minimize squared error L: (Also called RSS residual sum of squares)
+
+`$$L = \sum_{i=1}^n (y_i - (\beta_0+\beta_1x_i))^2$$`
+
+* Where each term of the squared error is the square of the distance of one `\(Y_i\)` to the regression line!
+
+---
+
+To show how to minimize the squared error `\(L\)`, we use the last lecture Galton's height data. Let’s write a function that computes the RSS for any pair of values `\(\beta_0\)` and `\(\beta_1\)`:
+
+
+
+.tiny[
+
+```r
+rss &lt;- function(beta0, beta1, data){
+  resid &lt;- galton_heights$son - (beta0+beta1*galton_heights$father)
+  return(sum(resid^2))
+}
+```
+
+So for any pair of values, we get an RSS. Here is a plot of the RSS as a function of `\(\beta_1\)` when we keep the `\(\beta_0\)` fixed at 25.
+
+
+```r
+beta1 = seq(0, 1, len=nrow(galton_heights))
+results &lt;- data.frame(beta1 = beta1,
+                      rss = sapply(beta1, rss, beta0 = 25))
+results |&gt; ggplot(aes(beta1, rss)) + geom_line() + 
+  geom_line(aes(beta1, rss))
+```
+
+&lt;img src="lecture24_files/figure-html/unnamed-chunk-9-1.png" width="360" /&gt;
+]
+
+---
+
+We can see a clear minimum for `\(\beta_1\)` at around 0.65. However, this minimum for `\(\beta_1\)` is for when `\(\beta_0 = 25\)`, a value we arbitrarily picked. We don't know if  (25, 0.65) is the pair that minimizes the equation across all possible pairs. 
+
+Trial and error is not going to work in this case. 
+
+But we can use calculus: take the partial derivatives, set them to 0 and solve for `\(\beta_1\)` and `\(\beta_2\)`. 
+
+---
+
+&lt;img src="img/11.png" width="100%" /&gt;
+
+
+---
+
+&lt;img src="img/12.png" width="100%" /&gt;
+
+---
+
+&lt;img src="img/13.png" width="100%" /&gt;
+
+Where `\(\frac{S_{xy}}{S_{xx}} = r \frac{s_y}{s_x}\)`,
+
+---
+
+Where `\(\frac{S_{xy}}{S_{xx}} = r \frac{s_y}{s_x}\)`,
+
+So this is the same with our last lecture formula replacing population parameters by sample estimations.
+
+$$
+y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and intercept } b=\mu_y - m \mu_x
+$$
+
+* To interpret the result: 1 unit increase in X will result in `\(\beta_1\)` unit increase in Y!
+
+---
+
+## The lm function (and it's summary)
+
+* We just introduced the formula of simple linear regression with 1 variable.
+
+* Of course, if we have many variables, these equations can get rather complex. 
+
+* But there are functions in R that do these calculations for us. The lm function.
+
+To fit the model:
+$$
+Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+$$
+
+with `\(Y_i\)` the son's height and `\(x_i\)` the father's height, we can use this code to obtain the least squares estimates. 
+
+
+```r
+fit &lt;- lm(son ~ father, data = galton_heights)
+fit$coef
+```
+
+```
+(Intercept)      father 
+  37.287605    0.461392 
+```
+---
+
+To fit the model:
+$$
+Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+$$
+
+with `\(Y_i\)` the son's height and `\(x_i\)` the father's height, we can use this code to obtain the least squares estimates. 
+
+
+```r
+fit &lt;- lm(son ~ father, data = galton_heights)
+fit$coef
+```
+
+```
+(Intercept)      father 
+  37.287605    0.461392 
+```
+
+The most common way we use `lm` is by using the character `~` to let `lm` know which is the variable we are predicting (left of `~`) and which we are using to predict (right of `~`). The intercept is added automatically to the model that will be fit. 
+
+---
+
+## Summary of lm function
+
+The object `fit` includes more information about the fit. We can use the function `summary` to extract more of this information (not shown):
+
+.small[
+
+```r
+summary(fit)
+```
+
+```
+
+Call:
+lm(formula = son ~ father, data = galton_heights)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.3543 -1.5657 -0.0078  1.7263  9.4150 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 37.28761    4.98618   7.478 3.37e-12 ***
+father       0.46139    0.07211   6.398 1.36e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.45 on 177 degrees of freedom
+Multiple R-squared:  0.1878,	Adjusted R-squared:  0.1833 
+F-statistic: 40.94 on 1 and 177 DF,  p-value: 1.36e-09
+```
+
+]
+
+To understand some of the information included in this summary we need to remember that the LSE are random variables. Mathematical statistics gives us some ideas of the distribution of these random variables
+
+---
+
+### LSE ( `\(\beta_0, \beta_1\)` ) are random variables 
+
+The LSE ( `\(\beta_0, \beta_1\)` ) is derived from the data `\(y_1,\dots,y_N\)`, which are a realization of random variables `\(Y_1, \dots, Y_N\)`.  
+
+This implies that our estimates are random variables. 
+
+To see this, we can run a Monte Carlo simulation in which we assume the son and father height data defines a population, take a random sample of size `\(N=50\)`, and compute the regression slope coefficient for each one:
+
+
+```r
+library(tidyverse)
+B &lt;- 1000
+N &lt;- 50
+lse &lt;- replicate(B, {
+  sample_n(galton_heights, N, replace = TRUE) %&gt;%
+    lm(son ~ father, data = .) %&gt;%
+    coef()
+})
+lse &lt;- data.frame(beta_0 = lse[1,], beta_1 = lse[2,]) 
+```
+
+We can see the variability of the estimates by plotting their distributions:
+
+---
+
+We can see the variability of the estimates by plotting their distributions:
+
+&lt;img src="lecture24_files/figure-html/lse-distributions-1.png" width="100%" /&gt;
+
+The reason these look normal is because the central limit theorem applies here as well: for large enough `\(N\)`, the least squares estimates will be approximately normal with expected value `\(\beta_0\)` and `\(\beta_1\)`, respectively. 
+
+For the standard deviation of the limit distribution of the `\(\beta_0\)` and `\(\beta_1\)`, they are called: **standard errors**
+
+---
+
+The standard errors are a bit complicated to compute, but mathematical theory does allow us to compute them and they are included in the summary provided by the `lm` function. Here it is for one of our simulated data sets:
+.small[
+
+```r
+ sample_n(galton_heights, N, replace = TRUE) %&gt;%
+  lm(son ~ father, data = .) %&gt;%
+  summary() %&gt;%
+  coef()
+```
+
+```
+              Estimate Std. Error  t value     Pr(&gt;|t|)
+(Intercept) 19.2791952 11.6564590 1.653950 0.1046637693
+father       0.7198756  0.1693834 4.249977 0.0000979167
+```
+
+You can see that the standard errors estimates reported by the `summary` are close to the standard errors from the simulation:
+
+
+```r
+lse |&gt; summarize(se_0 = sd(beta_0), se_1 = sd(beta_1))
+```
+
+```
+     se_0      se_1
+1 8.83591 0.1278812
+```
+]
+---
+.small[
+
+```r
+ sample_n(galton_heights, N, replace = TRUE) %&gt;%
+  lm(son ~ father, data = .) %&gt;%
+  summary() %&gt;%
+  coef()
+```
+
+```
+              Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept) 60.2849066 10.9564442 5.5022328 1.430103e-06
+father       0.1355222  0.1573947 0.8610342 3.935000e-01
+```
+]
+
+* The `summary` function also reports **t-statistics** (`t value`) and **p-values** (`Pr(&gt;|t|)`). 
+
+* The t-statistic is not actually based on the central limit theorem but rather on the assumption that the `\(\varepsilon\)`s follow a normal distribution. 
+
+* Under this assumption, mathematical theory tells us that the LSE divided by their standard error, `\(\hat{\beta}_0 / \hat{\mbox{SE}}(\hat{\beta}_0 )\)` and `\(\hat{\beta}_1 / \hat{\mbox{SE}}(\hat{\beta}_1 )\)`, follow a t-distribution with `\(N-p\)` degrees of freedom, with `\(p\)` the number of parameters in our model. 
+
+* In the case of height `\(p=2\)`, the two p-values are testing the null hypothesis that `\(\beta_0 = 0\)` and `\(\beta_1=0\)`, respectively. 
+
+* hypothesis testing with regression models is commonly used in epidemiology and economics to make statements such as "the effect of A on B was statistically significant after adjusting for X, Y, and Z".
+
+---
+
+### Predicted values are random variables 
+
+Once we fit our model, we can obtain prediction of `\(Y\)` by plugging in the estimates into the regression model. For example, if the father's height is `\(x\)`, then our prediction `\(\hat{Y}\)` for the son's height will be:
+
+`$$\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 x$$`
+
+When we plot `\(\hat{Y}\)` versus `\(x\)`, we see the regression line.
+
+Keep in mind that the prediction `\(\hat{Y}\)` is also a random variable and mathematical theory tells us what the standard errors are. 
+
+&gt; It is because `\(\hat{\beta}_0 , \hat{\beta}_1\)` are random variables, has their own standard error. Thus the `\(\hat{Y}\)` is also a random variable and has it's own standard error. 
+
+---
+
+If we assume the errors are normal, or have a large enough sample size, we can use theory to construct confidence intervals as well. In fact, the __ggplot2__ layer `geom_smooth(method = "lm")` that we previously used plots `\(\hat{Y}\)` and surrounds it by confidence intervals:
+
+
+```r
+galton_heights |&gt; ggplot(aes(son, father)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+&lt;img src="lecture24_files/figure-html/father-son-regression-1.png" width="504" /&gt;
+
+---
+
+The R function `predict` takes an `lm` object as input and returns the prediction. If requested, the standard errors and other information from which we can construct confidence intervals is provided:
+
+
+```r
+fit &lt;- galton_heights %&gt;% lm(son ~ father, data = .) 
+
+y_hat &lt;- predict(fit, se.fit = TRUE)
+
+names(y_hat)
+```
+
+```
+[1] "fit"            "se.fit"         "df"             "residual.scale"
+```
+
+---
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
