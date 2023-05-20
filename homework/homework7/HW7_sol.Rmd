@@ -35,8 +35,17 @@ knitr::opts_chunk$set(
 library(tidyverse)
 ```
 
-# Problem 1: 
+# Problem 1: GaltonFamilies
 
+1. Load the GaltonFamilies data from the HistData. The children in each family are listed by gender and then by height. Create a dataset called galton_heights by picking a male and female at random. (Hint: )
+
+2. Make a scatterplot for heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons. 
+
+3. Compute the correlation in heights between mothers and daughters, mothers and sons, fathers and daughters, and fathers and sons.
+
+4. 
+
+# Problem 2: Case study: Moneyball
 
 ## Include the person you coop with:
 

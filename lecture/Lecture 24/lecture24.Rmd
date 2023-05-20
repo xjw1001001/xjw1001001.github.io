@@ -53,6 +53,8 @@ Last lecture we covered how the linear regression was invented.
 
 Today we will go over the mathematics form of regression and it's derivation.
 
+
+
 ---
 
 ## Basics of Regression
@@ -97,37 +99,42 @@ A. Positive. B Negative. C. Cannot determine
 
 ---
 
-## Different forms of regression example:
+## Simple Linear Regression Model
 
+Galton’s father-and-son data inspire the following assumptions for the simple linear regression (SLR) model:
 
-```{r, echo = F, out.width="80%"}
-knitr::include_graphics("img/4.png")
-```
+1. The means of $Y$ ios a linear function of $X$, i.e.
+$$E(Y|X = x) = \beta_0 +\beta_1 x$$
 
-We will only cover the theory of Simple linear regression.
+2. The SD of $Y$ does not change with $x$, i.e.,
 
----
+$$SD(Y|X = x) = \sigma,  \text{for every } x$$
 
-## Simple linear regression
+3. Within each subpopulation, the distribution of $Y$ is normal.
 
-Our goal is to find the best line that describes a linear relationship for 1 response and 1 predictor.
-
-Find $(\beta_0,\beta_1)$ such that:
-
-$$Y = \beta_0 +\beta_1 X + \epsilon$$
-
-```{r, echo = F, out.width="80%"}
-knitr::include_graphics("img/5.png")
+```{r echo = F}
+knitr::include_graphics("img/113.png")
 ```
 
 ---
 
-```{r, echo = F, out.width="100%"}
-knitr::include_graphics("img/6.png")
-```
+## Simple Linear Regression Model
+
+Equivalently, the SLR model asserts the values of X and Y for individuals in a population are related as follows
+
+$$Y = \beta_0 +\beta_1 X + \varepsilon$$
+
+* The value of $\varepsilon$, called the **error**, varies from observation to observation, follows a normal distribution:
+
+$$\varepsilon \sim N(0,\sigma^2)$$
+
+In this model, the line $$y = \beta_0 +\beta_1 x$$ is called the **population regression line**.
+
+* In other words, our model assume:
+
+$$y_i \sim N(\beta_0 +\beta_1 x_i, \sigma^2) \text{ for all } i$$
 
 ---
-
 
 ## Estimate regression parameters
 
@@ -214,17 +221,126 @@ $$
 y= b + mx \mbox{ with slope } m = \rho \frac{\sigma_y}{\sigma_x} \mbox{ and intercept } b=\mu_y - m \mu_x
 $$
 
-* To interpret the result: 1 unit increase in X will result in $\beta_1$ unit increase in Y!
+* To interpret the result: 1 unit increase in X will result in $\hat \beta_1$ unit increase in Y!
+
+---
+
+## Caution: Sample V.S. Population
+
+Note the population regression line:
+
+$$y = \beta_0 + \beta_1 x$$
+
+is **different** from the least square regression line: (Where we estimate $\beta$s using LSE):
+
+$$y = \hat\beta_0 + \hat\beta_1 x$$
+
+* The latter is merely the least square line for our **sample**. The former is the regression relationship for entire **population**.
+
+* The values of $\hat\beta_0,\hat\beta_1$ will change from sample to sample:
+
+$$\hat\beta_1 = \frac{S_{xy}}{S_{xx}} = r \frac{s_y}{s_x}, \hat\beta_0 = \bar y - \hat \beta_1 \bar x$$
+
+* We are interested in the population parameter $\beta_0,\beta_1$, **not** the sample counterparts $\hat\beta_0,\hat\beta_1$.
+
+---
+
+* How close is $\hat\beta_1$ to $\beta_1$?
+
+By some algebra (You will learn it in STA108), the slope of the least square line is:
+
+$$\hat\beta_1 = \frac{S_{xy}}{S_{xx}} = \frac{\sum_i (x_i - \bar x)(y_i - \bar y)}{\sum_i (x_i - \bar x)^2}$$
+
+Under the SLR model: $y_i = \beta_0 + \beta_1 x_i +\varepsilon_i$, replacing $y_i$ in the $\hat \beta_1$ formula, we can show after some algebra that:
+
+$$\hat \beta_1 = \beta_1 + \frac{\sum_i(x_i - \bar x)\varepsilon_i}{\sum_i(x_i- \bar x)^2}$$
+
+From the above, one can get the mean, the SD and the sampling distribution of $\hat \beta_1$: (Detail in STA108)
+
+* $E \hat \beta_1 = \beta_1$, $\hat \beta_1$ is an **unbiased** estimate of $\beta_1$
+
+$$SD(\hat \beta_1) = \frac{\sigma}{\sqrt{\sum_{i}(x_i - \bar x)^2}} = \frac{\sigma}{s_x\sqrt{n-1}}$$
+
+Where $s_x$ is the sample SD of $x_i$'s.
+
+---
+
+## Estimate of $\sigma$
+
+* **Residuals** are the value between SLR prediction and true observation:
+
+$$e_i = y_i - \hat y_i = y_i - (\hat \beta_0 + \hat \beta_1 x_i)$$
+
+* By the property of Least Square estimation, $\sum_i e_i = 0$
+
+* We use the **"sample SD" of the residuals $e_i$** to estimate error variance $\sigma$:
+
+$$s_e = \sqrt{\frac{\sum_i(e_i - \bar e)^2}{n-2}}=\sqrt{\frac{\sum_i e_i^2}{n-2}}$$
+
+* Mean of residuals is 0: $\bar e = \sum_i e_i/n = 0$
+
+* Note here we divide by $n-2$ , not $n-1$, because we lose two degrees of freedom as we estimate two parameters $\beta_0$ and $\beta_1$.
+  - In multiple linear regression, it would be $n-p$, when we have $p$ parameters.
+  
+---
+
+## Sampling distribution of $\hat \beta_1$
+
+Recall that
+
+$$SD(\hat \beta_1) = \frac{\sigma}{\sqrt{\sum_i (x_i - \bar x)^2}}$$
+
+But $\sigma$ is unknown, so we estimate it with $s_e$. Then the estimated SD of $\hat \beta_1$ is called the **standard error (SE)** of $\hat \beta_1$:
+
+$$SE(\hat \beta_1) = \frac{s_e}{\sqrt{\sum_i (x_i - \bar x)^2}}$$
+
+The **sampling distribution** of $\hat \beta_1$ is  normal:
+
+$$\hat \beta_1 \sim N(\beta_1, \frac{\sigma^2}{\sum_i (x_i - \bar x)^2})$$
+
+$$z = \frac{\hat \beta_1 - \beta_1}{\sigma/\sqrt{\sum_i (x_i - \bar x)^2}} \sim N(0,1)$$
+
+---
+
+
+$$z = \frac{\hat \beta_1- \beta_1}{\sigma/\sqrt{\sum_i (x_i - \bar x)^2}} \sim N(0,1)$$
+
+This is (approx.) valid:
+
+* either if the errors $\varepsilon_i$ are i.i.d $N(0, \sigma^2)$
+
+* or if the errors $\varepsilon_i$ are independent and the sample size $n$ is large.
+
+As $\sigma$ is unknown, if replaced with $s_e$ (sample standard deviation of error), the t-statistic below has a t-distribution with $n-2$ degrees of freedom:
+
+$$T = \frac{\hat \beta_1- \beta_1}{s_e/\sqrt{\sum_i (x_i - \bar x)^2}} = \frac{\hat \beta_1- \beta_1}{SE(\hat\beta_1)} \sim t_{n-2}$$
+
+---
+
+## Confidence intervals  for $\beta_1$
+
+Then the $(1-\alpha)$ **confidence interval** for $\beta_1$ is given as:
+
+$$\hat \beta_1 - t^* SE(\hat\beta_1), \hat \beta_1 + t^* SE(\hat\beta_1)$$
+
+Where $t^*$ is the critical value for the $t_{n-2}$ distribution at confidence level $1-\alpha$
+
+```
+t_star = qt(1 - alpha / 2, df = n - 2)
+```
+
+---
+
+```{r, echo = F, out.width="100%"}
+knitr::include_graphics("img/114.png")
+```
+
 
 ---
 
 ## The lm function (and it's summary)
 
-* We just introduced the formula of simple linear regression with 1 variable.
-
-* Of course, if we have many variables, these equations can get rather complex. 
-
-* But there are functions in R that do these calculations for us. The lm function.
+* Regression in R is as simple as **lm(y ~ x)**, in which "lm" stands for "linear model".
 
 To fit the model:
 $$
@@ -233,23 +349,13 @@ $$
 
 with $Y_i$ the son's height and $x_i$ the father's height, we can use this code to obtain the least squares estimates. 
 
+.small[
 ```{r}
 fit <- lm(son ~ father, data = galton_heights)
 fit$coef
 ```
----
 
-To fit the model:
-$$
-Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
-$$
-
-with $Y_i$ the son's height and $x_i$ the father's height, we can use this code to obtain the least squares estimates. 
-
-```{r}
-fit <- lm(son ~ father, data = galton_heights)
-fit$coef
-```
+]
 
 The most common way we use `lm` is by using the character `~` to let `lm` know which is the variable we are predicting (left of `~`) and which we are using to predict (right of `~`). The intercept is added automatically to the model that will be fit. 
 
@@ -270,9 +376,9 @@ To understand some of the information included in this summary we need to rememb
 
 ---
 
-### LSE ( $\beta_0, \beta_1$ ) are random variables 
+### LSE ( $\hat\beta_0, \hat\beta_1$ ) are random variables 
 
-The LSE ( $\beta_0, \beta_1$ ) is derived from the data $y_1,\dots,y_N$, which are a realization of random variables $Y_1, \dots, Y_N$.  
+The LSE ( $\hat\beta_0, \hat\beta_1$ ) is derived from the data $y_1,\dots,y_N$, which are a realization of random variables $Y_1, \dots, Y_N$.  
 
 This implies that our estimates are random variables. 
 
