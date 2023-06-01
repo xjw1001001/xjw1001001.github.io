@@ -49,43 +49,24 @@ We want to build a model use the lower status of the population (percent) to pre
 
 1. Find the estimated regression line. Use `summary` to show the result.
 
-```{r}
-fit1 <- lm(medv~lstat, Boston)
-summary(fit1)
-```
 
 2. Interpret the slope of the estimated regression line in terms of the problem.
 
-On average 1 percentage increase in lower status of the population will decrease the median value of owner-occupied homes by 0.95*1000$.
 
 3. Interpret the intercept of the estimated regression line in terms of the problem (if appropriate). 
 
-When the proportion of lower status of the population is 0%, the median value of owner-occupied homes will on average be 34.55*1000$.
 
 4. Predict the median value of owner-occupied homes in $1000 when lower status of the population is 25%.
 
-```{r}
-34.55384 -0.95005 * 25
-```
 
 5. Interpret the value of R squared (`Multiple R-squared` in `summary`) in terms of the problem.
 
-R-squared of 0.5441 suggests that approximately 54.41% of the variability in the median value of owner-occupied homes (medv) can be explained by the lower status of the population (lstat).
 
 6. What is the $s_e$ ($\hat \sigma$) from the regression result?
 
-6.216
-
-```{r}
-sigma(fit1)
-```
 
 
 7. Find the 99% confidence interval for the slope and intercept using `confint`.
-
-```{r}
-confint(fit1, level = 0.99)
-```
 
 
 # Problem 2: Sampling distribution of regression
@@ -100,68 +81,20 @@ Where $X \sim Uniform(-3,3)$, $\varepsilon \sim N(0,\sigma^2)$.
 
 1. When $\beta_0 = 1$,$\beta_1 = 2$, $\sigma = 1$, write R code to simulate 100 pairs of $X$ and $Y$, and store them into a data frame. Use scatter plot to show the data.
 
-```{r}
-beta_0 = 1
-beta_1 = 2
-sigma = 1
-n = 100
-X = runif(n, -3, 3)
-Y = beta_0 + beta_1 * X + rnorm(n,0, sigma)
-df = data.frame(X = X, Y = Y)
-ggplot(df, aes(X,Y)) + geom_point()
-```
 
 2. Wrap the code to generate the dataframe as a function, with name `simulate_1`. The function should take inputs as: beta_0, beta_1, sigma and n. Use the values from part 1 as the default argument value. [About default argument value](https://www.javatpoint.com/r-function-default-arguments)
 
-```{r}
-simulate_1 = function(beta_0 = 1, beta_1 = 2,
-                      sigma = 1, n = 1000){
-  X = runif(n, -3, 3)
-  Y = beta_0 + beta_1 * X + rnorm(n, sigma)
-  df = data.frame(X = X, Y = Y)
-  return(df)
-}
-```
 
 3. Now use the `simulate_1()` simulate 1 dataset (blank in the `()` to use default argument value). Then first use the `lm` function fit the model, and use the [slide formula](https://xjw1001001.github.io/lecture/Lecture%2023/lecture23.html#22) to fit the model, check the result are the same. 
 
-```{r}
-df = simulate_1()
-lm(Y~X, df)
-
-mu_x <- mean(df$X)
-mu_y <- mean(df$Y)
-s_x <- sd(df$X)
-s_y <- sd(df$Y)
-r <- cor(df$X, df$Y)
-slope = r * s_y/s_x
-intercept = mu_y - r * s_y/s_x * mu_x
-c(intercept, slope)
-```
 
 4. Here I provide the code to fit a linear model and obtain its estimate of slope, intercept and the estimation of the [sample SD of residual](https://xjw1001001.github.io/lecture/Lecture%2024/lecture24.html#17) (sigma_hat in code):
 
-```{r}
-#suppose the dataset name is df:
-set.seed(123)
-df = simulate_1()
-
-fit = lm(Y~X, df)
-slope = fit$coefficients[2]
-intercept = fit$coefficients[1]
-sigma_hat = sigma(fit)
-```
 
 Now calculate the `sigma_hat` by the definition in the lecture note [sample SD of residual](https://xjw1001001.github.io/lecture/Lecture%2024/lecture24.html#17) and check it's the same with the result `sigma(fit)`. In your calculation, the dataset `df` and the fitted value of slope and intercept just use the ones provided in the previous code chunk.
 
 Hint: $e_i$ are the difference of the actual $y_i$ with the predicted value $\hat y_i$. The predicted value can be obtained by plug in $x_i$ into the fitted regression line. 
 
-
-```{r}
-n = dim(df)[1]
-error = df$Y - (df$X * slope + intercept)
-sqrt( sum(error^2) / (n-2)) - sigma_hat
-```
 
 5. Each time we simulate 100 pairs of the points, we can calculate the estimated slope and intercept, plus the estimated error standard deviation sigma_hat for these 100 pairs of the points. Now use for loop to simulate 500 sample of the 100 pairs of the points, calculate the estimated slope and intercept, sigma_hat for each of the sample. Store the result into a dataframe named `regression_simulation`.
 
@@ -175,37 +108,10 @@ regression_simulation = data.frame(
 ```
 
 
-```{r}
-for(i in 1:500){
-  df = simulate_1()
-  fit = lm(Y~X, df)
-  regression_simulation$slope[i] = 
-    fit$coefficients[2]
-  regression_simulation$intercept[i] =
-    fit$coefficients[1]
-  regression_simulation$sigma_hat[i] = 
-    sigma(fit)
-}
-```
-
 6. Now we have the 500 samples of regression line estimation: slope, intercept and sigma_hat. Now summary their mean and standard deviation using `summarise` function.
 
-```{r}
-regression_simulation %>% summarise(
-  mean(slope), sd(slope), mean(intercept),sd(intercept),
-  mean(sigma_hat), sd(sigma_hat)
-)
-```
+
 7. Call `summary(fit)`, compare the mean from part 6 with the actual value of $\beta_0,\beta_1,\sigma$. What do you find? Compare the sd from part 6 with the `Std. Error` of intercept and X, what do you find?
-
-```{r}
-set.seed(123)
-df = simulate_1()
-fit = lm(Y~X, df)
-summary(fit)
-```
-
-Though the standard error is not the same as the sample distribution standard deviation, it is quite close to it.
 
 8. Understand the p value in summary. In the lecture we know in the summary we test the null hypothesis about the slope coefficient is 0 against the alternative hypothesis the slope coefficient is not 0. The test statistic is:
 
@@ -216,14 +122,6 @@ Now we will use our simulation of the distribution of $\beta_1$ to check the p v
 Now draw the histogram of the `regression_simulation$slope`, and add a vertical line at 1.9. 
 
 Also calculate the $T$ statistics when $H_0: \beta_1 = 1.9$ by plug in $\beta_1 = 1.9$ (Use Problem 7 summary result), and calculate the corresponding p value by using `pt(t_statistic, df = n-2, lower.tail = F)`. What should the `df` be beased on the summary? Is the p value explain the histogram and the vertical line?
-
-```{r}
-ggplot(regression_simulation, aes(slope)) + 
-  geom_histogram() + geom_vline(xintercept = 1.9)
-
-pt((1.99028-1.9)/0.01838, df = 998, lower.tail = F)
-```
-
 
 # Problem 3: violations of the regression assumption: linearity.
 
@@ -237,43 +135,17 @@ Where $X \sim Uniform(-3,3)$, $\varepsilon \sim N(0,\sigma^2)$, $\beta_0 = 1$,$\
 
 1. write R code to simulate 100 pairs of $X$ and $Y$, and store them into a data frame. Use scatter plot to show the data. Add layer 1: `geom_smooth(color = "blue")` to add the true fitted line, and add layer 2: `geom_smooth(method = lm, color = "red")` to add the linear regression fitted line. Remember to `set.seed(123)`
 
-```{r}
-set.seed(123)
-beta_0 = 1
-beta_1 = 2
-sigma = 4
-n = 100
-X = runif(n, -3, 3)
-Y = beta_0 + beta_1 * (X-1.5)^2 + rnorm(n,0, sigma)
-df = data.frame(X = X, Y = Y)
-ggplot(df, aes(X,Y)) + geom_point() + 
-  geom_smooth(color = "blue") + 
-  geom_smooth(method = lm, color = "red")
-```
 
 2. Is the linear regression still a good model for this dataset? Why?
 
 3. Now fit the linear model on the data you generated. Save the fitted model as `fit`. Then use `plot(fit, 1)` to generate the [residual VS fitted plot](https://online.stat.psu.edu/stat462/node/117/). Interpret the residual vs fitted plot. 
 
-```{r}
-fit = lm(Y~X, df)
-plot(fit,1)
-```
 
 4. Now fit the polynomial model on the data you generated use: `fit2 = lm(Y ~ X + I(X^2), df)`. Then use `plot(fit2, 1)` to generate the residual VS fitted plot. Check `summary(fit2)` in your console (don't print it in rmd) and then write down the model in mathematical form $Y = \beta_0 + \beta_1 X + \beta_2 X^2$. Also check the residual vs fitted plot. 
 
-```{r}
-fit2 = lm(Y ~ X + I(X^2), df)
-plot(fit2, 1)
-```
 
 5. Draw the $Y = \beta_0 + \beta_1 X + \beta_2 X^2$ and the dataset using ggplot.
 
-```{r}
-f1 <- function(x) 4.9784 - 6.0642 * x + 2.1057 * x^2
-ggplot(df, aes(X,Y)) + geom_point() + 
-  stat_function(fun =f1)
-```
 
 # Problem 4: violations of the regression assumption: equal residual variance.
 
@@ -289,27 +161,11 @@ Where $X \sim Uniform(-3,3)$, $\varepsilon \sim N(0,(\sigma*|X|)^2)$, $\beta_0 =
 
 Hint: `rnorm(n, mean_vector, sd_vector)` will generate n normal RV, the ith mean and ith sd is the corresponding in the `mean_vector` and `sd_vector`.
 
-```{r}
-set.seed(123)
-beta_0 = 1
-beta_1 = 2
-sigma = 4
-n = 100
-X = runif(n, -3, 3)
-Y = beta_0 + beta_1 *X + rnorm(n,rep(0,n), sigma*abs(X))
-df = data.frame(X = X, Y = Y)
-ggplot(df, aes(X,Y)) + geom_point() + 
-  geom_smooth(method = lm, color = "red")
-```
 
 2. Is the linear regression still a good model for this dataset? Why?
 
 3. Now fit the linear model on the data you generated. Save the fitted model as `fit`. Then use `plot(fit, 1)` to generate the [residual VS fitted plot](https://online.stat.psu.edu/stat462/node/117/). Interpret the residual vs fitted plot. 
 
-```{r}
-fit = lm(Y~X, df)
-plot(fit,1)
-```
 
 
 ## Include the person you coop with:

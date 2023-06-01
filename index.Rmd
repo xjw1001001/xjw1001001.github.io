@@ -189,14 +189,13 @@ There are three optional textbooks. They are all available online and are free.
 - Wed May 31: Regression 1
   - Notes: [Lecture 24](https://xjw1001001.github.io/lecture/Lecture 24/lecture24.html)
 
-- Fri Jun 2: Exponential distribution and queue simulation
-  - Notes: [Lecture 25](https://xjw1001001.github.io/lecture/Lecture 25/lecture25.html)
+- Fri Jun 2: **Homework 7**: (Due Jun 12 midnight) [Html](https://xjw1001001.github.io/homework/homework7/HW7.html) [Rmd](https://xjw1001001.github.io/homework/homework7/HW7.Rmd)
 
 ### Week 10: Application 2
-- Mon Jun 5: Web scraping
+- Mon Jun 5: Web scraping 1
   - Notes: [Lecture 26](https://xjw1001001.github.io/lecture/Lecture 26/lecture26.html)  
   
-- Wed Jun 7: Regression 2
+- Wed Jun 7: Web scraping 2
   - Notes: 
 
   
