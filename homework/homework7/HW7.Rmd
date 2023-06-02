@@ -90,6 +90,16 @@ Where $X \sim Uniform(-3,3)$, $\varepsilon \sim N(0,\sigma^2)$.
 
 4. Here I provide the code to fit a linear model and obtain its estimate of slope, intercept and the estimation of the [sample SD of residual](https://xjw1001001.github.io/lecture/Lecture%2024/lecture24.html#17) (sigma_hat in code):
 
+```
+#suppose the dataset name is df:
+set.seed(123)
+df = simulate_1()
+
+fit = lm(Y~X, df)
+slope = fit$coefficients[2]
+intercept = fit$coefficients[1]
+sigma_hat = sigma(fit)
+```
 
 Now calculate the `sigma_hat` by the definition in the lecture note [sample SD of residual](https://xjw1001001.github.io/lecture/Lecture%2024/lecture24.html#17) and check it's the same with the result `sigma(fit)`. In your calculation, the dataset `df` and the fitted value of slope and intercept just use the ones provided in the previous code chunk.
 

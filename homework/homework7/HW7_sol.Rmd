@@ -115,7 +115,7 @@ ggplot(df, aes(X,Y)) + geom_point()
 
 ```{r}
 simulate_1 = function(beta_0 = 1, beta_1 = 2,
-                      sigma = 1, n = 1000){
+                      sigma = 1, n = 100){
   X = runif(n, -3, 3)
   Y = beta_0 + beta_1 * X + rnorm(n, sigma)
   df = data.frame(X = X, Y = Y)
@@ -221,7 +221,7 @@ Also calculate the $T$ statistics when $H_0: \beta_1 = 1.9$ by plug in $\beta_1 
 ggplot(regression_simulation, aes(slope)) + 
   geom_histogram() + geom_vline(xintercept = 1.9)
 
-pt((1.99028-1.9)/0.01838, df = 998, lower.tail = F)
+pt((1.98503-1.9)/0.05697, df = 98, lower.tail = F)
 ```
 
 
