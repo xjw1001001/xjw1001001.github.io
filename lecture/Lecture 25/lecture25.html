@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Web scraping</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jingwei Xiong" />
+    <meta name="date" content="2023-06-05" />
+    <script src="lecture25_files/header-attrs-2.17/header-attrs.js"></script>
+    <link href="lecture25_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="lecture25_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="lecture25_files/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="lecture25_files/tile-view-0.2.6/tile-view.js"></script>
+    <link href="lecture25_files/animate.css-3.7.2/animate.xaringan.css" rel="stylesheet" />
+    <link href="lecture25_files/tachyons-4.12.0/tachyons.min.css" rel="stylesheet" />
+    <link href="lecture25_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="lecture25_files/panelset-0.2.6/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Web scraping
+]
+.subtitle[
+## <br><br> STA 032: Gateway to data science Lecture 25
+]
+.author[
+### Jingwei Xiong
+]
+.date[
+### June 5, 2023
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { font-size: 60%; }
+.small .remark-code { font-size: 80%; }
+&lt;/style&gt;
+
+
+---
+
+## Web scraping in R
+
+* What is web scraping:
+
+  - Web scraping is the automated process of extracting data from websites.
+  
+  - It involves fetching and parsing HTML content to extract specific information.
+  
+  - It Enables gathering data for analysis, research, or automation purposes.
+
+* Why web scraping:
+
+  - Access to vast amounts of data available on websites.
+  
+  - Extract structured data from unstructured web pages.
+  
+  - Automate data collection and save time.
+  
+---
+
+## What can web scraping data do?
+
+
+
+| Feature     | Description                                    |
+|-------------|------------------------------------------------|
+| Tables      | Fetch tables like from Wikipedia               |
+| Forms       | You can submit forms and fetch the results      |
+| CSS         | You can access parts of a website using style or CSS selectors |
+| Tweets      | Process tweets including emojis                 |
+| Web Sites   | User forums have lots of content                |
+| Instagram   | Yes, you can "scrape" photos also     |
+
+
+* Common Applications of Web Scraping:
+
+  - Market research and competitive analysis.
+  - Price comparison and monitoring.
+  - News aggregation and sentiment analysis.
+  - Data collection for machine learning models.
+
+* Before we do web scraping, we need to know how website is generated.
+
+---
+
+## Crush course of website
+
+* Clients and Servers
+
+  - The Internet is a vast computer network that allows computers to send messages to each other.
+  
+  - Networking techniques enable communication between computers, with one computer acting as a server and others as clients.
+  
+  - The World Wide Web uses the Hyper Text Transfer Protocol (HTTP) to retrieve web pages and associated files, with the client (e.g., web browser) making HTTP requests and the server responding in a request-response cycle.
+
+???
+
+The Internet is, basically, just a computer network spanning most of the world. Computer networks make it possible for computers to send each other messages. Typically, one computer, which we will call the server, is waiting for other computers to start talking to it. Once another computer, the client, opens communications with this server, they will exchange whatever it is that needs to be exchanged using some specific language, a protocol.
+
+The protocol that is of interest to us is that used by the World Wide Web. It is called HTTP, which stands for Hyper Text Transfer Protocol, and is used to retrieve web-pages and the files associated with them.
+
+In HTTP communication, the server is the computer on which the web-page is stored. The client is the computer, such as yours, which asks the server for a page, so that it can display it. Asking for a page like this is called an HTTP request and the exchange of messages between the client (usually a web browser) and the server is called the request-response-cycle.
+
+---
+
+The Internet is, basically, just a computer network spanning most of the world. Computer networks make it possible for computers to send each other messages. Typically, one computer, which we will call the server, is waiting for other computers to start talking to it. Once another computer, the client, opens communications with this server, they will exchange whatever it is that needs to be exchanged using some specific language, a protocol.
+
+The protocol that is of interest to us is that used by the World Wide Web. It is called HTTP, which stands for Hyper Text Transfer Protocol, and is used to retrieve web-pages and the files associated with them.
+
+In HTTP communication, the server is the computer on which the web-page is stored. The client is the computer, such as yours, which asks the server for a page, so that it can display it. Asking for a page like this is called an HTTP request and the exchange of messages between the client (usually a web browser) and the server is called the request-response-cycle.
+
+---
+
+## Crush course of website
+
+* URLs
+
+Web-pages and other files that are accessible though the Internet are identified by URLs, which is an abbreviation of **Universal Resource Locators**. A URL looks like this:
+  
+  http://acc6.its.brooklyn.cuny.edu/~phalsall/texts/taote-v3.html
+  
+It is composed of three parts. The start, http://, indicates that this URL uses the HTTP protocol.
+
+The next part, acc6.its.brooklyn.cuny.edu, names the server on which this page can be found. 
+
+The end of the URL, /~phalsal/texts/taote-v3.html, names a specific file on this server.
+
+---
+
+## Crush course of website
+
+The Web has its own languages: HTML, CSS, Javascript
+
+  - HTML stands for **HyperText Mark-up Language**. An HTML document is all text with HTML tags to control information flows. 
+  
+  - CSS stands for **Cascading Style Sheets**. CSS is a styling language designed to describe the look and formatting (the presentation semantics) of web pages.
+  
+  - JavaScript is the last of the three languages that can be natively consumed by web browsers.
+
+More introduction: https://www.openbookproject.net/books/mi2pwjs/ch05.html
+
+---
+
+## Web scraping in R using package: rvest
+
+* **rvest** is a package inside **tidyverse**. It helps you scrape (or harvest) data from web pages, easy to express common web scraping tasks.
+
+* Installation:
+
+.small[
+
+```r
+# The easiest way to get rvest is to install the whole tidyverse:
+install.packages("tidyverse")
+
+# Alternatively, install just rvest:
+install.packages("rvest")
+```
+]
+
+* There are several steps involved in using **rvest** which are conceptually quite straightforward:
+
+1. Identify a URL to be examined for content
+2. Use **Selector Gadet, xPath, or Google Insepct** to identify the “selector” This will be a paragraph, table, hyper links, images
+3. Load rvest
+4. Use **read_html** to “read” the URL
+5. Pass the result to **html_nodes** to get the selectors identified in step number 2
+6. Get the text or table content
+
+---
+
+## Example: Parsing A Table From Wikipedia
+
+Look at the [Wikipedia Page](https://en.wikipedia.org/wiki/World_population) for world population:
+
+&lt;img src="https://steviep42.github.io/webscraping/book/PICS/worldpop.png" alt="Pop table" width="60%" height="400"/&gt;
+
+How to get this table?
+
+---
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

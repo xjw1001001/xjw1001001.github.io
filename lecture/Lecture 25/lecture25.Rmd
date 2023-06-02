@@ -1,8 +1,8 @@
 ---
-title: ""
-subtitle: "<br><br> STA 032: Gateway to data science Lecture 16"
+title: "Web scraping"
+subtitle: "<br><br> STA 032: Gateway to data science Lecture 25"
 author: "Jingwei Xiong"
-date: May 8, 2023
+date: June 5, 2023
 output:
   xaringan::moon_reader:
     # css: [default, metropolis, metropolis-fonts]
@@ -18,7 +18,7 @@ output:
 
 ```{r, echo = FALSE, eval = FALSE}
 library(renderthis)
-to_pdf(from = "lecture16.html",complex_slides = TRUE)
+to_pdf(from = "lecture26.html",complex_slides = TRUE)
 ```
 
 
@@ -36,9 +36,7 @@ knitr::opts_chunk$set(
 ```{r packages, echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(ggplot2)
-library(unvotes)
 library(tidyverse)
-library(openintro)
 ```
 
 
@@ -46,3 +44,155 @@ library(openintro)
 .tiny .remark-code { font-size: 60%; }
 .small .remark-code { font-size: 80%; }
 ```
+
+
+---
+
+## Web scraping in R
+
+* What is web scraping:
+
+  - Web scraping is the automated process of extracting data from websites.
+  
+  - It involves fetching and parsing HTML content to extract specific information.
+  
+  - It Enables gathering data for analysis, research, or automation purposes.
+
+* Why web scraping:
+
+  - Access to vast amounts of data available on websites.
+  
+  - Extract structured data from unstructured web pages.
+  
+  - Automate data collection and save time.
+
+
+???
+
+Web scraping is the process of pulling data directly from websites. Copy and paste is a brute force form of web scraping, but one that often also involves a lot of clean up of your data. A slightly more elegant, yet still nimble approach is to navigate the code in which the web page was written and perhaps glean the data you want from there. This doesn't always work, and it still takes some trial and error, but it can give you access to invaluable datasets in a pinch. 
+
+---
+
+## What can web scraping data do?
+
+
+
+| Feature     | Description                                    |
+|-------------|------------------------------------------------|
+| Tables      | Fetch tables like from Wikipedia               |
+| Forms       | You can submit forms and fetch the results      |
+| CSS         | You can access parts of a website using style or CSS selectors |
+| Tweets      | Process tweets including emojis                 |
+| Web Sites   | User forums have lots of content                |
+| Instagram   | Yes, you can "scrape" photos also     |
+
+
+* Common Applications of Web Scraping:
+
+  - Market research and competitive analysis.
+  - Price comparison and monitoring.
+  - News aggregation and sentiment analysis.
+  - Data collection for machine learning models.
+
+* Before we do web scraping, we need to know how website is generated.
+
+---
+
+## Crush course of website
+
+* Clients and Servers
+
+  - The Internet is a vast computer network that allows computers to send messages to each other.
+  
+  - Networking techniques enable communication between computers, with one computer acting as a server and others as clients.
+  
+  - The World Wide Web uses the Hyper Text Transfer Protocol (HTTP) to retrieve web pages and associated files, with the client (e.g., web browser) making HTTP requests and the server responding in a request-response cycle.
+
+???
+
+The Internet is, basically, just a computer network spanning most of the world. Computer networks make it possible for computers to send each other messages. Typically, one computer, which we will call the server, is waiting for other computers to start talking to it. Once another computer, the client, opens communications with this server, they will exchange whatever it is that needs to be exchanged using some specific language, a protocol.
+
+The protocol that is of interest to us is that used by the World Wide Web. It is called HTTP, which stands for Hyper Text Transfer Protocol, and is used to retrieve web-pages and the files associated with them.
+
+In HTTP communication, the server is the computer on which the web-page is stored. The client is the computer, such as yours, which asks the server for a page, so that it can display it. Asking for a page like this is called an HTTP request and the exchange of messages between the client (usually a web browser) and the server is called the request-response-cycle.
+
+---
+
+The Internet is, basically, just a computer network spanning most of the world. Computer networks make it possible for computers to send each other messages. Typically, one computer, which we will call the server, is waiting for other computers to start talking to it. Once another computer, the client, opens communications with this server, they will exchange whatever it is that needs to be exchanged using some specific language, a protocol.
+
+The protocol that is of interest to us is that used by the World Wide Web. It is called HTTP, which stands for Hyper Text Transfer Protocol, and is used to retrieve web-pages and the files associated with them.
+
+In HTTP communication, the server is the computer on which the web-page is stored. The client is the computer, such as yours, which asks the server for a page, so that it can display it. Asking for a page like this is called an HTTP request and the exchange of messages between the client (usually a web browser) and the server is called the request-response-cycle.
+
+---
+
+## Crush course of website
+
+* URLs
+
+Web-pages and other files that are accessible though the Internet are identified by URLs, which is an abbreviation of **Universal Resource Locators**. A URL looks like this:
+  
+  http://acc6.its.brooklyn.cuny.edu/~phalsall/texts/taote-v3.html
+  
+It is composed of three parts. The start, http://, indicates that this URL uses the HTTP protocol.
+
+The next part, acc6.its.brooklyn.cuny.edu, names the server on which this page can be found. 
+
+The end of the URL, /~phalsal/texts/taote-v3.html, names a specific file on this server.
+
+---
+
+## Crush course of website
+
+The Web has its own languages: HTML, CSS, Javascript
+
+  - HTML stands for **HyperText Mark-up Language**. An HTML document is all text with HTML tags to control information flows. 
+  
+  - CSS stands for **Cascading Style Sheets**. CSS is a styling language designed to describe the look and formatting (the presentation semantics) of web pages.
+  
+  - JavaScript is the last of the three languages that can be natively consumed by web browsers.
+
+More introduction: https://www.openbookproject.net/books/mi2pwjs/ch05.html
+
+---
+
+## Web scraping in R using package: rvest
+
+* **rvest** is a package inside **tidyverse**. It helps you scrape (or harvest) data from web pages, easy to express common web scraping tasks.
+
+* Installation:
+
+.small[
+```{r eval = F}
+# The easiest way to get rvest is to install the whole tidyverse:
+install.packages("tidyverse")
+
+# Alternatively, install just rvest:
+install.packages("rvest")
+```
+]
+
+* There are several steps involved in using **rvest** which are conceptually quite straightforward:
+
+1. Identify a URL to be examined for content
+2. Use **Selector Gadet, xPath, or Google Insepct** to identify the “selector” This will be a paragraph, table, hyper links, images
+3. Load rvest
+4. Use **read_html** to “read” the URL
+5. Pass the result to **html_nodes** to get the selectors identified in step number 2
+6. Get the text or table content
+
+---
+
+## Example: Parsing A Table From Wikipedia
+
+Look at the [Wikipedia Page](https://en.wikipedia.org/wiki/World_population) for world population:
+
+<img src="https://steviep42.github.io/webscraping/book/PICS/worldpop.png" alt="Pop table" width="60%" height="400"/>
+
+How to get this table?
+
+---
+
+
+
+

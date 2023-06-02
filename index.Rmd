@@ -193,10 +193,10 @@ There are three optional textbooks. They are all available online and are free.
 
 ### Week 10: Application 2
 - Mon Jun 5: Web scraping 1
-  - Notes: [Lecture 26](https://xjw1001001.github.io/lecture/Lecture 26/lecture26.html)  
+  - Notes: [Lecture 25](https://xjw1001001.github.io/lecture/Lecture 25/lecture25.html)  
   
 - Wed Jun 7: Web scraping 2
-  - Notes: 
+  - Notes: [Lecture 26](https://xjw1001001.github.io/lecture/Lecture 26/lecture26.html)  
 
   
 <!-- your comment 
