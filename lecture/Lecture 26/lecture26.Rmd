@@ -1,0 +1,43 @@
+---
+title: "Web scraping 2"
+subtitle: "STA 032: Gateway to data science Lecture 26"
+author: "Jingwei Xiong"
+date: June 7, 2023
+output:html_document
+---
+
+## Temu scraping
+
+
+
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(ggplot2)
+url<-"https://www.amazon.com/s?k=3090&crid=2CRFKFD2NPXO4&sprefix=3090%2Caps%2C185&ref=nb_sb_noss_1"
+
+# 
+# The results from the search will be of the form:
+# 
+path = ".a-link-normal.s-underline-text.s-underline-link-text.s-link-style.a-text-normal"
+results <- read_html(url) %>% 
+  html_nodes(path) %>% 
+  html_attr("href")
+
+results
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
