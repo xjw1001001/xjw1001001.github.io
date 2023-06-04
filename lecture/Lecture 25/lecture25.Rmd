@@ -18,7 +18,7 @@ output:
 
 ```{r, echo = FALSE, eval = FALSE}
 library(renderthis)
-to_pdf(from = "lecture26.html",complex_slides = TRUE)
+to_pdf(from = "lecture25.html",complex_slides = TRUE)
 ```
 
 
@@ -185,13 +185,431 @@ install.packages("rvest")
 
 ## Example: Parsing A Table From Wikipedia
 
-Look at the [Wikipedia Page](https://en.wikipedia.org/wiki/World_population) for world population:
+Look at the [Wikipedia Page](https://en.wikipedia.org/wiki/World_population) for world population: (https://en.wikipedia.org/wiki/World_population)
 
 <img src="https://steviep42.github.io/webscraping/book/PICS/worldpop.png" alt="Pop table" width="60%" height="400"/>
 
 How to get this table?
 
 ---
+
+## Get the desired table
+
+First we will load packages **rvest** that will help us throughout this session. Then set the **url** and fetch the webpage by **read_html**.
+
+```{r}
+library(rvest)
+url <- "https://en.wikipedia.org/wiki/World_population"
+webpage <- read_html(url)
+```
+
+In this case we’ll need to figure out what number table it is we want. We could fetch all the tables and then experiment to find the precise one.
+
+.tiny[
+
+```{r}
+webpage %>% html_nodes("table")
+# list all tables in that webpage
+```
+
+]
+
+
+---
+
+.tiny[
+
+```{r}
+length(webpage %>% html_nodes("table"))
+```
+
+]
+
+It suggests there are 19 tables. If we want the specific one in the picture, which one is the correct one?
+
+We need **inspect** the webpage.
+
+Listed below are the steps to inspect element in the Chrome browser:
+
+1. Launch Chrome and navigate to the desired web page that needs to be inspected.
+
+2. At the top right corner, click on three vertical dots
+
+3. From the drop-down menu, click on More tools -> Developer Tools
+
+4. Alternatively, you can use the Chrome inspect element shortcut Key.
+
+MacOS – Command + Option + C
+
+Windows – Control + Shift + C.
+
+---
+
+After we open the https://en.wikipedia.org/wiki/World_population webpage, and open the **inspect** mode, we need first click the red circle icon (select element), activate it. (When activated it will become blue)
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("1.png", dpi = 320)
+```
+
+---
+
+Then we scroll down to the table, move your mouse on the element of the table, click it.
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("2.png", dpi = 320)
+```
+
+---
+
+After we click it (select the element), we will find the **inspect** penal automatically navigated to the source code of the table. That grey row is the code of that element inside the table.
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("3.png", dpi = 320)
+```
+
+> Remark: Once you select the element, the element select mode will be deactivated. If you want to select another table, you need to activate it again.
+
+---
+
+Then we hover the mouse to find the table element. While hovering, the corresponding element will be marked colored.
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("4.png", dpi = 320)
+```
+
+Now congratulation, you find the table! it's class name is **wikitable sortable jquery-tablesorter**. Double click the class name you can copy that.
+
+---
+
+Now with this class name **wikitable sortable jquery-tablesorter**, we can narrow down our search range. 
+
+Basically, we need to replace space by ., and then apply the class name into the search inside **html_elements**.
+
+```{r}
+webpage %>% html_elements(".wikitable.sortable.jquery-tablesorter")
+```
+
+But this will give you no results. This is because when we use browser, data is loaded dynamically while in  **rvest::read_html** in webpage <- read_html(url), it is not. Now when we use this search:
+
+
+.tiny[
+
+```{r}
+webpage %>% html_elements(".wikitable.sortable") # You need to replace space by .
+```
+
+]
+
+There are 7 tables now, we need to use trail and error to find the correct one.
+
+---
+
+To access the **i** th table, we can use 
+
+**html_elements(search) %>% `[[`(i) %>% html_table()** 
+
+to obtain the table result.
+
+```{r}
+webpage %>% html_elements(".wikitable.sortable") %>% `[[`(2) %>% html_table() 
+```
+
+We find the desired table by trial and error of the **i**!
+
+---
+
+## Summary of Wikipedia web scraping
+
+Now summary all of the procedure:
+
+1. obtain the **url** (website link)
+
+2. obtain the full webpage.
+
+3. use **inspector** to get the search **".wikitable.sortable"** and then trial and error find the table **2**.
+
+```{r}
+library(rvest)
+url <- "https://en.wikipedia.org/wiki/World_population"
+webpage <- read_html(url)
+table = webpage %>% 
+  html_elements(".wikitable.sortable") %>%
+  `[[`(2) %>% html_table() 
+```
+
+---
+
+Now let's try another website: https://backlinko.com/iphone-users
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("5.png", dpi = 400)
+```
+
+
+```{r eval = FALSE}
+url <- "https://backlinko.com/iphone-users"
+webpage <- read_html(url)
+table = webpage %>% 
+  html_elements(???) %>% 
+  html_table()  %>%
+  `[[`(???) 
+head(table)
+```
+
+---
+
+```{r}
+url <- "https://backlinko.com/iphone-users"
+webpage <- read_html(url)
+table = webpage %>% 
+  html_elements(".table.table-primary.table-striped.table-hover") %>% 
+  html_table()  %>%
+  `[[`(1) 
+head(table)
+```
+
+Please try it yourself for more website tables!
+
+> Remarks: Sometime the website will deny our access because they don't want robots to get the data! You will get HTTP error 403 when you use **read_html(url)**
+
+---
+
+## Process the data and generate plots
+
+The data you scrap may need further processing: Look at the wikipedia table, what type are the Population, Percentage and Date?
+
+```{r}
+url <- "https://en.wikipedia.org/wiki/World_population"
+webpage <- read_html(url)
+table = webpage %>% 
+  html_elements(".wikitable.sortable") %>%
+  `[[`(2) %>% html_table() 
+glimpse(table)
+```
+
+They are all Chr (Strings), not the desired data format.
+
+---
+
+So we need to reformat the data: Here **gsub(",","",Population)** means change all **,** into nothing in the column Population.
+
+You need to use  **Country / Dependency** to choose the column including spaces. (GRAVE ACCENT) is the key of similar sign. (The code here cannot show it, check it in source code!)
+
+```{r, fig.height=4, fig.width=6}
+table %>% 
+  mutate(Population=gsub(",","",Population)) %>% 
+  mutate(Population=round(as.numeric(Population)/1e+06))  %>%
+  ggplot(aes(x= `Country / Dependency` ,y=Population)) + 
+  geom_point() + 
+  labs(y = "Population / 1,000,000") + coord_flip() +
+  ggtitle("Top 10 Most Populous Countries")
+
+```
+
+---
+
+How to do with the **Percentage of the world**? We need to replace **%** into nothing, and then call **as.numeric**, and then divide by 100.
+
+> Percentage  of the world    <chr> "17.7%", "17.6%", "4.17%", "3.43%", "2.86%", "2.70%", "2.69%", "
+
+```{r}
+t1 = table %>% 
+  mutate(Percentage=gsub("%","",`Percentage  of the world`)) %>% 
+  mutate(Percentage=as.numeric(Percentage)/1e+02) %>% 
+  dplyr::select(`Country / Dependency`,Percentage )
+head(t1)
+#Now add others and remaining percentage
+t2 = t1 %>% add_row(`Country / Dependency` = "others",
+                    Percentage = 1 - sum(t1$Percentage))
+```
+
+---
+
+And then we can generate the pie chart using the **t2**: [pie chart reference](https://r-charts.com/part-whole/pie-chart-labels-outside-ggplot2/)
+
+.panelset[
+.panel[.panel-name[code]
+
+```{r eval = FALSE}
+library(ggplot2)
+library(ggrepel)
+library(tidyverse)
+# Get the positions
+t2 <- t2 %>% 
+  mutate(csum = rev(cumsum(rev(Percentage))), 
+         pos = Percentage/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), Percentage/2, pos))
+
+ggplot(t2, aes(x = "" , y = Percentage, fill = fct(`Country / Dependency`) ) ) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = t2,
+                   aes(y = pos, label = paste0(Percentage, "%")),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "Group")) +
+  theme_void()
+```
+
+]
+
+.panel[.panel-name[plot]
+
+```{r echo = FALSE}
+library(ggplot2)
+library(ggrepel)
+library(tidyverse)
+# Get the positions
+t2 <- t2 %>% 
+  mutate(csum = rev(cumsum(rev(Percentage))), 
+         pos = Percentage/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), Percentage/2, pos))
+
+ggplot(t2, aes(x = "" , y = Percentage, fill = fct(`Country / Dependency`) ) ) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = t2,
+                   aes(y = pos, label = paste0(Percentage, "%")),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "Group")) +
+  theme_void()
+```
+
+]
+]
+
+---
+
+## Some other examples: BitCoin Prices
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("6.png", dpi = 400)
+```
+
+The challenge here is that it’s all one big table and it’s not clear how to address it.
+
+```{r}
+url <- "https://coinmarketcap.com/all/views/all/"
+bc <- read_html(url)
+
+bc_table <- bc %>% 
+  html_nodes('.cmc-table__table-wrapper-outer') %>% 
+  html_table() %>% .[[3]]
+bc_table = bc_table[,1:10]
+ str(bc_table)
+```
+
+---
+
+Everything is a character at this point so we have to go in an do some surgery on the data frame to turn the Price into an actual numeric.
+
+```{r}
+# The data is "dirty" and has characers in it that need cleaning
+bc_table <- bc_table %>% mutate(Price=gsub("\\$","",Price))
+bc_table <- bc_table %>% mutate(Price=gsub(",","",Price))
+bc_table <- bc_table %>% mutate(Price=round(as.numeric(Price),2))
+
+# There are four rows wherein the Price is missing NA
+bc_table <- bc_table %>% filter(complete.cases(bc_table))
+
+# Let's get the Crypto currencies with the Top 10 highest prices 
+top_10 <- bc_table %>% arrange(desc(Price)) %>% head(10)
+top_10
+```
+
+---
+
+Let’s make a barplot of the top 10 crypto currencies.
+
+```{r}
+# Next we want to make a barplot of the Top 10
+ylim=c(0,max(top_10$Price)+10000)
+main="Top 10 Crypto Currencies in Terms of Price"
+bp <- barplot(top_10$Price,col="aquamarine",
+              ylim=ylim,main=main)
+axis(1, at=bp, labels=top_10$Symbol,  cex.axis = 0.7)
+grid()
+```
+
+---
+
+```{r}
+
+# Let's take the log of the price
+ylim=c(0,max(log(top_10$Price))+5)
+main="Top 10 Crypto Currencies in Terms of log(Price)"
+bp <- barplot(log(top_10$Price),col="aquamarine",
+              ylim=ylim,main=main)
+axis(1, at=bp, labels=top_10$Symbol,  cex.axis = 0.7)
+grid()
+```
+
+---
+
+## Scraping Via Xpath example: IMDB
+
+Look at this example from IMDb (Internet Movie Database). 
+According to Wikipedia: IMDb (Internet Movie Database) is an online database of information related to films, television programs, home videos, video games, and streaming content online – including cast, production crew and personal biographies, plot summaries, trivia, fan and critical reviews, and ratings. 
+
+We can search or refer to specific movies by URL if we wanted. 
+
+For example, consider the following link to the “Lego Movie”: http://www.imdb.com/title/tt1490017/
+
+![](https://steviep42.github.io/webscraping/book/PICS/legom.png)
+
+---
+
+Let’s say that we wanted to capture the rating information.
+
+```{r}
+url <- "http://www.imdb.com/title/tt1490017/"
+lego_movie <- read_html(url)
+```
+
+Now let's go to the inspector and find the element:
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("7.png", dpi = 400)
+```
+
+Now we need to obtain the **Xpath**.
+
+---
+
+Now we need to obtain the **Xpath**. To do so, right click on the selected line, and choose Copy->Copy Xpath.
+
+```{r, fig.height=3, fig.width=4}
+knitr::include_graphics("9.jpg", dpi = 400)
+```
+
+Then you will have it.
+
+---
+
+Now copy that Xpath into your R code: Remember use '' (single quotation) to include the Xpath (it will be all blue), and then assign it to xpath. 
+
+```{r}
+xpath='//*[@id="__next"]/main/div/section[1]/section/div[3]/section/section/div[2]/div[2]/div/div[1]/a/span/div/div[2]/div[1]/span[1]'
+
+rating <- lego_movie %>%
+   html_nodes(xpath = xpath)  %>%
+  html_text() 
+rating
+```
+
+Now you are done! Then let’s access the summary section of the link.
+
+```{r}
+xpath='//*[@id="__next"]/main/div/section[1]/section/div[3]/section/section/div[3]/div[2]/div[1]/section/p/span[3]'
+mov_summary <- lego_movie %>%
+  html_nodes(xpath=xpath) %>%
+  html_text() 
+
+cat(mov_summary)
+```
+
+
 
 
 
