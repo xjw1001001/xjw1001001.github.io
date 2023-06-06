@@ -415,12 +415,12 @@ How to do with the **Percentage of the world**? We need to replace **%** into no
 ```{r}
 t1 = table %>% 
   mutate(Percentage=gsub("%","",`Percentage  of the world`)) %>% 
-  mutate(Percentage=as.numeric(Percentage)/1e+02) %>% 
+  mutate(Percentage=as.numeric(Percentage)) %>% 
   dplyr::select(`Country / Dependency`,Percentage )
 head(t1)
 #Now add others and remaining percentage
 t2 = t1 %>% add_row(`Country / Dependency` = "others",
-                    Percentage = 1 - sum(t1$Percentage))
+                    Percentage = 100 - sum(t1$Percentage))
 ```
 
 ---

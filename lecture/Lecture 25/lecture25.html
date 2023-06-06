@@ -391,11 +391,11 @@ webpage %&gt;% html_elements(".wikitable.sortable") %&gt;% `[[`(2) %&gt;% html_t
    &lt;int&gt; &lt;chr&gt;                  &lt;chr&gt;         &lt;chr&gt;                      &lt;chr&gt;  
  1     1 India                  1,425,775,850 17.7%                      14 Apr~
  2     2 China                  1,412,600,000 17.6%                      31 Dec~
- 3     3 United States          334,810,078   4.17%                      2 Jun ~
+ 3     3 United States          334,860,102   4.17%                      6 Jun ~
  4     4 Indonesia              275,773,800   3.43%                      1 Jul ~
  5     5 Pakistan               229,488,994   2.86%                      1 Jul ~
  6     6 Nigeria                216,746,934   2.70%                      1 Jul ~
- 7     7 Brazil                 216,219,078   2.69%                      2 Jun ~
+ 7     7 Brazil                 216,235,634   2.69%                      6 Jun ~
  8     8 Bangladesh             168,220,000   2.09%                      1 Jul ~
  9     9 Russia                 147,190,000   1.83%                      1 Oct ~
 10    10 Mexico                 128,271,248   1.60%                      31 Mar~
@@ -536,7 +536,7 @@ How to do with the **Percentage of the world**? We need to replace **%** into no
 ```r
 t1 = table %&gt;% 
   mutate(Percentage=gsub("%","",`Percentage  of the world`)) %&gt;% 
-  mutate(Percentage=as.numeric(Percentage)/1e+02) %&gt;% 
+  mutate(Percentage=as.numeric(Percentage)) %&gt;% 
   dplyr::select(`Country / Dependency`,Percentage )
 head(t1)
 ```
@@ -545,18 +545,18 @@ head(t1)
 # A tibble: 6 x 2
   `Country / Dependency` Percentage
   &lt;chr&gt;                       &lt;dbl&gt;
-1 India                      0.177 
-2 China                      0.176 
-3 United States              0.0417
-4 Indonesia                  0.0343
-5 Pakistan                   0.0286
-6 Nigeria                    0.027 
+1 India                       17.7 
+2 China                       17.6 
+3 United States                4.17
+4 Indonesia                    3.43
+5 Pakistan                     2.86
+6 Nigeria                      2.7 
 ```
 
 ```r
 #Now add others and remaining percentage
 t2 = t1 %&gt;% add_row(`Country / Dependency` = "others",
-                    Percentage = 1 - sum(t1$Percentage))
+                    Percentage = 100 - sum(t1$Percentage))
 ```
 
 ---
@@ -627,13 +627,13 @@ tibble [200 x 10] (S3: tbl_df/tbl/data.frame)
  $ Rank              : int [1:200] 1 2 3 4 5 6 7 8 9 10 ...
  $ Name              : chr [1:200] "BTCBitcoin" "ETHEthereum" "USDTTether" "BNBBNB" ...
  $ Symbol            : chr [1:200] "BTC" "ETH" "USDT" "BNB" ...
- $ Market Cap        : chr [1:200] "$524.75B$524,754,167,784" "$227.84B$227,844,219,208" "$83.17B$83,172,371,684" "$47.71B$47,706,241,120" ...
- $ Price             : chr [1:200] "$27,060.01" "$1,894.97" "$1.00" "$306.09" ...
- $ Circulating Supply: chr [1:200] "19,392,237 BTC" "120,236,127 ETH *" "83,152,494,319 USDT *" "155,855,901 BNB *" ...
- $ Volume(24h)       : chr [1:200] "$8,319,155,232" "$3,296,557,920" "$13,168,483,759" "$247,579,899" ...
- $ % 1h              : chr [1:200] "-0.02%" "0.03%" "0.00%" "0.02%" ...
- $ % 24h             : chr [1:200] "-0.42%" "-0.40%" "0.00%" "-0.01%" ...
- $ % 7d              : chr [1:200] "-0.42%" "2.45%" "-0.01%" "-0.84%" ...
+ $ Market Cap        : chr [1:200] "$525.82B$525,824,053,198" "$226.16B$226,163,978,356" "$83.23B$83,229,783,077" "$43.82B$43,817,865,488" ...
+ $ Price             : chr [1:200] "$27,111.56" "$1,881.03" "$1.00" "$281.14" ...
+ $ Circulating Supply: chr [1:200] "19,394,831 BTC" "120,233,889 ETH *" "83,218,992,303 USDT *" "155,855,392 BNB *" ...
+ $ Volume(24h)       : chr [1:200] "$21,361,773,791" "$8,628,498,940" "$30,489,226,836" "$686,212,836" ...
+ $ % 1h              : chr [1:200] "0.39%" "0.20%" "0.01%" "0.02%" ...
+ $ % 24h             : chr [1:200] "5.33%" "3.97%" "-0.01%" "2.24%" ...
+ $ % 7d              : chr [1:200] "-2.27%" "-1.28%" "-0.01%" "-9.94%" ...
 ```
 
 ---
@@ -659,16 +659,16 @@ top_10
 # A tibble: 10 x 10
     Rank Name      Symbol `Market Cap`  Price `Circulating Supply` `Volume(24h)`
    &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;                &lt;chr&gt;        
- 1    18 WBTCWrap~ WBTC   $4.24B$4,24~ 2.71e4 156,628 WBTC *       $79,469,253  
- 2     1 BTCBitco~ BTC    $524.75B$52~ 2.71e4 19,392,237 BTC       $8,319,155,2~
- 3     2 ETHEther~ ETH    $227.84B$22~ 1.89e3 120,236,127 ETH *    $3,296,557,9~
- 4     4 BNBBNB    BNB    $47.71B$47,~ 3.06e2 155,855,901 BNB *    $247,579,899 
- 5    12 LTCLitec~ LTC    $6.95B$6,95~ 9.51e1 73,068,964 LTC       $501,407,572 
- 6     9 SOLSolana SOL    $8.46B$8,46~ 2.13e1 396,969,183 SOL *    $149,702,749 
- 7    16 AVAXAval~ AVAX   $5.04B$5,03~ 1.46e1 344,209,869 AVAX *   $89,801,037  
- 8    19 ATOMCosm~ ATOM   $3.73B$3,73~ 1.08e1 346,608,690 ATOM *   $47,682,731  
- 9    13 DOTPolka~ DOT    $6.36B$6,35~ 5.34e0 1,190,859,197 DOT *  $81,883,839  
-10    20 LEOUNUS ~ LEO    $3.34B$3,33~ 3.59e0 930,208,882 LEO *    $425,000     
+ 1     1 BTCBitco~ BTC    $525.82B$52~ 2.71e4 19,394,831 BTC       $21,361,773,~
+ 2    18 WBTCWrap~ WBTC   $4.24B$4,24~ 2.71e4 156,728 WBTC *       $158,881,428 
+ 3     2 ETHEther~ ETH    $226.16B$22~ 1.88e3 120,233,889 ETH *    $8,628,498,9~
+ 4     4 BNBBNB    BNB    $43.82B$43,~ 2.81e2 155,855,392 BNB *    $686,212,836 
+ 5    12 LTCLitec~ LTC    $6.62B$6,62~ 9.06e1 73,087,627 LTC       $644,858,634 
+ 6     9 SOLSolana SOL    $8.09B$8,09~ 2.04e1 397,536,936 SOL *    $441,727,467 
+ 7    14 AVAXAval~ AVAX   $5.02B$5,02~ 1.46e1 344,435,516 AVAX *   $169,101,140 
+ 8    19 ATOMCosm~ ATOM   $3.51B$3,51~ 1.01e1 346,608,690 ATOM *   $76,341,109  
+ 9    13 DOTPolka~ DOT    $6.23B$6,22~ 5.2 e0 1,197,044,243 DOT *  $119,927,631 
+10    20 LEOUNUS ~ LEO    $3.27B$3,26~ 3.51e0 930,178,169 LEO *    $1,180,879   
 # i 3 more variables: `% 1h` &lt;chr&gt;, `% 24h` &lt;chr&gt;, `% 7d` &lt;chr&gt;
 ```
 
