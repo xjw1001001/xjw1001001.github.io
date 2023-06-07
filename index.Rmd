@@ -196,8 +196,8 @@ There are three optional textbooks. They are all available online and are free.
   - Notes: [Lecture 25](https://xjw1001001.github.io/lecture/Lecture 25/lecture25.html)  
   - Source code: [Lecture 25](https://xjw1001001.github.io/lecture/Lecture 25/lecture25.rmd)  
   
-- Wed Jun 7: Web scraping 2
-  - Notes: [Lecture 26](https://xjw1001001.github.io/lecture/Lecture 26/lecture26.html)  
+- Wed Jun 7: Web scraping 2 and Q&A
+  - Notes: https://steviep42.github.io/webscraping/book/Moreexamples.html#bitcoin-prices 
 
   
 <!-- your comment 
