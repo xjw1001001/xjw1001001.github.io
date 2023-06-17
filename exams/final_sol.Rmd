@@ -1,0 +1,723 @@
+---
+title: "STA 032 Final"
+author: "CHANGE YOUR NAME HERE"
+date: "Due June 11 midnight"
+output: 
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+# Instructions
+
++ Upload a PDF file, named with your UC Davis email ID and midterm1 (e.g., `xjw18_final.pdf`), to Gradescope (accessible through Canvas). You will give the commands to answer each question in its own code block, which will also produce output that will be automatically embedded in the output file. **Each problem will clearly tell you what type of result are expected**.
+
++ All code used to produce your results must be shown in your PDF file (e.g., do not use `echo = FALSE` or `include = FALSE` as options anywhere). `Rmd` files do not need to be submitted, but may be requested by the TA and must be available when the assignment is submitted.
+
++ When you want to show your result as a vector that is too long, slice the first 10 objects. When you want to show your result as a data frame, use `head()` on it. Failure to do so may lead to point deduction.
+
++ **Assign each sub problem into corresponding pages in Gradescope**. Failure to do so may lead to point deduction.
+
++ Directly knit the Rmd file will give you an html file. Open that file in your browser and then you can print it into a PDF file. 
+
++ **Please double check the output of each problem before turn in. Sometimes the output may not be the same as you wish.**
+
++ **No collaboration is allowed**. Plagiarism will be reported.
+
++ This is an open book exam. You can use any material from the course lecture note or your own homework.
+
+```{r setup, include=FALSE}
+# Don't change anything here
+knitr::opts_chunk$set(
+  comment = "", prompt = F, message=F, warning = F
+)
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+library(ggthemes)
+library(rvest)
+library(ggpubr)
+library(tidytext)
+```
+
+## Problem 1: Confidence interval simulation
+
+In this problem, we want to simulate confidence interval coverage rate similar to [This slide](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html#20).
+
+1. Write a function named **CI_proportion** to calculate the confidence interval for sample proportion. The function should take 3 inputs: **n**, **p_hat**, **alpha**, where **alpha** is 1 - confidence level (Which is significance level). The function should **return(c(lower, upper))**. Use this function to obtain the CI for $n = 1000, \hat p = 0.3$, 0.99 confidence level.
+
+```{r}
+CI_proportion <- function(n, p_hat, alpha) {
+  z <- qnorm(1 - alpha / 2) 
+  lower <- p_hat - z * sqrt((p_hat * (1 - p_hat)) / n)
+  upper <- p_hat + z * sqrt((p_hat * (1 - p_hat)) / n)
+  return(c(lower, upper))
+}
+CI_proportion(n=1000, p_hat = 0.3, alpha = 1-0.99)
+```
+
+2. For a binomial distribution $Y \sim Binomial(n = 100, p = 0.4)$, use R code to calculate the $P(Y\geq 50)$. Output the probability and then store that probability into a variable p_true.
+
+```{r}
+1 - pbinom(q = 49, size=100,prob=0.4)
+sum(dbinom(50:100, size = 100, prob = 0.4))
+
+p_true = sum(dbinom(50:100, size = 100, prob = 0.4))
+```
+
+3. Now write a function named **P1_simulate_1** to simulate n binomial sample $Y_1,...,Y_{n} \sim Binomial(n = 100, p = 0.4)$ with given seed, and then calculate the sample proportion $\hat p$ about $Y_i\geq 50$, then construct the alpha CI based on the sample. Use the function on n=300, alpha = 0.05, seed = 123 for output.
+
+Hint:
+
+```
+P1_simulate_1 = function(n = 300, alpha = 0.05, seed = 123){
+  How to do with seed?
+  How to sample?
+  How to calculate p_hat?
+  How to calculate proportion CI?
+  return what?
+}
+P1_simulate_1(n=300, alpha = 0.05, seed = 123)
+```
+
+
+```{r}
+P1_simulate_1 = function(n = 300, alpha = 0.05, seed = 123){
+  set.seed(seed)
+  samples = rbinom(n=n, size = 100, prob = 0.4)
+  p_hat = mean(samples>=50)
+  return(CI_proportion(n=n, p_hat = p_hat, alpha = alpha))
+}
+P1_simulate_1(n=300, alpha = 0.05, seed = 123)
+```
+
+
+
+4. Now with the function **P1_simulate_1** in part 3, you can simulate lots of confidence intervals. Here I provide the  template, now write R code fill in the simulation result for n = 300 using **for loop**.
+
+```
+simulate_times = 1000
+n = 300
+conf_intervals = data.frame(seed = 1:simulate_times, 
+                             lower = numeric(simulate_times), 
+                             upper = numeric(simulate_times),
+                             sig_level = 1 - alpha,
+                             captured = rep(FALSE, simulate_times))
+                             
+for(seed in 1:simulate_times){
+  CI = How to use P1_simulate_1?
+  How to assign the row "seed" column lower with the lower bound you calculated?
+  How to assign the row "seed" column upper with the upper bound you calculated?
+  How to assign the row "seed" captured upper with the whether the CI captured the p_true in part 2?
+}
+head(conf_intervals)
+```
+
+```{r}
+simulate_times = 1000
+alpha = 0.05
+n = 300
+conf_intervals = data.frame(seed = 1:simulate_times, 
+                             lower = numeric(simulate_times), 
+                             upper = numeric(simulate_times),
+                             sig_level = 1 - alpha,
+                            captured = rep(FALSE, simulate_times))
+                             
+for(seed in 1:simulate_times){
+  CI = P1_simulate_1(n=n, alpha = alpha, seed = seed)
+  conf_intervals$lower[seed] = CI[1]
+  conf_intervals$upper[seed] = CI[2]
+  conf_intervals$captured[seed] = (CI[1] < p_true) & (CI[2] > p_true) 
+}
+head(conf_intervals)
+```
+
+5. Now wrap the problem 4 code into a function named **P1_simulate_df**. Inputs: simulate_times, alpha, n. The function should return **conf_intervals**. When finish the function, run `dim(P1_simulate_df(simulate_times = 1000,alpha = 0.05,n = 300))`.
+
+```{r}
+P1_simulate_df = function(simulate_times = 1000,alpha = 0.05,n = 300){
+  conf_intervals = data.frame(seed = 1:simulate_times, 
+                               lower = numeric(simulate_times), 
+                               upper = numeric(simulate_times),
+                               sig_level = 1 - alpha,
+                              captured = rep(FALSE, simulate_times))
+                               
+  for(seed in 1:simulate_times){
+    CI = P1_simulate_1(n=n, alpha = alpha, seed = seed)
+    conf_intervals$lower[seed] = CI[1]
+    conf_intervals$upper[seed] = CI[2]
+    conf_intervals$captured[seed] = (CI[1] < p_true) & (CI[2] > p_true) 
+  }
+  return(conf_intervals)
+}
+
+dim(P1_simulate_df(simulate_times = 1000,alpha = 0.05,n = 300))
+```
+
+6. Now we want to simulate 100 confidence intervals with confidence level 0.75, 0.95, n=300, with the result of whether each CI include the true **p_true** in part 2. And then use plot to show the simulation result. Your result should similar to [This slide](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html#20)
+
+> Hint: Based on the provided code in the slide, you need to change the **index**, **capture**, **xlim=c(0.1,1)**, **population_mean=0.5** inside of the **plot_function**. **alpha** in the slide example is confidence level but in this problem is not confidence level! You need also replace the simulate function that generate the dfs!
+
+```{r}
+plot_function = function(dataframe, population_mean = p_true, xlim = c(0,0.08)){
+  fig = ggplot(dataframe) +
+  geom_segment(aes(
+    y = seed, yend = seed, x = lower, xend = upper,
+    alpha = factor(captured, levels = c("TRUE", "FALSE"))
+  )) +
+  geom_point(aes(x = (lower+upper)/2, y = seed, color = captured)) +
+  labs(
+    x = expression("sample proportion"),
+    y = "Confidence interval number",
+    alpha = "Captured"
+  ) +
+  geom_vline(xintercept = population_mean, color = "red") +
+  theme_light() + coord_cartesian(xlim = xlim) + 
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+  return(fig)
+}
+
+
+df1 = P1_simulate_df(simulate_times = 100,alpha = 0.25,n = 300)
+df2 = P1_simulate_df(simulate_times = 100,alpha = 0.05,n = 300)
+fig1 = plot_function(df1)
+fig2 = plot_function(df2)
+ggarrange(fig1, fig2, ncol = 2, common.legend = TRUE)
+```
+
+7. What will happen if we change n? Now with n (sample size) = 200,800,3000, simulate 25 confidence intervals with confidence level 0.95. Generate the plot similar to [The slide](https://xjw1001001.github.io/lecture/Extra_material/Discussion-8-confidence-interval.html#26). And also generate the table of Average width of 95% confidence intervals based on different ns.
+
+```{r}
+df1 = P1_simulate_df(simulate_times = 25,alpha = 0.05,n = 200)%>%
+  mutate(sample_size = 200)
+df2 = P1_simulate_df(simulate_times = 25,alpha = 0.05,n = 800)%>%
+  mutate(sample_size = 800)
+df3 = P1_simulate_df(simulate_times = 25,alpha = 0.05,n = 3000)%>%
+  mutate(sample_size = 3000)
+# bind the 3 data frames:
+df = bind_rows(df1, df2, df3)
+ggplot(df) + 
+  geom_point(aes(x = (lower+upper)/2, y = seed)) +
+  geom_segment(aes(y = seed , yend = seed , x = lower, xend = upper)) +
+  labs(x = expression("sample/population proportion"), y = "") +
+  scale_y_continuous(breaks = 1:25) +
+  facet_wrap(~sample_size) +
+  geom_vline(xintercept = p_true, color = "red")
+```
+
+```{r}
+df %>%
+  mutate(width = upper - lower) %>%
+  group_by(sample_size) %>%
+  summarize(`Mean width` = mean(width)) %>%
+  rename(`Sample size` = sample_size) %>%
+  knitr::kable(
+    digits = 3,
+    caption = "Average width of 95% confidence intervals based on $n = 200$, $800$, and $3000$",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = ""
+  )
+```
+
+
+## Problem 2: Regression analysis on ertility rates and meausres of development
+
+In this problem we will work with country indicators, total fertility rates, and gender indicators for a selection of countries in 2018, and explore the decline in fertility rates associated with developed nations.
+
+The data are stored in separate .csv files imported below:
+
+```{r}
+path_root = "https://raw.githubusercontent.com/xjw1001001/xjw1001001.github.io/main/data/final%20data/"
+
+fertility = read.csv(paste0(path_root,"fertility.csv"))
+country = read.csv(paste0(path_root,"country-indicators.csv"))
+gender = read.csv(paste0(path_root,"gender-data.csv"))
+```
+
+The variables you'll work with in this portion are the following:
+
+Dataset | Name | Variable | Units
+---|---|---|---
+`fertility` | `fertility_total` | National fertility rate | Average number of children per woman
+`country` | `hdi` | Human development index | Index between 0 and 1 (0 is lowest, 1 is highest)
+`gender` | `edu_expected_yrs_f` | Expected years of education for adult women | Years
+
+We will first need to extract them and merge by country.
+
+```{r}
+fertility_sub <- fertility[, c("Country", "fertility_total")]
+gender_sub <- gender[, c("educ_expected_yrs_f", "Country")]
+country_sub <- country[, c("Country", "hdi")]
+
+# Merge variables of interest
+reg_data <- merge(
+  merge(fertility_sub, gender_sub, by = "Country", all = TRUE),
+  country_sub,
+  by = "Country",
+  all = TRUE
+)
+reg_data <- na.omit(reg_data)
+hdi_labels <- c("1_low", "2_medium", "3_high")
+
+reg_data$hdi_fac <- cut(reg_data$hdi, 
+                        breaks = quantile(reg_data$hdi,                          probs = c(0, 1/3, 2/3, 1)),
+                        labels = hdi_labels,
+                        include.lowest = TRUE)
+# Preview
+head(reg_data, 4)
+```
+
+Now we will start working with the `reg_data`.
+
+1. Construct a scatterplot of total fertility against expected years of education for women, points are colored according to the corresponding country's level of human development. Label the axes 'Fertility rate' and 'Expected years of education for women'. Store this plot as `simple_scatter` and display the graphic.
+
+```{r}
+simple_scatter <- ggplot(reg_data, 
+     aes(x = educ_expected_yrs_f, y = fertility_total,
+         color = hdi_fac)) +
+  geom_point() +
+  labs(x = "Expected years of education for women", y = "Fertility rate") +
+  ggtitle("Scatterplot of Total Fertility vs Expected Years of Education")
+
+# Display the plot
+print(simple_scatter)
+```
+
+2. Add facet to `simple_scatter` by human development (hdi_fac level) so that you can see the pattern for each development level apart from the other levels. Does the negative association (downward trend in the scatter) seem to hold steady among countries at each level of human development?
+
+```{r}
+simple_scatter + facet_wrap(~ hdi_fac, nrow = 1)
+```
+
+3. Now fit a simple linear model regressing fertility on education. Then write out the model in mathematical form, interpret the slope and in terms of the problem.
+
+```{r}
+lm_model <- lm(fertility_total ~ educ_expected_yrs_f, data = reg_data)
+summary(lm_model)
+```
+
+Among the countries in the sample, a one-year increase in Expected years of education for women is associated with a decrease of 0.42747 in the average number of children per woman.
+
+4. Predict the Average number of children per woman in  when Expected years of education for women is 10. 
+
+```{r}
+7.51142 - 0.42747  * 10
+```
+
+5. Interpret the value of R squared in terms of the problem.
+
+R-squared of 0.7238 suggests that approximately 72.38% of the variability in fertility_total can be explained by the educ_expected_yrs_f.
+
+6. Check the residuals vs fitted plot, is there any violation of the regression assumptions?
+
+```{r}
+plot(lm_model,1)
+```
+
+No for linearity and equal variance assumption.
+
+7. Test the $H_0: \beta_1 = -0.37$ against $H_a: \beta_1 \leq -0.37$ at 0.05 significance level.
+
+```{r}
+pt((-0.42747-(-0.37))/0.02256, df = 137, lower.tail = T)
+```
+
+Reject the null.
+
+8. Add the linear regression line on `simple_scatter`.
+
+```{r}
+simple_scatter + geom_smooth(method = lm, color = "red")
+```
+
+## Problem 3: Web scraping and visualization
+
+1. Repeat the procedure of [slide 25](https://xjw1001001.github.io/lecture/Lecture%2025/lecture25.html?panelset=plot&panelset1=code2#25) and generate the pie chart.
+
+(Solution does not required. Check the plot is the same with the link)
+
+2. In the website https://en.wikipedia.org/wiki/List_of_cities_by_GDP there is a list of cities in the world by gross domestic product (GDP). Use **rvest** to obtain the Metropolitan area table (The first row is Greater Tokyo Area rank 1), and then use **ggplot2** to generate the bar chart of top 20 **GDP_billion_USD** `Metropolitan area`.
+
+Hint: 
+
+1. Indicate the url.
+2. Indicate the path used in `html_elements()`
+3. Indicate which table. And then store the table into a data frame.
+
+4. process the `Visual Capitalist[5]2021 est. GDP\n(billion US$)` column. Similar code in Lecture 25. It should be `mutate(GDP_billion_USD=gsub(???))`. How to use the grave accent sign?
+
+5. Further mutate `GDP_billion_USD` into numbers.
+
+6. `top_n` to process the dataframe.
+
+7. ggplot code skeleton:
+
+```
+processed_df %>%
+  ggplot(aes(x = reorder(?, ?, decreasing = TRUE),
+             y = ?)) +
+  geom_bar(?) +
+  labs(x = ?, y = ?) +
+  ggtitle(?) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+```
+
+```{r}
+url<-"https://en.wikipedia.org/wiki/List_of_cities_by_GDP"
+
+path = ".wikitable.sortable"
+results <- read_html(url) %>% 
+  html_nodes(path) %>% html_table() %>% `[[`(1)
+
+results %>% 
+  mutate(GDP_billion_USD = 
+        gsub(",","",`Visual Capitalist[5]2021 est. GDP\n(billion US$)`)) %>% 
+  mutate(GDP_billion_USD = 
+                    as.numeric(GDP_billion_USD)) %>% 
+  top_n(20,GDP_billion_USD) %>%
+  ggplot(aes(x = reorder(`Metropolitan area`, GDP_billion_USD, decreasing = TRUE),
+             y = GDP_billion_USD)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(x = "Metropolitan area", y = "GDP (billion US$)") +
+  ggtitle("Metropolitan Areas Ranked by Nominal GDP") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+  
+```
+
+
+
+
+## Problem 4 Gambler's ruin: 
+
+1. What does `sample(x = c(-1,1),size = 1, prob = c(0.4, 0.6))` do? Write your own words to explain it.
+
+**Solution:**
+
+* Now Suppose that on each play of the game a gambler either wins 1 with probability $p$ or loses 1 with probability $1 −p$. The gambler continues betting until she or he is either up $n$ or down $m$. The gambler's ruin problem ask about what is the probability that the gambler quits as a winner?
+
+2. Write a function `one_gambler_simulate` to simulate 1 gambler's result. Input: `n`, `m`, `p`, return: `"win"` or `"lose"`. 
+
+Hint: initializes the `balance` variable to 0, then write a while loop, condition is the balance is neither up $n$ nor down $m$. Inside the while loop, use `sample` function to get the result of one game's result, and modify the balance by that result. The game will continue until the balance reach $n$ or $-m$. Then use if condition to determine the function should return `"win"` or `"lose"`.
+
+```{r}
+one_gambler_simulate <- function(n, m, p) {
+  balance <- 0
+  while (balance < n && balance > -m) {
+    outcome <- sample(c(-1, 1), size = 1, prob = c(1 - p, p))
+    balance <- balance + outcome
+  }
+  
+  if (balance == n) {
+    return("win")
+  } else {
+    return("lose")
+  }
+}
+```
+
+3. Now use this function to simulate 10000 gamblers and calculate when $n=10, m = 10, p = 0.6$, the probability that the gambler quits as a winner.
+
+Hint: How to use function `replicate` on function `one_gambler_simulate` with the given parameters $n=10, m = 10, p = 0.6$?
+
+```{r}
+result = replicate(10000,one_gambler_simulate(n=10, m = 10, p = 0.6))
+mean(result == "win")
+```
+
+4. From Wikipedia the theoretical probability that the gambler quits as a winner is:
+
+$$1 - \frac{1 - (p/(1-p))^m}{1 - (p/(1-p))^{(m+n)}}$$
+
+Use R to calculate the theoretical probability, and then compare the theoretical one to your simulated result in part 3. Explain which theorem suggests the simulation can be a good approximate to the theoretical value.
+
+```{r}
+p = 0.6
+m=10
+n=10
+1 - (1-(p/(1-p))^m)/(1-(p/(1-p))^(m+n))
+```
+
+Law of the large numbers.
+
+## Problem 5 New York City flights
+
+3-5  **(Hard problem)**
+
+Here we load the dataset called `flights` from package `nycflights13`.
+
+```{r}
+#install.packages("nycflights13")
+data("flights", package = "nycflights13")
+```
+
+1. Find out how many flights took off on January 29th. You need to only output 1 number.
+
+```{r}
+flights |> 
+  filter(month == 1 & day == 29) |> 
+  nrow()
+```
+
+2. Create a new data frame `num.flights` with the count of how many flights took off on every day of the year: so it should have 365 rows and 4 columns (year, month, day, count). The data frame should be sorted from largest to smallest count. Then use `head()` to show the first 6 rows of that data frame as output.
+
+Hint: the function `n()` counts the number of observations in a group.
+
+```{r}
+num.flights <- flights |> 
+  group_by(year, month, day) |> 
+  summarise(count = n()) |> 
+  arrange(desc(count))
+
+head(num.flights)
+```
+
+For the following exercise you’ll need a function called `ifelse()`. It takes exactly 3 arguments.
+
+* The first should be a vector of logical conditions
+* The second should be any vector of the same length as the first argument
+* The third should also be any vector of the same length as the first argument
+
+It works by returning a new vector which contains the corresponding elements of the second vector wherever there is a TRUE in the first vector, and the corresponding elements of the third vector wherever there is a FALSE in the second vector.
+
+For example:
+
+```{r}
+ifelse(c(TRUE, TRUE, FALSE, TRUE, FALSE),
+       c(1, 2, 3, 4, 5),
+       c(1000, 2000, 3000, 4000, 5000))
+```
+
+3. Counting leaving early as negative is cheating! It might skew our impression of the average delay when a delay does occur. Compute the average :`avg_dep_delay`, standard deviation:`sd_dep_delay` and count:`num_flights` of departure delay for each `carrier` when you change any early departure to be a delay of 0 instead of a negative time. Sort the resulting dataframe by `avg_dep_delay` from smallest to largest and show the first 6 rows.
+
+Hint: You may need `na.rm = TRUE` in some functions
+
+```{r}
+flights |> 
+  mutate(dep_delay = ifelse(dep_delay < 0, 0, dep_delay)) |> 
+  group_by(carrier) |> 
+  summarise(avg_dep_delay = mean(dep_delay, na.rm = TRUE),
+            sd_dep_delay = sd(dep_delay, na.rm = TRUE),
+            num_flights = n()) |>
+  arrange(avg_dep_delay) |> head()
+```
+
+4. The times given in the variables ending `_time` are clock times, which are nice and easy to interpret, but we can’t calculate easily with them (1300 is one minute later than 1259, not 41 minutes later!) 
+
+Create a new function called `clock_to_minutes` which takes a clock time like 1259 and converts it to the number of minutes since midnight (for example,  
+1259->779) Then check your function actually change 1259 into 779.
+
+Hint: one of the functions `floor`, `ceiling` and `round` might assist, look at their help file.
+
+```{r}
+clock_to_minutes <- function(time) {
+  floor(time/100)*60 + (time-floor(time/100)*100)
+}
+
+clock_to_minutes(1259)
+```
+
+5. You may have noticed when working with this data that there are quite a few NA values. These represent scheduled flights that were cancelled.
+
+Create a table showing the total number of flights, total number of cancels, and cancel proportion by the hour of scheduled departure, sorted in descending order by the proportion. Show the result table. Would you choose to fly before or after lunch (Don't consider the 1AM that only has 1 observation)?
+
+Hint: `flights |> mutate(sched_hour = floor(sched_dep_time/100))` will transform the time into scheduled hours.
+
+```{r}
+flights |> 
+  mutate(sched_dep_time = floor(sched_dep_time/100)) |> 
+  group_by(sched_dep_time) |> 
+  summarise(total = n(), cancelled = sum(is.na(dep_time))) |>
+  mutate(prop = cancelled/total) |> 
+  arrange(desc(prop))
+```
+
+
+## Problem 6 Web scraping
+
+We will be scraping data from the NC DEQs Local Water Supply Planning website, specifically the Durham's 2022 Municipal Local Water Supply Plan (LWSP).
+
+Web address: <https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2022>
+
+The data we want to collect are listed below:
+
+* From the "1. System Information" section:
+ * Contact Information table
+
+* From the "3. Water Supply Sources" section:
+ * Monthly Withdrawals & Purchases table
+
+1. Scrape the tables and assign them to `contact.table` `monthly.withdrawals.table`. Please don't print anything. Then extract these information inside the `contact.table` and store them into corresponding variables.
+
+ * Water system name: `water.system.name`
+ * PWSID: `PWSID`
+ * Ownership: `ownership`
+
+The first value should be "Durham", the second "03-32-010", the third "Municipality"
+
+Hint: The search of Contact Information table is `"[style*='margin-bottom:15px;']"`. But you still need to use: [[(1) to select it as a table.
+
+Hint2: The `contact.table` is a tibble. Directly call `contact.table[1,3]` will not return the row 1 column 3 element, but the tibble containing that element. You need to call `contact.table[1,3] %>% pull` to obtain the element.
+
+```{r}
+url <- "https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2022"
+webpage <- read_html(url)
+
+contact.table <- webpage %>% 
+  html_elements("[style*='margin-bottom:15px;']") %>% 
+  html_table()  %>% `[[`(1)
+
+monthly.withdrawals.table <- webpage %>% 
+  html_nodes(".fancy-table") %>% 
+  html_table() %>% `[[`(6)
+
+water.system.name = contact.table[1,2] %>% pull
+PWSID = contact.table[1,5] %>% pull
+ownership = contact.table[2,5] %>% pull
+```
+
+2. Convert your scraped dataframe `monthly.withdrawals.table` into a new dataframe called `water_data`.
+
+The new dataframe should include columns: `Month`, `Average.DailyUse.MGD`, `Max.DayUse.MGD`, `water.system.name`, `PWSID`.
+
+Hint: consider `as.vector(monthly.withdrawals.table[,1])[[1]]`
+
+```{r}
+Month = c(as.vector(monthly.withdrawals.table[,1])[[1]],
+          as.vector(monthly.withdrawals.table[,4])[[1]],
+          as.vector(monthly.withdrawals.table[,7])[[1]])
+
+Average.DailyUse.MGD = c(as.vector(monthly.withdrawals.table[,2])[[1]],
+          as.vector(monthly.withdrawals.table[,5])[[1]],
+          as.vector(monthly.withdrawals.table[,8])[[1]])
+
+Max.DayUse.MGD = c(as.vector(monthly.withdrawals.table[,3])[[1]],
+          as.vector(monthly.withdrawals.table[,6])[[1]],
+          as.vector(monthly.withdrawals.table[,9])[[1]])
+
+water_data = data.frame(
+  water.system.name = rep(water.system.name, 12),
+  PWSID = rep(PWSID, 12),
+  Month = Month,
+  Average.DailyUse.MGD = Average.DailyUse.MGD,
+  Max.DayUse.MGD = Max.DayUse.MGD
+)
+```
+
+
+3. Note that the PWSID and the year appear in the web address for the page we scraped. Construct a function `scrape_water` using your code above that can scrape data for any PWSID and year for which the NC DEQ has data. **Be sure to modify the code to reflect the year and site (pwsid) scraped**.
+
+Hint:
+
+1. The function `scrape_water` should contain 2 parameters: `PWSID` and `the_year`.
+
+2. How to obtain the corresponding website based on the string `PWSID` and number `the_year`? Here I provide an example showcase of `sprintf`:
+
+```{r}
+sprintf("I am %s and my STA 032 midterm 2 score is %s", "Harry", 98)
+```
+
+3. The code to extract the elements from html, to process the data should mostly remain the same. But you need to add the column `Year` in the dataframe
+
+
+```{r}
+scrape_water = function(PWSID, the_year){
+  webpage <- read_html(sprintf("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=%s&year=%s",PWSID,the_year))
+
+contact.table <- webpage %>% 
+  html_elements("[style*='margin-bottom:15px;']") %>% 
+  html_table()  %>% `[[`(1)
+
+monthly.withdrawals.table <- webpage %>% 
+  html_nodes(".fancy-table") %>% 
+  html_table() %>% `[[`(6)
+
+water.system.name = contact.table[1,2] %>% pull
+PWSID = contact.table[1,5] %>% pull
+ownership = contact.table[2,5] %>% pull
+Month = c(as.vector(monthly.withdrawals.table[,1])[[1]],
+          as.vector(monthly.withdrawals.table[,4])[[1]],
+          as.vector(monthly.withdrawals.table[,7])[[1]])
+
+Average.DailyUse.MGD = c(as.vector(monthly.withdrawals.table[,2])[[1]],
+          as.vector(monthly.withdrawals.table[,5])[[1]],
+          as.vector(monthly.withdrawals.table[,8])[[1]])
+
+Max.DayUse.MGD = c(as.vector(monthly.withdrawals.table[,3])[[1]],
+          as.vector(monthly.withdrawals.table[,6])[[1]],
+          as.vector(monthly.withdrawals.table[,9])[[1]])
+
+water_data = data.frame(
+  water.system.name = rep(water.system.name, 12),
+  PWSID = rep(PWSID, 12),
+  Month = Month,
+  Year =  rep(the_year, 12),
+  Average.DailyUse.MGD = Average.DailyUse.MGD,
+  Max.DayUse.MGD = Max.DayUse.MGD
+)
+
+return(water_data)
+}
+
+scrape_water('03-32-010',2015)
+```
+
+4. Use the function above to extract data for Asheville (PWSID = 01-11-010) in 2015, Durham (PWSID = 03-32-010) in 2015. Combine this 2 data and create a plot that compares Asheville's to Durham's water Max Daily Usage (MGD).  Add reasonable label and title to the plot.
+
+Hint: directly set `aes(x = Month)` may not work as you expected because the R will not understand the Months. Here we need to set `x = my(paste(Month, Year, sep = " "))` inside `aes()`. Remember to `library(lubridate)` first before using the `my()` function.
+
+```{r}
+the_df <- scrape_water('03-32-010',2015)
+the_df2 <- scrape_water('01-11-010',2015)
+# Combine the data
+combined_data <- rbind(the_df, the_df2)
+ggplot(combined_data, 
+       aes(x = my(paste(Month, Year, sep = " ")),
+           y = Max.DayUse.MGD, color = water.system.name)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Comparison of Water Usage (2015)",
+       x = "Month",
+       y = "Max Daily Usage (MGD)")
+```
+
+5. Use the code & function you created above to plot Asheville's max daily withdrawal by months for the years 2010 thru 2021. Add a smoothed line to the plot (method = 'loess', se = FALSE). Add reasonable label and title to the plot.
+
+> Hint: Here is an example of map2 function in package **purrr**. Run this example to study how map2 is working.
+
+```
+#install.packages("purrr")
+library(purrr)
+my_multiply = function(a,b){
+  return(a*b)
+}
+argument1 = 1:10
+argument2 = 1:10
+map2(argument1,argument2,my_multiply)
+```
+
+> Then you can try to write similar code to use the map2 to return each year's result as a list of dataframes. The function `bindrows()` can be used on that list to directly construct a big dataframe by concatenating all dataframes inside that list.
+
+```{r}
+the_years <- 2010:2021
+theids = rep('01-11-010', length(the_years))
+dfs_2020 <- map2(theids,the_years,scrape_water) 
+
+#Conflate the returned list of dataframes into a single one
+df_2020 <- bind_rows(dfs_2020)
+ggplot(df_2020, aes(x = my(paste(Month, Year, sep = " ")),
+                    y = Max.DayUse.MGD)) +
+  geom_line(color = "blue") +
+  geom_point(color = "red") +
+  geom_smooth(method = "loess", se = FALSE, color = "green") +
+  labs(title = "Asheville's Max Daily Usage (2010-2021)",
+       x = "Year",
+       y = "Max Daily Usage (MGD)") +
+  theme_minimal()
+```
+
+
